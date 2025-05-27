@@ -1,0 +1,20 @@
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../../app/store';
+import paginationSlice from '../slices/paginationSlice';
+
+export const PaginationStepper = () => {
+  const { limit } = useSelector((state: RootState) => state.pagination);
+  const dispatch = useDispatch();
+  const updateLimit = (limitInput: string) => {
+    const newLimit = parseInt(limitInput);
+    dispatch(paginationSlice.actions.setLimit(newLimit));
+  };
+
+  return (
+    <select value={limit} onChange={(e) => updateLimit(e.target.value)}>
+      <option value={2}>2</option>
+      <option value={5}>5</option>
+      <option value={10}>10</option>
+    </select>
+  );
+};

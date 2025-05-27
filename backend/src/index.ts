@@ -1,5 +1,5 @@
 import * as express from 'express';
-import nuggets from './routes/nuggets-routes';
+import nuggetsRoutes from './routes/nuggets-routes';
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 
@@ -17,7 +17,7 @@ app.post('/requests', (req, res) => {
   res.status(201).json('all ok');
 });
 
-app.use('/api/nuggets', nuggets);
+app.use('/api/nuggets', nuggetsRoutes);
 
 app.listen(8080, () => {
   console.log('Server is running on port 8080 🚀');

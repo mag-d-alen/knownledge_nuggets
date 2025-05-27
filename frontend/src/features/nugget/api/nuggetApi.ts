@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { CreateNugget, Nugget } from '../models/types';
+import type { CreateNugget, Nugget, PaginatedNuggets } from '../models/types';
 
 export const nuggetApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api' }),
   endpoints: (builder) => ({
-    getNuggets: builder.query<Nugget[], void>({
-      query: () => '/nuggets',
+    getNuggets: builder.query<PaginatedNuggets, { page: number; limit: number }>({
+      query: ({ page = 1, limit = 2 }) =>
+        `/nuggets?page=${page}&limit=${limit}`,
       providesTags: ['Nuggets'],
     }),
     getNuggetById: builder.query<Nugget, string>({

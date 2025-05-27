@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Button } from './Button';
 import { useDeleteNuggetMutation } from '../api/nuggetApi';
 import type { RootState } from '../../../app/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,8 +18,8 @@ export const DeleteNugget: React.FC<{ id: string }> = ({ id }) => {
     deleteNugget(id);
   };
   return (
-    <Button disabled={isLoading} onClick={deleteNuggetHandler}>
+    <button disabled={isLoading} onClick={deleteNuggetHandler}>
       delete me
-    </Button>
+    </button>
   );
 };

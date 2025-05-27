@@ -5,6 +5,7 @@ export const uiSlice = createSlice({
     isLoading: false,
     isSuccess: false,
     isError: false,
+    darkMode:false,
   },
   reducers: {
     setIsLoading: (state, action: PayloadAction<boolean>) => {
@@ -16,6 +17,9 @@ export const uiSlice = createSlice({
     },
     setIsError: (state, action: PayloadAction<boolean>) => {
       state.isError = action.payload;
+    },
+    toggleDarkMode: (state) => {
+      state.darkMode = !state.darkMode;
     },
   },
 });

@@ -1,28 +1,48 @@
-import { useGetNuggetsQuery } from '../api/nuggetApi';
-import { DeleteNugget } from './DeleteNugget';
+import { PaginationButtons, PaginationStepper } from '../../pagination';
+import classes from './Nugget.module.scss';
+
+import { useNuggets } from '../hooks/useNuggets';
+import { NuggetCard } from './NuggetCard';
 
 export const NuggetList = () => {
-  const { data, isLoading } = useGetNuggetsQuery();
+  const { nuggets, nuggetsCount, isLoading } = useNuggets();
   if (isLoading) return <div>Loading...</div>;
-  if (!data) return <div>No data</div>;
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-        padding: '1rem',
-      }}>
-      {data.length} nuggets found.
-      {data.map((nugget) => (
-        <div key={nugget.id}>
-          <div>
-            {nugget.title} <DeleteNugget id={nugget.id} />
+    <>
+      {nuggets.length > 0 ? (
+        <div className={classes.container}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+              padding: '1rem',
+            }}>
+            {nuggetsCount} nuggets found.
+            {nuggets?.map((nugget) => (
+              <NuggetCard
+                key={nugget.id}
+                id={nugget.id}
+                title={nugget.title}
+                content={nugget.content}
+                tags={nugget.tags}
+              />
+            ))}
           </div>
-          <div>{nugget.content}</div>
-          <div>{nugget.tags?.join(', ')}</div>
+          <PaginationButtons />
+          <PaginationStepper />
         </div>
-      ))}
+      ) : (
+        <NuggetListSkeleton />
+      )}
+    </>
+  );
+};
+const NuggetListSkeleton = () => {
+  return (
+    <div className={classes.container}>
+      <div className={classes.skeleton}></div>
     </div>
   );
 };

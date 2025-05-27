@@ -1,12 +1,24 @@
-import './App.css';
-import { store } from './app/store';
-import { Provider } from 'react-redux';
+import { useSelector } from 'react-redux';
+
 import { HomePage } from './pages/HomePage';
+import { Route } from 'react-router-dom';
+import { Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import type { RootState } from './app/store';
+import { ErrorPage } from './pages/ErrorPage';
+import '../styles/main.scss';
 function App() {
+  const darkMode = useSelector((state: RootState) => state.ui.darkMode);
+
   return (
-    <Provider store={store}>
-      <HomePage />
-    </Provider>
+    <div className={darkMode ? 'darkMode' : ''}>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/error' element={<ErrorPage />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 

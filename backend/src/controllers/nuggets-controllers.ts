@@ -1,62 +1,79 @@
-import * as dotenv from 'dotenv';
-import { createClient } from '@supabase/supabase-js';
-import { Request, Response } from 'express';
-
-dotenv.config();
-
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseKey = process.env.SUPABASE_ANON_KEY!;
-
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-export const getNuggets = async (_: Request, res: Response) => {
-  const { data, error } = await supabase.from('nuggets').select('*');
-  if (error) {
-    throw new Error(error.message);
-  }
-  res.status(200).json(data);
+import type { Request, Response } from 'express';
+import type { NuggetsService } from '../services/nuggets-service';
+type Nugget = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
 };
-
-export const getNuggetById = async (req:Request, res: Response) => {
-  const { id } = req.params;
-  const { data, error } = await supabase
-    .from('nuggets')
-    .select('*')
-    .eq('id', id);
-  if (error) {
-    throw new Error(error.message);
-  }
-  res.status(200).json(data);
+type FilteredNuggets = {
+  nuggets: Nugget[];
+  totalNuggets: number;
+  totalPages: number;
+  currentPage: number;
+  nextPage: number;
+  prevPage: number;
+  isLastPage: boolean;
 };
+export class NuggetsController {
+  constructor(private readonly nuggetsService: NuggetsService) {}
 
-export const createNugget = async (req: Request, res: Response) => {
-  console.log(req.body);
-  const { data, error } = await supabase.from('nuggets').insert(req.body);
-  if (error) {
-    throw new Error(error.message);
-  }
-  console.log(data);
-  res.status(200).json(data);
-};
+  getPaginatedNuggets = async (req: Request, res: Response) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
 
-export const updateNugget = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { data, error } = await supabase
-    .from('nuggets')
-    .update(req.body)
-    .eq('id', id);
+    if (page < 1) throw new Error('Page number must be 1 or greater.');
+    if (limit < 1) throw new Error('Limit must be 1 or greater.');
+    const isFirstPage = page === 1;
+    const startIndex = isFirstPage ? 0 : (page - 1) * limit;
+    const endIndex = page * limit;
+    const { count, data } = await this.nuggetsService.getPaginatedNuggets({
+      startIndex,
+      endIndex,
+      limit,
+    });
 
-  if (error) {
-    throw new Error(error.message);
-  }
-  res.status(200).json(data);
-};
+    const result: FilteredNuggets = {
+      totalPages: count ? Math.ceil(count / limit) : 0,
+      totalNuggets: count || 0,
+      nuggets: data || [],
+      currentPage: page,
+      nextPage: page + 1,
+      prevPage: page - 1,
+      isLastPage: page === Math.ceil(Number(count) / limit),
+    };
+    res.json(result);
+  };
 
-export const deleteNugget = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { data, error } = await supabase.from('nuggets').delete().eq('id', id);
-  if (error) {
-    throw new Error(error.message);
-  }
-  res.status(200).json(data);
-};
+  getNuggetById = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const nugget = await this.nuggetsService.getNuggetById(id);
+    if (!nugget) {
+      throw new Error('Controller Error: Nugget not found');
+    }
+    res.status(200).json(nugget);
+  };
+
+  createNugget = async (req: Request, res: Response): Promise<void> => {
+    const data = await this.nuggetsService.createNugget(req.body);
+    res.status(201).json(data);
+  };
+
+  updateNugget = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const data = await this.nuggetsService.updateNugget(id, req.body);
+    if (!data) {
+      throw new Error('Controller Error: Nugget not updated');
+    }
+    res.status(204).send();
+  };
+
+  deleteNugget = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const data = await this.nuggetsService.deleteNugget(id);
+    if (!data) {
+      res.status(404).send();
+    }
+    res.status(204).send();
+  };
+}

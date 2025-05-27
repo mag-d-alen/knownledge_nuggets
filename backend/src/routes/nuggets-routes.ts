@@ -1,21 +1,22 @@
 import * as express from 'express';
+import { NuggetsController } from '../controllers/nuggets-controllers';
+import { NuggetsDao } from '../dao/nuggets-dao';
+import { NuggetsService } from '../services/nuggets-service';
+
 const router = express.Router();
-import {
-  getNuggets,
-  getNuggetById,
-  createNugget,
-  updateNugget,
-  deleteNugget,
-} from '../controllers/nuggets-controllers';
-
-router.get('/', getNuggets);
-
-router.get('/:id', getNuggetById);
-
-router.post('/', createNugget);
-
-router.put('/:id', updateNugget);
-
-router.delete('/:id', deleteNugget);
-
-export default router;
+export class NuggetsRoutes {
+  constructor(private readonly nuggetsController: NuggetsController) {
+    router.get('/', this.nuggetsController.getPaginatedNuggets);
+    router.get('/:id', this.nuggetsController.getNuggetById);
+    router.post('/', this.nuggetsController.createNugget);
+    router.put('/:id', this.nuggetsController.updateNugget);
+    router.delete('/:id', this.nuggetsController.deleteNugget);
+  }
+  getRoutes() {
+    return router;
+  }
+}
+const nuggetsRoutes = new NuggetsRoutes(
+  new NuggetsController(new NuggetsService(new NuggetsDao()))
+);
+export default nuggetsRoutes.getRoutes();

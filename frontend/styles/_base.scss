@@ -1,0 +1,21 @@
+@import 'variables';
+
+$font-stack: system-ui, Avenir, Helvetica, Arial, sans-serif;
+:root {
+  line-height: 1.5;
+  font-weight: 400;
+}
+body {
+  margin: 0;
+  padding-inline: 1.5rem;
+  min-width: 320px;
+  min-height: 100vh;
+  font: 100% $font-stack;
+  color: $color-text;
+  text-align: center;
+  .darkMode {
+    background-color: $color-darkmode-background;
+    color: $color-darkmode-text;
+    box-shadow: $shadow-darkmode;
+  }
+}
