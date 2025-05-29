@@ -69,6 +69,7 @@ export class NuggetsController {
   };
 
   deleteNugget = async (req: Request, res: Response): Promise<void> => {
+
     const { id } = req.params;
     const data = await this.nuggetsService.deleteNugget(id);
     if (!data) {

@@ -1,4 +1,3 @@
-import { PaginationButtons, PaginationStepper } from '../../pagination';
 import classes from './Nugget.module.scss';
 
 import { useNuggets } from '../hooks/useNuggets';
@@ -12,37 +11,23 @@ export const NuggetList = () => {
     <>
       {nuggets.length > 0 ? (
         <div className={classes.container}>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1rem',
-              padding: '1rem',
-            }}>
-            {nuggetsCount} nuggets found.
-            {nuggets?.map((nugget) => (
-              <NuggetCard
-                key={nugget.id}
-                id={nugget.id}
-                title={nugget.title}
-                content={nugget.content}
-                tags={nugget.tags}
-              />
-            ))}
-          </div>
-          <PaginationButtons />
-          <PaginationStepper />
+          <header>
+            <h3>{nuggetsCount} nuggets found</h3>
+          </header>
+          {nuggets?.map((nugget) => (
+            <NuggetCard nugget={nugget} />
+          ))}
         </div>
       ) : (
-        <NuggetListSkeleton />
+        <EmptyNuggets />
       )}
     </>
   );
 };
-const NuggetListSkeleton = () => {
+const EmptyNuggets = () => {
   return (
     <div className={classes.container}>
-      <div className={classes.skeleton}></div>
+      <p>No nuggets found</p>
     </div>
   );
 };

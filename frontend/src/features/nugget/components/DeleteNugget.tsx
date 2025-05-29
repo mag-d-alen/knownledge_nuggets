@@ -9,16 +9,17 @@ export const DeleteNugget: React.FC<{ id: string }> = ({ id }) => {
     useDeleteNuggetMutation();
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state: RootState) => state.ui);
+  const handleDeleteNugget = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    deleteNugget(id);
+  };
   useEffect(() => {
     dispatch(uiSlice.actions.setIsLoading(isLoadingNugget));
     (isSuccess || isError) && dispatch(uiSlice.actions.setIsLoading(false));
   }, [isLoadingNugget, isSuccess, isError]);
 
-  const deleteNuggetHandler = () => {
-    deleteNugget(id);
-  };
   return (
-    <button disabled={isLoading} onClick={deleteNuggetHandler}>
+    <button disabled={isLoading} onClick={(e) => handleDeleteNugget(e)}>
       delete me
     </button>
   );

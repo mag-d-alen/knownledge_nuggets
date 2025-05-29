@@ -55,20 +55,22 @@ export class NuggetsDao {
     const { data, error } = await this.supabase
       .from('nuggets')
       .update(nugget)
-      .eq('id', id);
+      .eq('id', id)
+      .select()
+      .single();
     if (error) {
       throw new Error(`Error updating nugget in database: ${error.message}`);
     }
     return data;
   };
   deleteNugget = async (id: string) => {
-    const { data, error } = await this.supabase
+    const {  error } = await this.supabase
       .from('nuggets')
       .delete()
       .eq('id', id);
     if (error) {
       throw new Error(`Error deleting nugget from database: ${error.message}`);
     }
-    return data;
+    return true;
   };
 }

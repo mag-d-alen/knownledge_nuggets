@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import type { CreateNugget } from '../models/types';
 import { useCreateNuggetMutation } from '../api/nuggetApi';
-import { uiSlice } from '../../ui/slices/uiSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../app/store';
-import { TagInput, Error } from '../../ui';
+import { uiSlice, TagInput, TextInput, Error } from '../../ui';
+import classes from './CreateNuggetForm.module.scss';
 export const CreateNuggetForm: React.FC = () => {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state: RootState) => state.ui);
@@ -14,78 +14,88 @@ export const CreateNuggetForm: React.FC = () => {
     tags: [],
   });
   const [error, setError] = useState<string | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const [
     createNugget,
     { isLoading: isLoadingCreateNugget, isSuccess, isError },
   ] = useCreateNuggetMutation();
-  useEffect(() => {
-    if (isSuccess) {
-      setNewNugget({
-        title: '',
-        content: '',
-        tags: [],
-      });
-    }
-  }, [isSuccess]);
 
   useEffect(() => {
     dispatch(uiSlice.actions.setIsLoading(isLoadingCreateNugget));
     (isSuccess || isError) && dispatch(uiSlice.actions.setIsLoading(false));
   }, [isLoadingCreateNugget, isSuccess, isError]);
 
-  const validateForm = (nugget: CreateNugget) => {
+  const isFormValid = () => {
+    console.log(newNugget);
     return (
-      nugget.title.length > 0 &&
-      nugget.content.length > 0 &&
-      nugget.tags.length > 0
+      newNugget.title.length > 0 &&
+      newNugget.content.length > 0 &&
+      newNugget.tags.length > 0
     );
   };
-
+  const resetForm = () => {
+    setNewNugget({
+      title: '',
+      content: '',
+      tags: [],
+    });
+  };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const isValid = validateForm(newNugget);
-    if (isValid) {
-      return createNugget(newNugget);
+    if (isFormValid()) {
+      createNugget(newNugget);
+      return setIsFormOpen(false);
     }
     setError('Please fill in all fields');
   };
+  const handleToggleForm = () => {
+    setIsFormOpen(!isFormOpen);
+    resetForm();
+  };
+  const isValid = isFormValid();
+
   return (
     <>
       {error && <Error text={error} dismissError={() => setError(null)} />}
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <input
-          required
-          disabled={isLoading}
-          placeholder='Title'
-          type='text'
-          value={newNugget.title}
-          onChange={(e) =>
-            setNewNugget({ ...newNugget, title: e.target.value })
-          }
-        />
-        <textarea
-          required
-          disabled={isLoading}
-          placeholder='Content'
-          value={newNugget.content}
-          onChange={(e) =>
-            setNewNugget({ ...newNugget, content: e.target.value })
-          }
-        />
-        <TagInput
-          disabled={isLoading}
-          updateTags={(newTags: string[]) =>
-            setNewNugget({ ...newNugget, tags: newTags })
-          }
-          currentTags={newNugget.tags || []}
-        />
-        <button type='submit' disabled={isLoading} onClick={handleSubmit}>
-          Create Nugget
-        </button>
-      </form>
+      {isFormOpen && (
+        <>
+          <h1 className={classes.title}>Create Nugget</h1>
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <TextInput
+              isDisabled={isLoading}
+              value={newNugget.title}
+              onChange={(value) => setNewNugget({ ...newNugget, title: value })}
+              placeholder={'Title'}
+              shouldSaveOnEnter={false}
+            />
+            <TextInput
+              isDisabled={isLoading}
+              value={newNugget.content}
+              onChange={(value) =>
+                setNewNugget({ ...newNugget, content: value })
+              }
+              placeholder={'Content'}
+              type={'textarea'}
+              shouldSaveOnEnter={false}
+            />
+            <TagInput
+              disabled={isLoading}
+              updateTags={(newTags: string[]) =>
+                setNewNugget({ ...newNugget, tags: newTags })
+              }
+              currentTags={newNugget.tags || []}
+            />
+            <div className={classes.buttons}>
+              <button type='submit' disabled={isLoading || !isValid}>
+                Save
+              </button>
+              <button onClick={handleToggleForm}>Cancel</button>
+            </div>
+          </form>
+        </>
+      )}
+      {!isFormOpen && <button onClick={handleToggleForm}>Create Nugget</button>}
     </>
   );
 };

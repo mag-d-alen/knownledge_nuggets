@@ -1,0 +1,28 @@
+@import '../../../../styles/variables.scss';
+.title {
+  text-align: center;
+  width: 50%;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  width: 50%;
+  input,
+  textarea {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+  .buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    button {
+      flex: 1;
+    }
+  }
+  button {
+    align-self: center;
+  }
+}

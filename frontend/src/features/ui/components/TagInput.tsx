@@ -24,24 +24,27 @@ export const TagInput: React.FC<TagInputProps> = ({
   };
 
   return (
-    <div>
+    <>
       <input
-        required
         disabled={disabled}
         value={newTag}
         onChange={(e) => setNewTag(e.target.value)}
         onKeyDown={(e) => addTag(e)}
         placeholder='Add a tag'
       />
-      {currentTags.map((tag) => (
-        <button
-          key={tag}
-          className={classes.tag}
-          onClick={() => removeTag(tag)}>
-          <p>{tag}</p>
-          <span>𐄂</span>
-        </button>
-      ))}
-    </div>
+      {currentTags.length > 0 && (
+        <div className={classes.tags}>
+          {currentTags.map((tag) => (
+            <button
+              key={tag}
+              className={classes.tag}
+              onClick={() => removeTag(tag)}>
+              <p>{tag}</p>
+              <span>𐄂</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </>
   );
 };

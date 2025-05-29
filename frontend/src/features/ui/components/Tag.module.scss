@@ -1,4 +1,11 @@
 @import '../../../../styles/variables.scss';
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .tag {
   display: flex;
   align-items: center;

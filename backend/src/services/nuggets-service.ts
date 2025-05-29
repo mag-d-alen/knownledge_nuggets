@@ -36,8 +36,8 @@ export class NuggetsService {
     const data = await this.nuggetsDao.updateNugget(id, nugget);
     return data;
   }
-  async deleteNugget(id: string): Promise<Nugget | null> {
-    const data = await this.nuggetsDao.deleteNugget(id);
-    return data;
+  async deleteNugget(id: string): Promise<boolean> {
+    const isDeleted = await this.nuggetsDao.deleteNugget(id);
+    return isDeleted;
   }
 }

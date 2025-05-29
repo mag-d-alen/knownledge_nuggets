@@ -3,7 +3,6 @@ export type Nugget = {
   title: string;
   content: string;
   tags: string[];
-  createdAt: string;
 };
 export type CreateNugget = Omit<Nugget, 'id' | 'createdAt'>;
 export type PaginatedNuggets = {
