@@ -4,7 +4,10 @@ import type { CreateNugget, Nugget, PaginatedNuggets } from '../models/types';
 export const nuggetApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api' }),
   endpoints: (builder) => ({
-    getNuggets: builder.query<PaginatedNuggets, { page: number; limit: number }>({
+    getNuggets: builder.query<
+      PaginatedNuggets,
+      { page: number; limit: number }
+    >({
       query: ({ page = 1, limit = 2 }) =>
         `/nuggets?page=${page}&limit=${limit}`,
       providesTags: ['Nuggets'],
@@ -14,7 +17,7 @@ export const nuggetApi = createApi({
       providesTags: ['Nugget'],
       transformResponse: (response: Nugget[]) => response[0],
     }),
-    createNugget: builder.mutation<Partial<Nugget>, Partial<CreateNugget>>({
+    createNugget: builder.mutation<Partial<Nugget>, CreateNugget>({
       query: (nugget) => ({
         url: '/nuggets',
         method: 'POST',

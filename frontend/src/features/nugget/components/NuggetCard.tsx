@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DeleteNugget } from '.';
-import { Tag, TextInput } from '../../ui';
+import { Tags, TextInput } from '../../ui';
 import classes from './Nugget.module.scss';
 import { useUpdateNuggetMutation } from '../api/nuggetApi';
 import type { Nugget } from '../models/types';
@@ -16,7 +16,7 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
   const [canEdit, setCanEdit] = useState<Record<string, boolean>>({});
 
   const { id, title, content, tags } = nugget;
-  const toggleEdit = (key: 'title' | 'content') => {
+  const toggleEdit = (key: 'title' | 'content' | 'tags') => {
     setCanEdit({ ...canEdit, [key]: !canEdit[key] });
   };
 
@@ -24,10 +24,14 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
     key,
     value,
   }: {
-    key: 'title' | 'content';
-    value: string;
+    key: 'title' | 'content' | 'tags';
+    value: string | string[];
   }) => {
-    updateNugget({ ...nugget, [key]: value });
+    if (key === 'tags') {
+      updateNugget({ ...nugget, tags: value as string[] });
+    } else {
+      updateNugget({ ...nugget, [key]: value as string });
+    }
   };
 
   useEffect(() => {
@@ -63,7 +67,15 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
         </div>
       )}
       <div className={classes.tags}>
-        {tags?.length > 0 && tags.map((tag) => <Tag key={tag} tag={tag} />)}
+        {tags?.length > 0 && (
+          <Tags
+            updateTags={(newTags: string[]) =>
+              saveNugget({ key: 'tags', value: newTags })
+            }
+            currentTags={tags}
+            disabled={false}
+          />
+        )}
       </div>
     </div>
   );

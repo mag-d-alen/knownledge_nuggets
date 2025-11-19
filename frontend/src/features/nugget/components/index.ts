@@ -1,3 +1,3 @@
-export * from './CreateNuggetForm';
+export * from '../createNugget/CreateNuggetForm';
 export * from './NuggetList';
-export * from './DeleteNugget';
+export * from '../deleteNugget/DeleteNugget';
