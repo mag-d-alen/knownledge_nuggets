@@ -3,8 +3,11 @@
 .tags {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
   gap: 0.5rem;
   width: 100%;
+  padding: 1rem 0;
 }
 
 .tag {
@@ -12,8 +15,8 @@
   align-items: center;
   border: 1px solid $color-yellow;
   border-radius: 1rem;
+  padding-inline: 0.5rem;
   width: fit-content;
-  padding: 0.2rem 0.5rem;
   min-width: 2rem;
   font-size: small;
   gap: 1rem;
@@ -23,4 +26,20 @@
   p {
     margin: 0;
   }
+
+  button {
+    padding: 0;
+    background-color: transparent;
+    color: inherit;
+    border: none;
+  }
+}
+
+.addTag {
+  background-color: $color-yellow;
+  border: 1px solid $color-yellow;
+  font-weight: bold;
+  padding: 0.1rem 0.5rem;
+  font-size: small;
+  cursor: pointer;
 }

@@ -12,9 +12,9 @@ export const PaginationStepper = () => {
 
   return (
     <select value={limit} onChange={(e) => updateLimit(e.target.value)}>
-      <option value={2}>2</option>
       <option value={5}>5</option>
       <option value={10}>10</option>
+      <option value={20}>20</option>
     </select>
   );
 };

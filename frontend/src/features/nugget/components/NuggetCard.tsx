@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DeleteNugget } from '.';
 import { Tags, TextInput } from '../../ui';
 import classes from './Nugget.module.scss';
@@ -9,17 +9,14 @@ type NuggetCardProps = {
   nugget: Nugget;
 };
 export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
-  const [
-    updateNugget,
-    { isLoading: isLoadingUpdateNugget, isSuccess: isSuccessUpdateNugget },
-  ] = useUpdateNuggetMutation();
   const [canEdit, setCanEdit] = useState<Record<string, boolean>>({});
-
+  const [updateNugget, { isLoading: isLoadingUpdateNugget }] =
+    useUpdateNuggetMutation();
+ 
   const { id, title, content, tags } = nugget;
-  const toggleEdit = (key: 'title' | 'content' | 'tags') => {
+  const toggleEdit = (key: 'title' | 'content') => {
     setCanEdit({ ...canEdit, [key]: !canEdit[key] });
   };
-
   const saveNugget = ({
     key,
     value,
@@ -32,11 +29,8 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
     } else {
       updateNugget({ ...nugget, [key]: value as string });
     }
+    setCanEdit({ ...canEdit, [key]: false });
   };
-
-  useEffect(() => {
-    isSuccessUpdateNugget && setCanEdit({});
-  }, [isSuccessUpdateNugget]);
 
   return (
     <div key={id} className={classes.card}>

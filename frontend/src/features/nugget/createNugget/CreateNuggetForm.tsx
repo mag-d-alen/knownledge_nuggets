@@ -87,7 +87,7 @@ export const CreateNuggetForm: React.FC = () => {
           </form>
         </>
       )}
-      {!isFormOpen && <button onClick={handleToggleForm}>Create Nugget</button>}
+      {!isFormOpen && <button className={classes.createNuggetButton} onClick={handleToggleForm}>Create Nugget</button>}
     </>
   );
 };

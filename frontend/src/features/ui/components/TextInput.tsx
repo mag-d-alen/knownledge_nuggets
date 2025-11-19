@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import classes from './TextInput.module.scss';
 
 type TextInputProps = {
   isDisabled: boolean;
@@ -50,6 +51,7 @@ export const TextInput = ({
       value={inputValue}
       onKeyDown={(e) => handleKeyDown(e)}
       onChange={(e) => handleChange(e.target.value)}
+      className={classes.textInput}
     />
   ) : (
     <input
@@ -59,7 +61,8 @@ export const TextInput = ({
       placeholder={placeholder}
       type={'text'}
       value={inputValue}
-      onChange={(e) => handleChange(e.target.value)}
+        onChange={(e) => handleChange(e.target.value)}
+        className={classes.textInput}
     />
   );
 };

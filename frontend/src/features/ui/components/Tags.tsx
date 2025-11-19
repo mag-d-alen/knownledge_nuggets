@@ -30,7 +30,7 @@ export const Tags: React.FC<TagsProps> = ({
   };
 
   return (
-    <>
+    <div className={classes.tags}>
       {isEditing ? (
         <input
           disabled={disabled}
@@ -42,16 +42,14 @@ export const Tags: React.FC<TagsProps> = ({
           placeholder='Add a tag'
         />
       ) : (
-        <button onClick={toggleEdit}>Add a tag</button>
+        <button className={classes.addTag} onClick={toggleEdit}>
+          +
+        </button>
       )}
-
-      {currentTags.length > 0 && (
-        <div className={classes.tags}>
-          {currentTags.map((tag) => (
-            <Tag key={tag} tag={tag} onClick={() => removeTag(tag)} />
-          ))}
-        </div>
-      )}
-    </>
+      {currentTags.length > 0 &&
+        currentTags.map((tag) => (
+          <Tag key={tag} tag={tag} onClick={() => removeTag(tag)} />
+        ))}
+    </div>
   );
 };

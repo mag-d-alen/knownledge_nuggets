@@ -1,0 +1,28 @@
+@use '../../../../styles/variables.scss' as *;
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem;
+  width: 100%;
+  box-shadow: $shadow-primary;
+
+  .darkModeToggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: $color-background;
+
+    .darkModeToggleIcon {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  .darkMode {
+    background-color: $color-darkmode-background;
+  }
+  .lightMode {
+    background-color: white;
+  }
+}

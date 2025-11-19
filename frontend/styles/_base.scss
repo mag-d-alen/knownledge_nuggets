@@ -6,10 +6,11 @@ $font-stack: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
 }
 body {
+  width: 100vw;
   margin: 0;
-  padding-inline: 1.5rem;
   min-width: 320px;
   min-height: 100vh;
+
   font: 100% $font-stack;
   color: $color-text;
   text-align: center;
