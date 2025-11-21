@@ -4,7 +4,7 @@ const paginationSlice = createSlice({
   name: 'pagination',
   initialState: {
     page: 1,
-    limit: 2,
+    limit: 5,
     isLastPage: false,
     totalPages: 0,
     totalNuggets: 0,
