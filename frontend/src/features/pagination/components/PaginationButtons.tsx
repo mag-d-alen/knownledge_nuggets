@@ -8,6 +8,7 @@ export const PaginationButtons = () => {
   );
   const dispatch = useDispatch();
   const updatePage = (newPage: number) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     dispatch(paginationSlice.actions.setPage(newPage));
   };
   const goForward = () => updatePage(page + 1);

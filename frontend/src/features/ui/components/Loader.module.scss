@@ -1,0 +1,11 @@
+@use '../../../../styles/variables.scss' as *;
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  width: 50%;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: $color-text;
+}
