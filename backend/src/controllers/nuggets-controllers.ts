@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import type { NuggetsService } from '../services/nuggets-service';
+import { AIVerificationService } from '../services/ai-verification-service';
 type Nugget = {
   id: number;
   name: string;
@@ -16,7 +17,11 @@ type FilteredNuggets = {
   isLastPage: boolean;
 };
 export class NuggetsController {
-  constructor(private readonly nuggetsService: NuggetsService) {}
+  private readonly aiVerificationService: AIVerificationService;
+  
+  constructor(private readonly nuggetsService: NuggetsService) {
+    this.aiVerificationService = new AIVerificationService();
+  }
 
   getPaginatedNuggets = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string) || 1;
@@ -76,5 +81,27 @@ export class NuggetsController {
       res.status(404).send();
     }
     res.status(204).send();
+  };
+
+  verifyNuggetWithAI = async (req: Request, res: Response): Promise<void> => {
+    const { title, content } = req.body;
+    
+    if (!title || !content) {
+      res.status(400).json({ error: 'Title and content are required' });
+      return;
+    }
+
+    try {
+      const verificationResult = await this.aiVerificationService.verifyNugget(
+        title,
+        content
+      );
+      res.status(200).json({ feedback: verificationResult });
+    } catch (error) {
+      res.status(500).json({ 
+        error: 'Failed to verify nugget with AI',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
   };
 }

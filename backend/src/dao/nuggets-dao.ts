@@ -11,6 +11,7 @@ export class NuggetsDao {
       process.env.SUPABASE_ANON_KEY!
     ) as SupabaseClient;
   }
+
   getPaginatedNuggets = async ({
     startIndex,
     endIndex,
@@ -31,6 +32,7 @@ export class NuggetsDao {
     }
     return { data, count };
   };
+
   getNuggetById = async (id: string) => {
     const { data, error } = await this.supabase
       .from('nuggets')
@@ -44,6 +46,7 @@ export class NuggetsDao {
     }
     return data;
   };
+
   insertNugget = async (nugget: Nugget) => {
     const { data, error } = await this.supabase.from('nuggets').insert(nugget);
     if (error) {
@@ -51,6 +54,7 @@ export class NuggetsDao {
     }
     return data;
   };
+
   updateNugget = async (id: string, nugget: Nugget) => {
     const { data, error } = await this.supabase
       .from('nuggets')
@@ -63,6 +67,7 @@ export class NuggetsDao {
     }
     return data;
   };
+  
   deleteNugget = async (id: string) => {
     const {  error } = await this.supabase
       .from('nuggets')

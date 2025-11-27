@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import type { CreateNugget } from '../models/types';
-import { useCreateNuggetMutation } from '../api/nuggetApi';
+import {
+  useCreateNuggetMutation,
+  useVerifyNuggetWithAIMutation,
+} from '../api/nuggetApi';
 import { Tags, TextInput, Error } from '../../ui';
+import { AIVerification } from './AIVerification';
 import classes from './CreateNuggetForm.module.scss';
+import { Loader } from '../../ui/components/Loader';
 
 export const CreateNuggetForm: React.FC = () => {
   const [newNugget, setNewNugget] = useState<CreateNugget>({
@@ -12,7 +17,12 @@ export const CreateNuggetForm: React.FC = () => {
   });
   const [error, setError] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [showVerificationButton, setShowVerificationButton] = useState(true);
+  const [showVerification, setShowVerification] = useState(false);
+
   const [createNugget, { isLoading }] = useCreateNuggetMutation();
+  const [verifyNugget, { isLoading: isVerifying, data: verificationData }] =
+    useVerifyNuggetWithAIMutation();
 
   const isFormValid = () => {
     return (
@@ -21,26 +31,50 @@ export const CreateNuggetForm: React.FC = () => {
       newNugget.tags.length > 0
     );
   };
-  const resetForm = () => {
+  const resetAndCloseForm = () => {
+    setIsFormOpen(false);
     setNewNugget({
       title: '',
       content: '',
       tags: [],
     });
+    setShowVerificationButton(true);
   };
-  const isValid = isFormValid();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isValid) {
+  const handleSubmit = () => {
+    if (isFormValid()) {
       createNugget(newNugget);
-      return setIsFormOpen(false);
+      resetAndCloseForm();
+    } else {
+      setError('Please fill in all fields');
     }
-    setError('Please fill in all fields');
   };
+
+  const handleVerifyWithAI = () => {
+    setShowVerification(true);
+    setShowVerificationButton(false);
+    verifyNugget({
+      title: newNugget.title,
+      content: newNugget.content,
+    });
+    setNewNugget(newNugget);
+  };
+
+  const handleCloseVerification = () => {
+    setShowVerification(false);
+    setShowVerificationButton(false);
+  };
+
+  const handleDismissVerificationOption = () => {
+    setShowVerificationButton(false);
+  };
+
   const handleToggleForm = () => {
-    setIsFormOpen(!isFormOpen);
-    resetForm();
+    if (isFormOpen) {
+      resetAndCloseForm();
+      return dismissError();
+    }
+    setIsFormOpen(true);
   };
 
   const dismissError = () => {
@@ -49,12 +83,19 @@ export const CreateNuggetForm: React.FC = () => {
 
   return (
     <>
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <Loader />}
       {error && <Error text={error} dismissError={dismissError} />}
+      {showVerification && (
+        <AIVerification
+          feedback={verificationData?.feedback || ''}
+          isLoading={isVerifying}
+          onClose={handleCloseVerification}
+        />
+      )}
       {isFormOpen && (
         <>
           <h1 className={classes.title}>Create Nugget</h1>
-          <form onSubmit={handleSubmit} className={classes.form}>
+          <form className={classes.form}>
             <TextInput
               isDisabled={isLoading}
               value={newNugget.title}
@@ -79,15 +120,33 @@ export const CreateNuggetForm: React.FC = () => {
               currentTags={newNugget.tags}
               disabled={isLoading}
             />
-            <FormButtons
-              submitDisabled={isLoading || !isValid}
-              submitText='Save'
-              handleToggleForm={handleToggleForm}
-            />
           </form>
+          <FormButtons
+            onSubmit={
+              showVerificationButton ? handleVerifyWithAI : handleSubmit
+            }
+            onCancel={
+              showVerificationButton
+                ? handleDismissVerificationOption
+                : handleToggleForm
+            }
+            submitDisabled={isLoading}
+            submitText={
+              showVerificationButton ? 'Ask AI Assistant for Feedback' : 'Save'
+            }
+            cancelText={
+              showVerificationButton ? 'Close' : 'Dismiss the feedback'
+            }
+          />
         </>
       )}
-      {!isFormOpen && <button className={classes.createNuggetButton} onClick={handleToggleForm}>Create Nugget</button>}
+      {!isFormOpen && (
+        <button
+          className={classes.createNuggetButton}
+          onClick={handleToggleForm}>
+          Create Nugget
+        </button>
+      )}
     </>
   );
 };
@@ -95,18 +154,23 @@ export const CreateNuggetForm: React.FC = () => {
 type FormButtonsProps = {
   submitDisabled: boolean;
   submitText: string;
-  handleToggleForm: () => void;
+  cancelText: string;
+  onSubmit: () => void;
+  onCancel: () => void;
 };
 const FormButtons = ({
   submitDisabled,
-  handleToggleForm,
+  submitText,
+  cancelText,
+  onSubmit,
+  onCancel,
 }: FormButtonsProps) => {
   return (
     <div className={classes.buttons}>
-      <button type='submit' disabled={submitDisabled}>
-        Save
+      <button disabled={submitDisabled} onClick={onSubmit}>
+        {submitText}
       </button>
-      <button onClick={handleToggleForm}>Cancel</button>
+      <button onClick={onCancel}>{cancelText}</button>
     </div>
   );
 };

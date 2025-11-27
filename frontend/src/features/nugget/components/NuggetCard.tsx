@@ -32,6 +32,7 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
     setCanEdit({ ...canEdit, [key]: false });
   };
 
+
   return (
     <div key={id} className={classes.card}>
       {canEdit.title ? (

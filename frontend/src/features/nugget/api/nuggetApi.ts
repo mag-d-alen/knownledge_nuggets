@@ -40,6 +40,16 @@ export const nuggetApi = createApi({
       }),
       invalidatesTags: ['Nuggets'],
     }),
+    verifyNuggetWithAI: builder.mutation<
+      { feedback: string },
+      { title: string; content: string }
+    >({
+      query: ({ title, content }) => ({
+        url: '/nuggets/verify',
+        method: 'POST',
+        body: { title, content },
+      }),
+    }),
   }),
   tagTypes: ['Nuggets', 'Nugget'],
 });
@@ -51,4 +61,5 @@ export const {
   useUpdateNuggetMutation,
   useDeleteNuggetMutation,
   useLazyGetNuggetByIdQuery,
+  useVerifyNuggetWithAIMutation,
 } = nuggetApi;

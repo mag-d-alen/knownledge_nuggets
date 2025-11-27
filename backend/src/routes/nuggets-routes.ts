@@ -9,6 +9,7 @@ export class NuggetsRoutes {
     router.get('/', this.nuggetsController.getPaginatedNuggets);
     router.get('/:id', this.nuggetsController.getNuggetById);
     router.post('/', this.nuggetsController.createNugget);
+    router.post('/verify', this.nuggetsController.verifyNuggetWithAI);
     router.put('/:id', this.nuggetsController.updateNugget);
     router.delete('/:id', this.nuggetsController.deleteNugget);
   }
