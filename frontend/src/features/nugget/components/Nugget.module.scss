@@ -9,9 +9,7 @@
     text-transform: uppercase;
     color: $color-text-secondary;
   }
-  .skeleton {
-    background-color: var(--color-secondary);
-  }
+
 
   .card {
     padding: 1rem;
@@ -22,7 +20,7 @@
     flex-direction: column;
     justify-content: space-between;
     box-shadow: $shadow-primary;
-    border: 1px solid $color-background;
+    border: 1px solid $shadow-large;
 
     .title {
       font-weight: bold;
