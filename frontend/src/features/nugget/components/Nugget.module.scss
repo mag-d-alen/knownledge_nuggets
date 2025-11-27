@@ -21,6 +21,7 @@
     flex-direction: column;
     justify-content: space-between;
     box-shadow: $shadow-primary;
+    border: 1px solid $color-background;
   }
 
   .title {

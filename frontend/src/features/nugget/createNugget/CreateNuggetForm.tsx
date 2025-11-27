@@ -5,7 +5,7 @@ import {
   useVerifyNuggetWithAIMutation,
 } from '../api/nuggetApi';
 import { Tags, TextInput, Error } from '../../ui';
-import { AIVerification } from './AIVerification';
+import { AIVerification } from '../components/AIVerification';
 import classes from './CreateNuggetForm.module.scss';
 import { Loader } from '../../ui/components/Loader';
 

@@ -10,6 +10,7 @@ export class NuggetsRoutes {
     router.get('/:id', this.nuggetsController.getNuggetById);
     router.post('/', this.nuggetsController.createNugget);
     router.post('/verify', this.nuggetsController.verifyNuggetWithAI);
+    router.post('/explain', this.nuggetsController.explainNuggetWithAI);
     router.put('/:id', this.nuggetsController.updateNugget);
     router.delete('/:id', this.nuggetsController.deleteNugget);
   }

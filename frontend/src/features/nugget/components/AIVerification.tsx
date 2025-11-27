@@ -25,9 +25,9 @@ export const AIVerification: React.FC<AIVerificationProps> = ({
             </button>
           </div>
           <div className={classes.loading}>
-            <div className={classes.spinner}></div>
             <p>
               Hi, I'm your assistant.
+              <div className={classes.spinner} />
               <br /> Let me think how to polish up your entry...
             </p>
           </div>

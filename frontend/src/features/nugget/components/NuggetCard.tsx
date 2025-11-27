@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { DeleteNugget } from '.';
 import { Tags, TextInput } from '../../ui';
 import classes from './Nugget.module.scss';
 import { useUpdateNuggetMutation } from '../api/nuggetApi';
 import type { Nugget } from '../models/types';
+import { DeleteNugget } from '../deleteNugget/DeleteNugget';
+import { ExplainNugget } from '../explainNugget/ExplainNugget';
 
 type NuggetCardProps = {
   nugget: Nugget;
@@ -12,7 +13,7 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
   const [canEdit, setCanEdit] = useState<Record<string, boolean>>({});
   const [updateNugget, { isLoading: isLoadingUpdateNugget }] =
     useUpdateNuggetMutation();
- 
+
   const { id, title, content, tags } = nugget;
   const toggleEdit = (key: 'title' | 'content') => {
     setCanEdit({ ...canEdit, [key]: !canEdit[key] });
@@ -31,7 +32,6 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
     }
     setCanEdit({ ...canEdit, [key]: false });
   };
-
 
   return (
     <div key={id} className={classes.card}>
@@ -72,6 +72,7 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
           />
         )}
       </div>
+      <ExplainNugget nugget={nugget} />
     </div>
   );
 };

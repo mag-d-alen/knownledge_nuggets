@@ -18,7 +18,7 @@ type FilteredNuggets = {
 };
 export class NuggetsController {
   private readonly aiVerificationService: AIVerificationService;
-  
+
   constructor(private readonly nuggetsService: NuggetsService) {
     this.aiVerificationService = new AIVerificationService();
   }
@@ -74,7 +74,6 @@ export class NuggetsController {
   };
 
   deleteNugget = async (req: Request, res: Response): Promise<void> => {
-
     const { id } = req.params;
     const data = await this.nuggetsService.deleteNugget(id);
     if (!data) {
@@ -85,7 +84,7 @@ export class NuggetsController {
 
   verifyNuggetWithAI = async (req: Request, res: Response): Promise<void> => {
     const { title, content } = req.body;
-    
+
     if (!title || !content) {
       res.status(400).json({ error: 'Title and content are required' });
       return;
@@ -98,9 +97,30 @@ export class NuggetsController {
       );
       res.status(200).json({ feedback: verificationResult });
     } catch (error) {
-      res.status(500).json({ 
+      res.status(500).json({
         error: 'Failed to verify nugget with AI',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        message: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  };
+
+  explainNuggetWithAI = async (req: Request, res: Response): Promise<void> => {
+    const {
+      title,
+      content,
+      question = 'Please explain the nugget in a way that is easy to understand',
+    } = req.body;
+    try {
+      const explanationResult = await this.aiVerificationService.explainNugget(
+        title,
+        content,
+        question
+      );
+      res.status(200).json({ explanation: explanationResult });
+    } catch (error) {
+      res.status(500).json({
+        error: 'Failed to explain nugget with AI',
+        message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   };

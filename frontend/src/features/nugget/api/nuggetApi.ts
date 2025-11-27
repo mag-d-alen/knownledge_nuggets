@@ -12,11 +12,13 @@ export const nuggetApi = createApi({
         `/nuggets?page=${page}&limit=${limit}`,
       providesTags: ['Nuggets'],
     }),
+
     getNuggetById: builder.query<Nugget, string>({
       query: (id) => `/nuggets/${id}`,
       providesTags: ['Nugget'],
       transformResponse: (response: Nugget[]) => response[0],
     }),
+
     createNugget: builder.mutation<Partial<Nugget>, CreateNugget>({
       query: (nugget) => ({
         url: '/nuggets',
@@ -25,6 +27,7 @@ export const nuggetApi = createApi({
       }),
       invalidatesTags: ['Nuggets'],
     }),
+
     updateNugget: builder.mutation<Nugget, Nugget>({
       query: (nugget) => ({
         url: `/nuggets/${nugget.id}`,
@@ -33,6 +36,7 @@ export const nuggetApi = createApi({
       }),
       invalidatesTags: ['Nuggets'],
     }),
+
     deleteNugget: builder.mutation<void, string>({
       query: (id) => ({
         url: `/nuggets/${id}`,
@@ -40,12 +44,23 @@ export const nuggetApi = createApi({
       }),
       invalidatesTags: ['Nuggets'],
     }),
+
     verifyNuggetWithAI: builder.mutation<
       { feedback: string },
       { title: string; content: string }
     >({
       query: ({ title, content }) => ({
         url: '/nuggets/verify',
+        method: 'POST',
+        body: { title, content },
+      }),
+    }),
+    explainNuggetWithAI: builder.mutation<
+      { explanation: string },
+      { title: string; content: string; question: string }
+    >({
+      query: ({ title, content }) => ({
+        url: '/nuggets/explain',
         method: 'POST',
         body: { title, content },
       }),
@@ -62,4 +77,5 @@ export const {
   useDeleteNuggetMutation,
   useLazyGetNuggetByIdQuery,
   useVerifyNuggetWithAIMutation,
+  useExplainNuggetWithAIMutation,
 } = nuggetApi;

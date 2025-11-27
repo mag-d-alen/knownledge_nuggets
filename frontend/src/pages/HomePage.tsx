@@ -1,4 +1,5 @@
-import { CreateNuggetForm, NuggetList } from '../features/nugget';
+import { NuggetList } from '../features/nugget';
+import { CreateNuggetForm } from '../features/nugget/createNugget/CreateNuggetForm';
 import { Pagination } from '../features/pagination';
 
 import { Header } from '../features/ui';
