@@ -5,6 +5,7 @@ import { useUpdateNuggetMutation } from '../api/nuggetApi';
 import type { Nugget } from '../models/types';
 import { DeleteNugget } from '../deleteNugget/DeleteNugget';
 import { ExplainNugget } from '../explainNugget/ExplainNugget';
+import Markdown from 'react-markdown';
 
 type NuggetCardProps = {
   nugget: Nugget;
@@ -58,7 +59,7 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
         />
       ) : (
         <div className={classes.content} onClick={() => toggleEdit('content')}>
-          {content}
+          <Markdown>{content}</Markdown>
         </div>
       )}
       <div className={classes.tags}>

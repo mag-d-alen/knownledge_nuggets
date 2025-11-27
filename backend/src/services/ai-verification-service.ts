@@ -6,10 +6,9 @@ Title: ${title}
 Content: ${content}
 Please provide:
 1. A brief summary of what the entry is about
-2. Any suggestions for improvement (clarity, completeness, accuracy)
-3. Suggest a refined version, examples of use
-4. Return the response in markdown format
-5. Keep the response concise and helpful.`;
+2. Suggest a refined version, examples of use
+3. Return the response in markdown format
+4. Keep the response concise and helpful.`;
     return this.sendRequestToAI(prompt);
   }
 

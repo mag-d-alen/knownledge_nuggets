@@ -128,8 +128,8 @@ export const CreateNuggetForm: React.FC = () => {
             }
             onCancel={
               showVerificationButton
-                ? handleDismissVerificationOption
-                : handleToggleForm
+                ? handleToggleForm
+                : handleDismissVerificationOption
             }
             submitDisabled={isLoading}
             submitText={
@@ -141,13 +141,7 @@ export const CreateNuggetForm: React.FC = () => {
           />
         </>
       )}
-      {!isFormOpen && (
-        <button
-          className={classes.createNuggetButton}
-          onClick={handleToggleForm}>
-          Create Nugget
-        </button>
-      )}
+      {!isFormOpen && <CreateNuggetButton onClick={handleToggleForm} />}
     </>
   );
 };
@@ -173,5 +167,16 @@ const FormButtons = ({
       </button>
       <button onClick={onCancel}>{cancelText}</button>
     </div>
+  );
+};
+
+type CreateNuggetButtonProps = {
+  onClick: () => void;
+};
+const CreateNuggetButton = ({ onClick }: CreateNuggetButtonProps) => {
+  return (
+    <button className={classes.createNuggetButton} onClick={onClick}>
+      Create Nugget
+    </button>
   );
 };

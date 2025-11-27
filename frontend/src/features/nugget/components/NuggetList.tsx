@@ -2,30 +2,22 @@ import classes from './Nugget.module.scss';
 
 import { useNuggets } from '../hooks/useNuggets';
 import { NuggetCard } from './NuggetCard';
+import { Loader } from '../../ui/components/Loader';
 
 export const NuggetList = () => {
   const { nuggets, nuggetsCount, isLoading, isError } = useNuggets();
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader loadingText='Loading nuggets...' />;
   if (isError) return <div>Error loading nuggets</div>;
+  const hasNuggets = nuggetsCount > 0;
+  const title =
+    nuggets.length > 0 ? `${nuggetsCount} nuggets found` : 'No nuggets found';
   return (
-    <section>
-      {nuggets.length > 0 ? (
-        <div className={classes.container}>
-          <h2>{nuggetsCount} nuggets found</h2>
-          {nuggets?.map((nugget) => (
-            <NuggetCard key={nugget.id} nugget={nugget} />
-          ))}
-        </div>
-      ) : (
-        <EmptyNuggets />
-      )}
+    <section className={classes.container}>
+      <h2 className={classes.title}>{title}</h2>
+      {hasNuggets &&
+        nuggets?.map((nugget) => (
+          <NuggetCard key={nugget.id} nugget={nugget} />
+        ))}
     </section>
-  );
-};
-const EmptyNuggets = () => {
-  return (
-    <div className={classes.container}>
-      <p>No nuggets found</p>
-    </div>
   );
 };

@@ -16,42 +16,61 @@ export const AIResponseModal: React.FC<AIResponseModalProps> = ({
   onClose,
   loadingText,
 }) => {
-  if (isLoading) {
-    return (
-      <>
-        <div className={classes.backdrop} onClick={onClose}></div>
-        <div className={classes.verificationContainer}>
-          <div className={classes.header}>
-            <h3>Message from your assistant</h3>
-            <button onClick={onClose} className={classes.closeButton}>
-              ×
-            </button>
-          </div>
-          <div className={classes.loading}>
-            <h3>
-              Hi, I'm your assistant 🤗
-              <Loader loadingText={loadingText} />
-            </h3>
-          </div>
-        </div>
-      </>
-    );
-  }
+  const loadingTitle = 'Message from your assistant';
+  const loadedTitle = "Your Assistant's Feedback";
 
   return (
     <>
       <div className={classes.backdrop} onClick={onClose}></div>
       <div className={classes.verificationContainer}>
-        <div className={classes.header}>
-          <h3>Your Assistant's Feedback</h3>
-          <button onClick={onClose} className={classes.closeButton}>
-            ×
-          </button>
-        </div>
-        <div className={classes.feedback}>
-          <Markdown>{message}</Markdown>
-        </div>
+        <Header
+          title={isLoading ? loadingTitle : loadedTitle}
+          onClose={onClose}
+        />
+        {isLoading ? (
+          <LoadingBody loadingText={loadingText} />
+        ) : (
+          <LoadedBody message={message} />
+        )}
       </div>
     </>
+  );
+};
+
+type HeaderProps = {
+  title: string;
+  onClose: () => void;
+};
+const Header = ({ title, onClose }: HeaderProps) => {
+  return (
+    <div className={classes.header}>
+      <h3 className={classes.title}>{title}</h3>
+      <button onClick={onClose} className={classes.closeButton}>
+        ×
+      </button>
+    </div>
+  );
+};
+
+type LoadingBodyProps = {
+  loadingText: string;
+};
+const LoadingBody = ({ loadingText }: LoadingBodyProps) => {
+  return (
+    <div className={classes.loading}>
+      <h3>Hi, I'm your assistant 🤗</h3>
+      <Loader loadingText={loadingText} />
+    </div>
+  );
+};
+
+type LoadedBodyProps = {
+  message: string;
+};
+const LoadedBody = ({ message }: LoadedBodyProps) => {
+  return (
+    <div className={classes.feedback}>
+      <Markdown>{message}</Markdown>
+    </div>
   );
 };

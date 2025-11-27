@@ -14,7 +14,7 @@
   width: 90%;
   max-height: 80vh;
   overflow-y: auto;
-  z-index: 1001;
+  z-index: 1;
 }
 
 .backdrop {
@@ -23,8 +23,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1000;
-  background-color: rgba($color-text, 0.5);
+
+  background-color: var(--color-backdrop);
   backdrop-filter: blur(10px);
 }
 
@@ -35,47 +35,23 @@
   margin-bottom: 2rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid $color-detail;
-
-  h3 {
-    margin: 0;
-    font-size: 20px;
-    color: #333;
-  }
 }
 
 .closeButton {
   background: none;
   border: none;
-  font-size: 28px;
-  cursor: pointer;
-  color: #666;
+  font-size: 2rem;
+  color: $color-text-secondary;
   padding: 0;
   width: 3rem;
   height: 3rem;
   display: flex;
   align-items: center;
   border-radius: 0.5rem;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #f0f0f0;
-    color: #333;
-  }
 }
 
-.loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem;
-  gap: 2rem;
-
-  p {
-    margin: 0;
-    color: #666;
-    font-size: 14px;
-  }
+.title {
+  color: $color-text-secondary;
 }
 
 .feedback {
