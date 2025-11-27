@@ -1,4 +1,13 @@
 import classes from './Loader.module.scss';
-export const Loader = () => {
-  return <div className={classes.loader}>Loading...</div>;
+export const Loader = ({
+  loadingText = 'Loading...',
+}: {
+  loadingText?: string;
+}) => {
+  return (
+    <div className={classes.container}>
+      <div className={classes.loader} />
+      <h5 className={classes.loadingText}>{loadingText}</h5>
+    </div>
+  );
 };

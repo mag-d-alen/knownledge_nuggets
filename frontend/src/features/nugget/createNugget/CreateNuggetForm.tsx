@@ -5,7 +5,7 @@ import {
   useVerifyNuggetWithAIMutation,
 } from '../api/nuggetApi';
 import { Tags, TextInput, Error } from '../../ui';
-import { AIVerification } from '../components/AIVerification';
+import { AIResponseModal } from '../components/AIResponseModal';
 import classes from './CreateNuggetForm.module.scss';
 import { Loader } from '../../ui/components/Loader';
 
@@ -86,10 +86,11 @@ export const CreateNuggetForm: React.FC = () => {
       {isLoading && <Loader />}
       {error && <Error text={error} dismissError={dismissError} />}
       {showVerification && (
-        <AIVerification
-          feedback={verificationData?.feedback || ''}
+        <AIResponseModal
+          message={verificationData?.feedback || ''}
           isLoading={isVerifying}
           onClose={handleCloseVerification}
+          loadingText='Let me think how to polish up your entry...'
         />
       )}
       {isFormOpen && (

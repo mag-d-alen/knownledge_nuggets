@@ -1,17 +1,20 @@
 import React from 'react';
-import classes from './AIVerification.module.scss';
+import classes from './AIResponseModal.module.scss';
 import Markdown from 'react-markdown';
+import { Loader } from '../../ui/components/Loader';
 
-type AIVerificationProps = {
-  feedback: string;
+type AIResponseModalProps = {
+  message: string;
   isLoading: boolean;
   onClose: () => void;
+  loadingText: string;
 };
 
-export const AIVerification: React.FC<AIVerificationProps> = ({
-  feedback,
+export const AIResponseModal: React.FC<AIResponseModalProps> = ({
+  message,
   isLoading,
   onClose,
+  loadingText,
 }) => {
   if (isLoading) {
     return (
@@ -25,11 +28,10 @@ export const AIVerification: React.FC<AIVerificationProps> = ({
             </button>
           </div>
           <div className={classes.loading}>
-            <p>
-              Hi, I'm your assistant.
-              <div className={classes.spinner} />
-              <br /> Let me think how to polish up your entry...
-            </p>
+            <h3>
+              Hi, I'm your assistant 🤗
+              <Loader loadingText={loadingText} />
+            </h3>
           </div>
         </div>
       </>
@@ -47,7 +49,7 @@ export const AIVerification: React.FC<AIVerificationProps> = ({
           </button>
         </div>
         <div className={classes.feedback}>
-          <Markdown>{feedback}</Markdown>
+          <Markdown>{message}</Markdown>
         </div>
       </div>
     </>

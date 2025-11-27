@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { Nugget } from '../models';
 import classes from './ExplainNugges.module.scss';
-import { AIVerification } from '../components';
+import { AIResponseModal } from '../components';
 import { useExplainNuggetWithAIMutation } from '../api/nuggetApi';
 
 type ExplainNuggetProps = {
@@ -9,7 +9,6 @@ type ExplainNuggetProps = {
 };
 export const ExplainNugget: React.FC<ExplainNuggetProps> = ({ nugget }) => {
   const [showExplanation, setShowExplanation] = useState(false);
-
   const [explainNugget, { isLoading, data: explanationData }] =
     useExplainNuggetWithAIMutation();
 
@@ -25,19 +24,15 @@ export const ExplainNugget: React.FC<ExplainNuggetProps> = ({ nugget }) => {
     });
     setShowExplanation(true);
   };
-  //   const { id, title, content, tags } = nugget;
-  //   const { resense } = useExplainNuggetWithAIMutation();
-
-  //   const [explainNugget, { isLoading }] = useExplainNuggetMutation();
-  //   const [explainNugget, { isLoading }] = useExplainNuggetMutation();
   return (
     <div>
       <button className={classes.explainButton} onClick={handleExplainNugget}>
         Explain it to me
       </button>
       {showExplanation && (
-        <AIVerification
-          feedback={explanationData?.explanation || ''}
+        <AIResponseModal
+          loadingText='Let me think how to explain the nugget...'
+          message={explanationData?.explanation || ''}
           isLoading={isLoading}
           onClose={handleCloseExplanation}
         />

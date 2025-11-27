@@ -1,3 +1,2 @@
 export * from './NuggetList';
-export * from './AIVerification';
-
+export * from './AIResponseModal';
