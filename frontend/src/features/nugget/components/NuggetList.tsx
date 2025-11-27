@@ -11,9 +11,7 @@ export const NuggetList = () => {
     <section>
       {nuggets.length > 0 ? (
         <div className={classes.container}>
-          <header>
-            <h3>{nuggetsCount} nuggets found</h3>
-          </header>
+          <h2>{nuggetsCount} nuggets found</h2>
           {nuggets?.map((nugget) => (
             <NuggetCard key={nugget.id} nugget={nugget} />
           ))}

@@ -18,7 +18,7 @@ Please provide:
     content: string,
     question: string
   ): Promise<string> {
-    const prompt = `Please  act as a helpful assistant that explains the following knowledge entry and provide a detailed explanation:
+    const prompt = `Please act as a helpful assistant that explains the following knowledge entry and provide a detailed explanation:
 
 Title: ${title}
 Content: ${content}

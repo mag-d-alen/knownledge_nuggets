@@ -14,17 +14,11 @@
     padding: 0.5rem;
     font-size: 1rem;
   }
-  .buttons {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    button {
-      flex: 1;
-    }
-  }
-  button {
-    align-self: center;
-  }
+}
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .createNuggetButton {
   align-self: flex-end;

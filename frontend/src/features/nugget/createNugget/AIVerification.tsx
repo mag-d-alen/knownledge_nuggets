@@ -41,7 +41,7 @@ export const AIVerification: React.FC<AIVerificationProps> = ({
       <div className={classes.backdrop} onClick={onClose}></div>
       <div className={classes.verificationContainer}>
         <div className={classes.header}>
-          <h3>AI Verification Feedback</h3>
+          <h3>Your Assistant's Feedback</h3>
           <button onClick={onClose} className={classes.closeButton}>
             ×
           </button>

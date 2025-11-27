@@ -1,3 +1,5 @@
+@use '../../styles/variables.scss' as *;
+
 main {
   display: flex;
   flex-direction: column;
@@ -8,6 +10,11 @@ main {
   height: 100%;
   padding-bottom: 6rem;
 }
+header {
+  margin-bottom: 1rem;
+  box-shadow: $shadow-white;
+}
 footer {
   margin-top: 1rem;
+  box-shadow: $shadow-white;
 }

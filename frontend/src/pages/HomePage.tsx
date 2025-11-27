@@ -6,8 +6,10 @@ import classes from './PageLayout.module.scss';
 export const HomePage: React.FC = () => {
   return (
     <>
-      <main className={classes.container}>
+      <header>
         <Header />
+      </header>
+      <main className={classes.container}>
         <CreateNuggetForm />
         <NuggetList />
       </main>
