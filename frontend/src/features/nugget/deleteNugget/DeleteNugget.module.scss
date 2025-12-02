@@ -1,6 +1,6 @@
 @use '../../../../styles/variables.scss' as *;
 .deleteButton {
-  background-color: $color-error-background;
+  background-color: transparent;
   cursor: pointer;
   border: none;
   color: $color-text;
@@ -8,8 +8,10 @@
   .deleteIcon {
     width: 1rem;
     height: 1rem;
-    stroke: $color-error;
-    color: $color-error;
-    fill: $color-error;
+  }
+  .darkModeIcon {
+    width: 1rem;
+    height: 1rem;
+    filter: brightness(0) invert(1);
   }
 }

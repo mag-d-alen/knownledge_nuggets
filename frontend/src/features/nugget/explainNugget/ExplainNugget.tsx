@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
 import type { Nugget } from '../models';
 import classes from './ExplainNugges.module.scss';
-import { AIResponseModal } from '../components';
 import { useExplainNuggetWithAIMutation } from '../api/nuggetApi';
+import { Modal } from '../../ui/components/Modal';
+import { useState } from 'react';
 
 type ExplainNuggetProps = {
   nugget: Nugget;
 };
 export const ExplainNugget: React.FC<ExplainNuggetProps> = ({ nugget }) => {
-  const [showExplanation, setShowExplanation] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [explainNugget, { isLoading, data: explanationData }] =
     useExplainNuggetWithAIMutation();
-
-  const handleCloseExplanation = () => {
-    setShowExplanation(false);
-  };
 
   const handleExplainNugget = () => {
     explainNugget({
@@ -22,21 +18,31 @@ export const ExplainNugget: React.FC<ExplainNuggetProps> = ({ nugget }) => {
       content: nugget.content,
       question: 'Please explain the nugget in a way that is easy to understand',
     });
-    setShowExplanation(true);
   };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    handleExplainNugget();
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const loadedTitle = "Your Assistant's Feedback";
+  const loadingText = 'Let me think how to explain the nugget...';
+  const message = explanationData?.explanation || '';
+
   return (
-    <div>
-      <button className={classes.explainButton} onClick={handleExplainNugget}>
-        Explain it to me
-      </button>
-      {showExplanation && (
-        <AIResponseModal
-          loadingText='Let me think how to explain the nugget...'
-          message={explanationData?.explanation || ''}
-          isLoading={isLoading}
-          onClose={handleCloseExplanation}
-        />
-      )}
-    </div>
+    <Modal
+      onClose={handleCloseModal}
+      isOpen={isModalOpen}
+      setModalOpen={handleOpenModal}
+      loadingText={loadingText}
+      title={loadedTitle}
+      message={message}
+      isLoading={isLoading}
+      triggerButton={'Explain it to me'}
+    />
   );
 };

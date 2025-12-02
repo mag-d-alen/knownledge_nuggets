@@ -5,9 +5,9 @@ import {
   useVerifyNuggetWithAIMutation,
 } from '../api/nuggetApi';
 import { Tags, TextInput, Error } from '../../ui';
-import { AIResponseModal } from '../components/AIResponseModal';
 import classes from './CreateNuggetForm.module.scss';
 import { Loader } from '../../ui/components/Loader';
+import { Modal } from '../../ui/components/Modal';
 
 export const CreateNuggetForm: React.FC = () => {
   const [newNugget, setNewNugget] = useState<CreateNugget>({
@@ -16,10 +16,8 @@ export const CreateNuggetForm: React.FC = () => {
     tags: [],
   });
   const [error, setError] = useState<string | null>(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [showVerificationButton, setShowVerificationButton] = useState(true);
   const [showVerification, setShowVerification] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [createNugget, { isLoading }] = useCreateNuggetMutation();
   const [verifyNugget, { isLoading: isVerifying, data: verificationData }] =
     useVerifyNuggetWithAIMutation();
@@ -32,13 +30,12 @@ export const CreateNuggetForm: React.FC = () => {
     );
   };
   const resetAndCloseForm = () => {
-    setIsFormOpen(false);
     setNewNugget({
       title: '',
       content: '',
       tags: [],
     });
-    setShowVerificationButton(true);
+    setIsModalOpen(false);
   };
 
   const handleSubmit = () => {
@@ -52,7 +49,6 @@ export const CreateNuggetForm: React.FC = () => {
 
   const handleVerifyWithAI = () => {
     setShowVerification(true);
-    setShowVerificationButton(false);
     verifyNugget({
       title: newNugget.title,
       content: newNugget.content,
@@ -62,19 +58,6 @@ export const CreateNuggetForm: React.FC = () => {
 
   const handleCloseVerification = () => {
     setShowVerification(false);
-    setShowVerificationButton(false);
-  };
-
-  const handleDismissVerificationOption = () => {
-    setShowVerificationButton(false);
-  };
-
-  const handleToggleForm = () => {
-    if (isFormOpen) {
-      resetAndCloseForm();
-      return dismissError();
-    }
-    setIsFormOpen(true);
   };
 
   const dismissError = () => {
@@ -82,101 +65,88 @@ export const CreateNuggetForm: React.FC = () => {
   };
 
   return (
-    <>
-      {isLoading && <Loader />}
+    <div>
+      {isLoading && <Loader isFullscreen={true} />}
       {error && <Error text={error} dismissError={dismissError} />}
-      {showVerification && (
-        <AIResponseModal
-          message={verificationData?.feedback || ''}
-          isLoading={isVerifying}
-          onClose={handleCloseVerification}
-          loadingText='Let me think how to polish up your entry...'
-        />
-      )}
-      {isFormOpen && (
-        <>
-          <h1 className={classes.title}>Create Nugget</h1>
-          <form className={classes.form}>
-            <TextInput
-              isDisabled={isLoading}
-              value={newNugget.title}
-              onChange={(value) => setNewNugget({ ...newNugget, title: value })}
-              placeholder={'Title'}
-              shouldSaveOnEnter={false}
+
+      <Modal
+        isOpen={isModalOpen}
+        setModalOpen={setIsModalOpen}
+        loadingText='Let me think how to polish up your entry...'
+        title="Your Assistant's Feedback"
+        message={
+          verificationData?.feedback && showVerification
+            ? verificationData?.feedback
+            : ''
+        }
+        isLoading={isVerifying}
+        onClose={resetAndCloseForm}
+        triggerButton={'Create Nugget'}>
+        {showVerification ? (
+          <button onClick={handleCloseVerification}>Back to form</button>
+        ) : (
+          <div>
+            <h1 className={classes.title}>Create Nugget</h1>
+            <form className={classes.form}>
+              <TextInput
+                isDisabled={isLoading}
+                value={newNugget.title}
+                onChange={(value) =>
+                  setNewNugget({ ...newNugget, title: value })
+                }
+                placeholder={'Title'}
+                shouldSaveOnEnter={false}
+              />
+              <TextInput
+                isDisabled={isLoading}
+                value={newNugget.content}
+                onChange={(value) =>
+                  setNewNugget({ ...newNugget, content: value })
+                }
+                placeholder={'Content'}
+                type={'textarea'}
+                shouldSaveOnEnter={false}
+              />
+              <Tags
+                updateTags={(newTags: string[]) =>
+                  setNewNugget({ ...newNugget, tags: newTags })
+                }
+                currentTags={newNugget.tags}
+                disabled={isLoading}
+              />
+            </form>
+            <FormButtons
+              onSubmit={handleSubmit}
+              onAskAIAssistant={handleVerifyWithAI}
+              submitDisabled={isLoading || !isFormValid()}
             />
-            <TextInput
-              isDisabled={isLoading}
-              value={newNugget.content}
-              onChange={(value) =>
-                setNewNugget({ ...newNugget, content: value })
-              }
-              placeholder={'Content'}
-              type={'textarea'}
-              shouldSaveOnEnter={false}
-            />
-            <Tags
-              updateTags={(newTags: string[]) =>
-                setNewNugget({ ...newNugget, tags: newTags })
-              }
-              currentTags={newNugget.tags}
-              disabled={isLoading}
-            />
-          </form>
-          <FormButtons
-            onSubmit={
-              showVerificationButton ? handleVerifyWithAI : handleSubmit
-            }
-            onCancel={
-              showVerificationButton
-                ? handleToggleForm
-                : handleDismissVerificationOption
-            }
-            submitDisabled={isLoading}
-            submitText={
-              showVerificationButton ? 'Ask AI Assistant for Feedback' : 'Save'
-            }
-            cancelText={
-              showVerificationButton ? 'Close' : 'Dismiss the feedback'
-            }
-          />
-        </>
-      )}
-      {!isFormOpen && <CreateNuggetButton onClick={handleToggleForm} />}
-    </>
+          </div>
+        )}
+      </Modal>
+    </div>
   );
 };
 
 type FormButtonsProps = {
   submitDisabled: boolean;
-  submitText: string;
-  cancelText: string;
+
+  onAskAIAssistant: () => void;
   onSubmit: () => void;
-  onCancel: () => void;
 };
 const FormButtons = ({
   submitDisabled,
-  submitText,
-  cancelText,
+
+  onAskAIAssistant,
   onSubmit,
-  onCancel,
 }: FormButtonsProps) => {
   return (
     <div className={classes.buttons}>
       <button disabled={submitDisabled} onClick={onSubmit}>
-        {submitText}
+        Save
       </button>
-      <button onClick={onCancel}>{cancelText}</button>
+      <button disabled={submitDisabled} onClick={onAskAIAssistant}>
+        Ask AI Assistant for Feedback
+      </button>
     </div>
-  );
-};
-
-type CreateNuggetButtonProps = {
-  onClick: () => void;
-};
-const CreateNuggetButton = ({ onClick }: CreateNuggetButtonProps) => {
-  return (
-    <button className={classes.createNuggetButton} onClick={onClick}>
-      Create Nugget
-    </button>
   );
 };

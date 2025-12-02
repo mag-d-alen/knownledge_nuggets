@@ -1,102 +1,101 @@
 @use '../../../../styles/variables.scss' as *;
-.title {
-  text-align: center;
-  width: 50%;
-}
-.form {
+.container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-  width: 50%;
-  input,
-  textarea {
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
-}
-.buttons {
-  display: flex;
   align-items: center;
-  gap: 0.5rem;
-}
-.createNuggetButton {
-  align-self: flex-end;
-  margin-top: 1rem;
-  padding: 1rem 2rem;
-  border-radius: 0.5rem;
-  border: $color-yellow 1px solid;
-  background-color: $color-yellow;
-  font-weight: 600;
-  font-size: 1.2rem;
-  color: $color-text;
-}
+  justify-content: center;
+  position: fixed;
+  top: 5.75rem;
+  left: 0;
+  right: 0;
 
-.successMessage {
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 16px 0;
-  width: 50%;
+  background-color: $color-success;
+  z-index: 1;
 
-  p {
-    margin: 0 0 12px 0;
-    color: #155724;
+  .title {
+    text-align: center;
+    width: 50%;
+  }
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    width: 50%;
+    input,
+    textarea {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+  }
+  .buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .createNuggetButton {
+    align-self: flex-end;
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    border: $color-yellow 1px solid;
+    background-color: $color-yellow;
     font-weight: 600;
-    font-size: 16px;
-  }
-}
-
-.verificationOptions {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.verifyButton {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  font-size: 14px;
-
-  &:hover:not(:disabled) {
-    background-color: #0056b3;
+    font-size: 1.2rem;
+    color: $color-text;
   }
 
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-}
+  .successMessage {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    width: 50%;
 
-.dismissButton {
-  padding: 10px 20px;
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  font-size: 14px;
-
-  &:hover {
-    background-color: #5a6268;
+    p {
+      margin: 0 0 12px 0;
+      color: #155724;
+      font-weight: 600;
+      font-size: 16px;
+    }
   }
-}
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50%;
-  width: 50%;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: $color-text;
+
+  .verificationOptions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .dismissButton {
+    padding: 10px 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+
+    &:hover {
+      background-color: #5a6268;
+    }
+  }
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+    width: 50%;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $color-text;
+  }
+  @media (max-width: $breakpoint-md) {
+    width: 90%;
+  }
+  @media (max-width: $breakpoint-sm) {
+    width: 100%;
+  }
 }
