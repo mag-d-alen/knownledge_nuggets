@@ -32,7 +32,8 @@ Question: ${question}
   private async sendRequestToAI(prompt: string): Promise<string> {
     try {
       const apiKey = process.env.OPENROUTER_API_KEY;
-      let response = await fetch(
+      const model = process.env.OPENROUTER_MODEL;
+      const response = await fetch(
         'https://openrouter.ai/api/v1/chat/completions',
         {
           method: 'POST',
@@ -41,7 +42,7 @@ Question: ${question}
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: 'x-ai/grok-4.1-fast:free',
+            model: model,
             messages: [
               {
                 role: 'user',
@@ -52,9 +53,14 @@ Question: ${question}
           }),
         }
       );
+
       const result = await response.json();
-      response = result.choices[0].message;
-      return result.choices[0].message.content;
+      const responseText = result.choices[0].message.content;
+      if (!responseText) {
+        console.log('No response from AI', result.choces[0]);
+        return this.getFallbackResponse();
+      }
+      return responseText;
     } catch (error) {
       console.error('AI verification error:', error);
       return this.getFallbackResponse();
@@ -64,8 +70,8 @@ Question: ${question}
   private getFallbackResponse(): string {
     return `The AI assistant has failed to verify your knowledge nugget. 
     You may want to try again later.
-    But then, AI assistant might not like you very much.
-    Have you offered him a cup of coffee?  
+    But then, your AI assistant might not like you very much.
+    Have you offered them a cup of coffee?  
     Anyways, you can save your knowledge nugget anyway.
     Have a nice day!
 `;
