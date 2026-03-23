@@ -4,7 +4,6 @@ import { useCreateNugget, useVerifyNuggetWithAI } from '../api/nuggetApi';
 import { Tags, TextInput, Error } from '../../ui';
 import classes from './CreateNuggetForm.module.scss';
 import { Loader } from '../../ui/components/Loader';
-import { Modal } from '../../ui/components/Modal';
 import { z } from 'zod';
 
 const createNuggetSchema = z.object({
@@ -23,7 +22,6 @@ export const CreateNuggetForm: React.FC = () => {
   });
   const [error, setError] = useState<string | null>(null);
   const [showVerification, setShowVerification] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     mutate: verifyNugget,
@@ -73,20 +71,6 @@ export const CreateNuggetForm: React.FC = () => {
     <div>
       {isCreating && <Loader isFullscreen={true} />}
       {error && <Error text={error} dismissError={dismissError} />}
-
-      <Modal
-        isOpen={isModalOpen}
-        setModalOpen={setIsModalOpen}
-        loadingText='Let me think how to polish up your entry...'
-        title="Your Assistant's Feedback"
-        message={
-          verificationData?.feedback && showVerification
-            ? verificationData?.feedback
-            : ''
-        }
-        isLoading={isVerifying || isCreating}
-        onClose={resetAndCloseForm}
-        triggerButton={'Create Nugget'}>
         {showVerification ? (
           <button onClick={handleCloseVerification}>Back to form</button>
         ) : (
@@ -127,7 +111,6 @@ export const CreateNuggetForm: React.FC = () => {
             />
           </div>
         )}
-      </Modal>
     </div>
   );
 };

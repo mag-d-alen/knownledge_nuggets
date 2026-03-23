@@ -6,29 +6,24 @@ import { Loader } from './Loader';
 type ModalProps = {
   message?: string;
   isLoading: boolean;
-  onClose?: () => void;
   loadingText: string;
   title: string;
   children?: React.ReactNode;
   triggerButton: React.ReactNode;
-  isOpen: boolean;
-  setModalOpen: (isOpen: boolean) => void;
+
 };
 
 export const Modal: React.FC<ModalProps> = ({
   message,
-  isLoading,
-  onClose,
   loadingText,
   children,
   triggerButton,
   title,
-  isOpen = false,
-  setModalOpen,
+  isLoading,
 }) => {
+  const [isOpen, setModalOpen] = React.useState(false);
   const handleClose = () => {
     setModalOpen(false);
-    onClose?.();
   };
   const handleOpen = () => {
     setModalOpen(true);
@@ -36,8 +31,7 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <>
       {isOpen ? (
-        <>
-          <button className={classes.backdrop} onClick={onClose}></button>
+        <div className={classes.backdrop}>
           <div className={classes.verificationContainer}>
             <Header title={title} onClose={handleClose} />
             {isLoading ? (
@@ -46,7 +40,7 @@ export const Modal: React.FC<ModalProps> = ({
               <Body message={message}>{children}</Body>
             )}
           </div>
-        </>
+        </div>
       ) : (
         <button onClick={handleOpen}>{triggerButton}</button>
       )}

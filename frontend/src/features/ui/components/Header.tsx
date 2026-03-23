@@ -3,6 +3,7 @@ import sun from '../../../assets/sun.svg';
 import moon from '../../../assets/moon.svg';
 import classes from './Header.module.scss';
 import { useDarkMode } from '../../../providers/DarkModeProvider';
+import { CreateNuggetModal } from '../../nugget/createNugget/CreateNuggetModal';
 
 
 export const Header: React.FC = () => {
@@ -10,6 +11,8 @@ export const Header: React.FC = () => {
     <div className={classes.container}>
       <h3>Knowledge Nuggets</h3>
       <DarkModeToggle />
+      <CreateNuggetModal />
+
     </div>
   );
 };
