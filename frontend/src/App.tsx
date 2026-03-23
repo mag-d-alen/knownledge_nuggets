@@ -1,24 +1,27 @@
-import { useSelector } from 'react-redux';
 
 import { HomePage } from './pages/HomePage';
 import { Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
-import type { RootState } from './app/store';
 import { ErrorPage } from './pages/ErrorPage';
 import '../styles/main.scss';
+import { ReactQueryProvider } from './providers/ReactQueryProvider';
+import { DarkModeProvider, useDarkMode } from './providers/DarkModeProvider';
 function App() {
-  const darkMode = useSelector((state: RootState) => state.ui.darkMode);
-
+  const { darkMode } = useDarkMode();
   return (
-    <div className={darkMode ? 'darkMode' : ''}>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/error' element={<ErrorPage />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <ReactQueryProvider>
+      <DarkModeProvider>
+        <div className={darkMode ? 'darkMode' : ''}>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<HomePage />} />
+              <Route path='/error' element={<ErrorPage />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </DarkModeProvider>
+    </ReactQueryProvider>
   );
 }
 

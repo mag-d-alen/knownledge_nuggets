@@ -1,30 +1,30 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { uiSlice } from '../slices';
+
 import sun from '../../../assets/sun.svg';
 import moon from '../../../assets/moon.svg';
 import classes from './Header.module.scss';
-import { CreateNuggetForm } from '../../nugget/createNugget/CreateNuggetForm';
+import { useDarkMode } from '../../../providers/DarkModeProvider';
+
+
 export const Header: React.FC = () => {
   return (
     <div className={classes.container}>
       <h3>Knowledge Nuggets</h3>
-      <CreateNuggetForm />
-      <DarkmodeToggle />
+      <DarkModeToggle />
     </div>
   );
 };
-const DarkmodeToggle = () => {
-  const dispatch = useDispatch();
-  const toggleDarkMode = () => {
-    dispatch(uiSlice.actions.toggleDarkMode());
-  };
+
+const DarkModeToggle = () => {
+  const { darkMode, toggleDarkMode } = useDarkMode();
 
   return (
-    <div className={classes.darkmodeToggleContainer}>
+    <div className={classes.darkModeToggleContainer}>
       <button className={classes.darkModeToggle} onClick={toggleDarkMode}>
-        <img className={classes.darkModeToggleIcon} src={sun} alt='sun' />
-        <img src={moon} alt='moon' className={classes.darkModeToggleIcon} />
+        <img
+          className={classes.darkModeToggleIcon}
+          src={darkMode ? moon : sun}
+          alt={darkMode ? 'moon' : 'sun'}
+        />
       </button>
     </div>
   );

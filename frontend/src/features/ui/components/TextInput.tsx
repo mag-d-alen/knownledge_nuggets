@@ -35,15 +35,20 @@ export const TextInput = ({
     }
   };
   const handleChange = (value: string) => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
     setInputValue(value);
     if (!shouldSaveOnEnter) {
-      setTimeout(() => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
         onChange(value);
       }, 100);
     }
   };
   return type === 'textarea' ? (
     <textarea
+      aria-label={placeholder}
       required={required}
       rows={rows}
       disabled={isDisabled}
@@ -55,14 +60,15 @@ export const TextInput = ({
     />
   ) : (
     <input
+      aria-label={placeholder}
       onKeyDown={(e) => handleKeyDown(e)}
       required={required}
       disabled={isDisabled}
       placeholder={placeholder}
       type={'text'}
       value={inputValue}
-        onChange={(e) => handleChange(e.target.value)}
-        className={classes.textInput}
+      onChange={(e) => handleChange(e.target.value)}
+      className={classes.textInput}
     />
   );
 };

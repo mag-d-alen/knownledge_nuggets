@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { Tags, TextInput } from '../../ui';
 import classes from './Nugget.module.scss';
-import { useUpdateNuggetMutation } from '../api/nuggetApi';
 import type { Nugget } from '../models/types';
 import { DeleteNugget } from '../deleteNugget/DeleteNugget';
 import { ExplainNugget } from '../explainNugget/ExplainNugget';
 import Markdown from 'react-markdown';
+import { useUpdateNugget } from '../api/nuggetApi';
 
 type NuggetCardProps = {
   nugget: Nugget;
 };
 export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
   const [canEdit, setCanEdit] = useState<Record<string, boolean>>({});
-  const [updateNugget, { isLoading: isLoadingUpdateNugget }] =
-    useUpdateNuggetMutation();
+  const { mutateAsync: updateNugget, isPending: isLoadingUpdateNugget } =
+    useUpdateNugget();
 
   const { id, title, content, tags } = nugget;
   const toggleEdit = (key: 'title' | 'content') => {

@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import type { CreateNugget } from '../models/types';
-import {
-  useCreateNuggetMutation,
-  useVerifyNuggetWithAIMutation,
-} from '../api/nuggetApi';
+import { useCreateNugget, useVerifyNuggetWithAI } from '../api/nuggetApi';
 import { Tags, TextInput, Error } from '../../ui';
 import classes from './CreateNuggetForm.module.scss';
 import { Loader } from '../../ui/components/Loader';
 import { Modal } from '../../ui/components/Modal';
+import { z } from 'zod';
+
+const createNuggetSchema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  content: z.string().min(1, 'Content is required'),
+  tags: z.array(z.string()).min(1, 'At least one tag is required'),
+});
+
+
 
 export const CreateNuggetForm: React.FC = () => {
   const [newNugget, setNewNugget] = useState<CreateNugget>({
@@ -18,10 +24,13 @@ export const CreateNuggetForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showVerification, setShowVerification] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [createNugget, { isLoading }] = useCreateNuggetMutation();
-  const [verifyNugget, { isLoading: isVerifying, data: verificationData }] =
-    useVerifyNuggetWithAIMutation();
 
+  const {
+    mutate: verifyNugget,
+    data: verificationData,
+    isPending: isVerifying,
+  } = useVerifyNuggetWithAI();
+  const { mutate: createNugget, isPending: isCreating } = useCreateNugget();
   const isFormValid = () => {
     return (
       newNugget.title.length > 0 &&
@@ -29,6 +38,7 @@ export const CreateNuggetForm: React.FC = () => {
       newNugget.tags.length > 0
     );
   };
+
   const resetAndCloseForm = () => {
     setNewNugget({
       title: '',
@@ -39,12 +49,8 @@ export const CreateNuggetForm: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    if (isFormValid()) {
-      createNugget(newNugget);
-      resetAndCloseForm();
-    } else {
-      setError('Please fill in all fields');
-    }
+    createNugget(newNugget);
+    resetAndCloseForm();
   };
 
   const handleVerifyWithAI = () => {
@@ -53,7 +59,6 @@ export const CreateNuggetForm: React.FC = () => {
       title: newNugget.title,
       content: newNugget.content,
     });
-    setNewNugget(newNugget);
   };
 
   const handleCloseVerification = () => {
@@ -66,7 +71,7 @@ export const CreateNuggetForm: React.FC = () => {
 
   return (
     <div>
-      {isLoading && <Loader isFullscreen={true} />}
+      {isCreating && <Loader isFullscreen={true} />}
       {error && <Error text={error} dismissError={dismissError} />}
 
       <Modal
@@ -79,7 +84,7 @@ export const CreateNuggetForm: React.FC = () => {
             ? verificationData?.feedback
             : ''
         }
-        isLoading={isVerifying}
+        isLoading={isVerifying || isCreating}
         onClose={resetAndCloseForm}
         triggerButton={'Create Nugget'}>
         {showVerification ? (
@@ -89,21 +94,21 @@ export const CreateNuggetForm: React.FC = () => {
             <h1 className={classes.title}>Create Nugget</h1>
             <form className={classes.form}>
               <TextInput
-                isDisabled={isLoading}
+                isDisabled={isCreating || isVerifying}
                 value={newNugget.title}
                 onChange={(value) =>
                   setNewNugget({ ...newNugget, title: value })
                 }
-                placeholder={'Title'}
+                placeholder={'Nugget title'}
                 shouldSaveOnEnter={false}
               />
               <TextInput
-                isDisabled={isLoading}
+                isDisabled={isCreating || isVerifying}
                 value={newNugget.content}
                 onChange={(value) =>
                   setNewNugget({ ...newNugget, content: value })
                 }
-                placeholder={'Content'}
+                placeholder={'Nugget content'}
                 type={'textarea'}
                 shouldSaveOnEnter={false}
               />
@@ -112,13 +117,13 @@ export const CreateNuggetForm: React.FC = () => {
                   setNewNugget({ ...newNugget, tags: newTags })
                 }
                 currentTags={newNugget.tags}
-                disabled={isLoading}
+                disabled={isCreating || isVerifying}
               />
             </form>
             <FormButtons
               onSubmit={handleSubmit}
               onAskAIAssistant={handleVerifyWithAI}
-              submitDisabled={isLoading || !isFormValid()}
+              submitDisabled={isCreating || !isFormValid()}
             />
           </div>
         )}
@@ -129,13 +134,11 @@ export const CreateNuggetForm: React.FC = () => {
 
 type FormButtonsProps = {
   submitDisabled: boolean;
-
   onAskAIAssistant: () => void;
   onSubmit: () => void;
 };
 const FormButtons = ({
   submitDisabled,
-
   onAskAIAssistant,
   onSubmit,
 }: FormButtonsProps) => {

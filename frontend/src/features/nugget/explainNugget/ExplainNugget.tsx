@@ -1,18 +1,20 @@
 import type { Nugget } from '../models';
-import classes from './ExplainNugges.module.scss';
-import { useExplainNuggetWithAIMutation } from '../api/nuggetApi';
 import { Modal } from '../../ui/components/Modal';
 import { useState } from 'react';
+import { useExplainNuggetWithAI } from '../api/nuggetApi';
 
 type ExplainNuggetProps = {
   nugget: Nugget;
 };
-export const ExplainNugget: React.FC<ExplainNuggetProps> = ({ nugget }) => {
+export const ExplainNugget = ({ nugget }: ExplainNuggetProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [explainNugget, { isLoading, data: explanationData }] =
-    useExplainNuggetWithAIMutation();
+  const {
+    mutate: explainNugget,
+    isPending: isLoading,
+    data: explanationData,
+  } = useExplainNuggetWithAI();
 
-  const handleExplainNugget = () => {
+  const handleExplainNugget = () => { 
     explainNugget({
       title: nugget.title,
       content: nugget.content,

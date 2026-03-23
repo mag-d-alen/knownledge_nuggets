@@ -8,6 +8,15 @@
   gap: 0.5rem;
   width: 100%;
   padding: 1rem 0;
+  .addTagContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    .addTagText {
+      font-size: 0.8rem;
+      color: $color-text-secondary;
+    }
+  }
 }
 
 .tag {
@@ -18,7 +27,7 @@
   padding-inline: 0.5rem;
   width: fit-content;
   min-width: 2rem;
-  font-size: small;
+  font-size: 0.8rem;
   gap: 1rem;
   background-color: $color-yellow;
   height: fit-content;

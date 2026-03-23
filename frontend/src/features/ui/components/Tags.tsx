@@ -42,9 +42,16 @@ export const Tags: React.FC<TagsProps> = ({
           placeholder='Add a tag'
         />
       ) : (
-        <button className={classes.addTag} onClick={toggleEdit}>
-          +
-        </button>
+        <div className={classes.addTagContainer}>
+          <button className={classes.addTag} onClick={toggleEdit}>
+            +
+          </button>
+          {currentTags.length === 0 && (
+            <span className={classes.addTagText}>
+              Add a tag to save this nugget
+            </span>
+          )}
+        </div>
       )}
       {currentTags.length > 0 &&
         currentTags.map((tag) => (

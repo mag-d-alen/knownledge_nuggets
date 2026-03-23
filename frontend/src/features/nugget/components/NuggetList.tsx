@@ -1,11 +1,21 @@
 import classes from './Nugget.module.scss';
-
-import { useNuggets } from '../hooks/useNuggets';
 import { NuggetCard } from './NuggetCard';
 import { Loader } from '../../ui/components/Loader';
+import type { Nugget } from '../models';
 
-export const NuggetList = () => {
-  const { nuggets, nuggetsCount, isLoading, isError } = useNuggets();
+type NuggetListProps = {
+  nuggets: Nugget[];
+  nuggetsCount: number;
+  isLoading: boolean;
+  isError: boolean;
+};
+
+export const NuggetList = ({
+  nuggets,
+  nuggetsCount,
+  isLoading,
+  isError,
+}: NuggetListProps) => {
   if (isLoading) return <Loader loadingText='Loading nuggets...' />;
   if (isError) return <div>Error loading nuggets</div>;
   const hasNuggets = nuggetsCount > 0;

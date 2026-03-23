@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classes from './Modal.module.scss';
 import Markdown from 'react-markdown';
 import { Loader } from './Loader';
@@ -37,7 +37,7 @@ export const Modal: React.FC<ModalProps> = ({
     <>
       {isOpen ? (
         <>
-          <div className={classes.backdrop} onClick={onClose}></div>
+          <button className={classes.backdrop} onClick={onClose}></button>
           <div className={classes.verificationContainer}>
             <Header title={title} onClose={handleClose} />
             {isLoading ? (

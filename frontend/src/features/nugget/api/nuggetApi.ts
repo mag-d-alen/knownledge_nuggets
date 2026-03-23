@@ -1,81 +1,112 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import type { CreateNugget, Nugget, PaginatedNuggets } from '../models/types';
 
-export const nuggetApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api' }),
-  endpoints: (builder) => ({
-    getNuggets: builder.query<
-      PaginatedNuggets,
-      { page: number; limit: number }
-    >({
-      query: ({ page = 1, limit = 2 }) =>
-        `/nuggets?page=${page}&limit=${limit}`,
-      providesTags: ['Nuggets'],
-    }),
+const API_BASE_URL = 'http://localhost:8080/api';
 
-    getNuggetById: builder.query<Nugget, string>({
-      query: (id) => `/nuggets/${id}`,
-      providesTags: ['Nugget'],
-      transformResponse: (response: Nugget[]) => response[0],
-    }),
+export const useGetNuggets = ({ page = 1, limit = 2 }) => {
+  return useQuery({
+    queryKey: ['nuggets'],
+    queryFn: async () => {
+      const { data } = await axios.get<PaginatedNuggets>(
+        `${API_BASE_URL}/nuggets?page=${page}&limit=${limit}`,
+      );
+      return data;
+    },
+  });
+};
 
-    createNugget: builder.mutation<Partial<Nugget>, CreateNugget>({
-      query: (nugget) => ({
-        url: '/nuggets',
-        method: 'POST',
-        body: nugget,
-      }),
-      invalidatesTags: ['Nuggets'],
-    }),
+export const useGetNuggetById = (id: string) => {
+  return useQuery({
+    queryKey: ['nugget', id],
+    queryFn: async () => {
+      const { data } = await axios.get<Nugget[]>(
+        `${API_BASE_URL}/nuggets/${id}`,
+      );
+      return data[0];
+    },
+  });
+};
 
-    updateNugget: builder.mutation<Nugget, Nugget>({
-      query: (nugget) => ({
-        url: `/nuggets/${nugget.id}`,
-        method: 'PUT',
-        body: nugget,
-      }),
-      invalidatesTags: ['Nuggets'],
-    }),
+export const useCreateNugget = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (nugget: CreateNugget) => {
+      const { data } = await axios.post<Partial<Nugget>>(
+        `${API_BASE_URL}/nuggets`,
+        nugget,
+      );
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['nuggets'] });
+    },
+  });
+};
 
-    deleteNugget: builder.mutation<void, string>({
-      query: (id) => ({
-        url: `/nuggets/${id}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: ['Nuggets'],
-    }),
+export const useUpdateNugget = () => {
+const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (nugget: Nugget) => {
+      const { data } = await axios.put<Nugget>(
+        `${API_BASE_URL}/nuggets/${nugget.id}`,
+        nugget,
+      );
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['nuggets'] });
+    },
+  });
+};
 
-    verifyNuggetWithAI: builder.mutation<
-      { feedback: string },
-      { title: string; content: string }
-    >({
-      query: ({ title, content }) => ({
-        url: '/nuggets/verify',
-        method: 'POST',
-        body: { title, content },
-      }),
-    }),
-    explainNuggetWithAI: builder.mutation<
-      { explanation: string },
-      { title: string; content: string; question: string }
-    >({
-      query: ({ title, content }) => ({
-        url: '/nuggets/explain',
-        method: 'POST',
-        body: { title, content },
-      }),
-    }),
-  }),
-  tagTypes: ['Nuggets', 'Nugget'],
-});
+export const useDeleteNugget = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await axios.delete(`${API_BASE_URL}/nuggets/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['nuggets'] });
+    },
+  });
+};
 
-export const {
-  useGetNuggetsQuery,
-  useGetNuggetByIdQuery,
-  useCreateNuggetMutation,
-  useUpdateNuggetMutation,
-  useDeleteNuggetMutation,
-  useLazyGetNuggetByIdQuery,
-  useVerifyNuggetWithAIMutation,
-  useExplainNuggetWithAIMutation,
-} = nuggetApi;
+// Verify Nugget with AI
+export const useVerifyNuggetWithAI = () => {
+  return useMutation({
+    mutationFn: async ({
+      title,
+      content,
+    }: {
+      title: string;
+      content: string;
+    }) => {
+      const { data } = await axios.post<{ feedback: string }>(
+        `${API_BASE_URL}/nuggets/verify`,
+        { title, content },
+      );
+      return data;
+    },
+  });
+};
+
+export const useExplainNuggetWithAI = () => {
+  return useMutation({
+    mutationFn: async ({
+      title,
+      content,
+      question,
+    }: {
+      title: string;
+      content: string;
+      question: string;
+    }) => {
+      const { data } = await axios.post<{ explanation: string }>(
+        `${API_BASE_URL}/nuggets/explain`,
+        { title, content, question },
+      );
+      return data;
+    },
+  });
+};
