@@ -3,7 +3,7 @@ import { CreateNuggetForm } from './CreateNuggetForm'
 
 export const CreateNuggetModal = () => {
     return (
-        <div><Modal triggerButton={<button>Create Nugget</button>} isLoading={false} loadingText={''} title={''} >
+        <div><Modal trigger={<span>Create Nugget</span>} isLoading={false} loadingText={''} title={''} >
             <CreateNuggetForm />
         </Modal>
         </div>

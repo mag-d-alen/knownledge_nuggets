@@ -48,7 +48,7 @@ export class NuggetsDao {
   };
 
   insertNugget = async (nugget: Nugget) => {
-    const { data, error } = await this.supabase.from('nuggets').insert(nugget);
+    const { data, error } = await this.supabase.from('nuggets').insert(nugget).select().maybeSingle();
     if (error) {
       throw new Error(`Error inserting nugget into database: ${error.message}`);
     }
@@ -67,9 +67,9 @@ export class NuggetsDao {
     }
     return data;
   };
-  
+
   deleteNugget = async (id: string) => {
-    const {  error } = await this.supabase
+    const { error } = await this.supabase
       .from('nuggets')
       .delete()
       .eq('id', id);

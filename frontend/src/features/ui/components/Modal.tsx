@@ -9,30 +9,40 @@ type ModalProps = {
   loadingText: string;
   title: string;
   children?: React.ReactNode;
-  triggerButton: React.ReactNode;
+  trigger: React.ReactNode;
+  onClose?: () => void;
+  onOpen?: () => void;
+
 
 };
 
 export const Modal: React.FC<ModalProps> = ({
+  onOpen,
   message,
   loadingText,
   children,
-  triggerButton,
+  trigger,
   title,
   isLoading,
+  onClose
 }) => {
   const [isOpen, setModalOpen] = React.useState(false);
   const handleClose = () => {
     setModalOpen(false);
+    onClose && onClose();
   };
   const handleOpen = () => {
     setModalOpen(true);
+    onOpen && onOpen();
   };
   return (
     <>
       {isOpen ? (
         <div className={classes.backdrop}>
-          <div className={classes.verificationContainer}>
+          <div className={classes.verificationContainer} role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description">
             <Header title={title} onClose={handleClose} />
             {isLoading ? (
               <Loader loadingText={loadingText} />
@@ -42,7 +52,7 @@ export const Modal: React.FC<ModalProps> = ({
           </div>
         </div>
       ) : (
-        <button onClick={handleOpen}>{triggerButton}</button>
+        <button onClick={handleOpen} aria-label='Open Modal'> {trigger} </button>
       )}
     </>
   );

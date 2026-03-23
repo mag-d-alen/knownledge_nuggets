@@ -20,7 +20,7 @@ export const NuggetList = ({
   if (isError) return <div>Error loading nuggets</div>;
   const hasNuggets = nuggetsCount > 0;
   const title =
-    nuggets.length > 0 ? `${nuggetsCount} nuggets found` : 'No nuggets found';
+    nuggets?.length > 0 ? `${nuggetsCount} nuggets found` : 'No nuggets found';
   return (
     <section className={classes.container}>
       <h2 className={classes.title}>{title}</h2>

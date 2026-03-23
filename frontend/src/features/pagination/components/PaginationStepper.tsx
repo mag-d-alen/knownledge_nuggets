@@ -1,21 +1,18 @@
+import { usePaginatedNuggets } from '../hooks';
 import classes from './Pagination.module.scss';
 
-export const PaginationStepper = ({
-  limit,
-  setLimit,
-}: {
-  limit: number;
-  setLimit: (limit: number) => void;
-}) => {
+export const PaginationStepper = () => {
+
+  const { currentPageSize, setPageSize } = usePaginatedNuggets();
   const updateLimit = (limitInput: string) => {
     const newLimit = parseInt(limitInput);
-    setLimit(newLimit);
+    setPageSize(newLimit);
   };
 
   return (
     <select
       aria-label='select pagination'
-      value={limit}
+      value={currentPageSize}
       onChange={(e) => updateLimit(e.target.value)}
       className={classes.paginationStepper}>
       <option aria-label='5 items per page' value={5}>

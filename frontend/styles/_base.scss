@@ -6,50 +6,50 @@ $font-stack: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  // Light mode colors
-  --color-primary: #007bff;
-  --color-secondary: #6c757d;
-  --color-success: #28a745;
-  --color-error: #dc3545;
-  --color-error-background: rgba(220, 53, 69, 0.8);
-  --color-text: #333;
-  --color-text-secondary: #666;
-  --color-background: #f4f5eb;
-  --color-detail: #e0e0e0;
-  --color-yellow: #e8bb279f;
+  --color-primary: #2563eb;
+  --color-secondary: #64748b;
 
-  --shadow-darkmode: 0 2px 4px rgba(244, 245, 235, 0.1);
-  --shadow-primary: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  --shadow-large: 0 0 24px 4px rgba(78, 76, 76, 0.5);
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --color-error-background: rgba(220, 38, 38, 0.1);
 
-  --color-background-backdrop: rgba(51, 51, 51, 0.5);
-}
-body {
-  width: 100vw;
-  margin: 0;
-  min-width: 320px;
-  font: 100% $font-stack;
-  color: $color-text;
-  text-align: center;
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
 
-  // background-color: $color-background;
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-detail: #e2e8f0;
+
+  --color-yellow: #facc15;
+
+  --shadow-primary: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-large: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+  --color-background-backdrop: rgba(15, 23, 42, 0.5);
 }
 
 .darkMode {
-  // Dark mode colors
-  --color-primary: #007bff;
-  --color-secondary: #6c757d;
-  --color-success: #28a745;
-  --color-error: #dc3545;
-  --color-error-background: rgba(220, 53, 69, 0.8);
-  --color-text: #f4f5eb;
-  --color-text-secondary: #f4f5eb;
-  --color-background: #4e4c4c;
-  --color-detail: #666;
+  --color-primary: #3b82f6;
+  --color-secondary: #94a3b8;
 
-  --shadow-darkmode: 0 2px 4px rgba(244, 245, 235, 0.1);
-  --shadow-primary: 0 0 10px 0 rgba(0, 0, 0, 0.3);
-  --shadow-large: 0 0 24px 4px rgba(234, 224, 224, 0.915);
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --color-error-background: rgba(239, 68, 68, 0.15);
 
-  --color-background-backdrop: rgba(244, 245, 235, 0.5);
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+
+  --color-background: rgba(42, 32, 15, 0.861);
+  --color-surface: #1e293b;
+
+  --color-yellow: #fde047;
+
+  --shadow-primary: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-large: 0 10px 25px rgba(0, 0, 0, 0.7);
+
+  --color-background-backdrop: rgba(42, 31, 15, 0.7);
+}
+body {
+  color: var(--color-text);
+  background-color: var(--color-background);
 }

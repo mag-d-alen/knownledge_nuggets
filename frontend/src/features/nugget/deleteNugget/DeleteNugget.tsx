@@ -16,14 +16,16 @@ export const DeleteNugget: React.FC<{ id: string }> = ({ id }) => {
 
   const deleteIconClassName = darkMode
     ? classes.darkModeIcon
-    : classes.deleteIcon;
+    : classes.deleteIcon
 
   return (
     <button
+      type='button'
+      aria-label='Delete Nugget'
       onClick={handleDeleteNugget}
-      className={deleteIconClassName}
+      className={classes.deleteButton}
       disabled={isDeleting}>
-      {isDeleting ? <Loader /> : <img src={deleteIcon} alt='Delete' />}
+      {isDeleting ? <Loader /> : <img src={deleteIcon} alt='Delete' className={deleteIconClassName} />}
     </button>
   );
 };

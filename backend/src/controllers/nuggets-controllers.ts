@@ -60,8 +60,12 @@ export class NuggetsController {
   };
 
   createNugget = async (req: Request, res: Response): Promise<void> => {
-    const data = await this.nuggetsService.createNugget(req.body);
-    res.status(201).json(data);
+    try {
+      const nugget = await this.nuggetsService.createNugget(req.body);
+      res.status(201).json(nugget);
+    } catch (error) {
+      throw new Error('Controller Error: Nugget not created');
+    }
   };
 
   updateNugget = async (req: Request, res: Response): Promise<void> => {

@@ -1,5 +1,4 @@
 import { NuggetList } from '../features/nugget';
-import { CreateNuggetModal } from '../features/nugget/createNugget/CreateNuggetModal';
 import { Pagination, usePaginatedNuggets } from '../features/pagination';
 import { Header } from '../features/ui';
 import classes from './PageLayout.module.scss';
@@ -9,12 +8,8 @@ export const HomePage: React.FC = () => {
     nuggetsCount,
     isLoading,
     isError,
-    isLastPage,
-    page,
-    limit,
-    setPage,
-    setLimit,
   } = usePaginatedNuggets();
+
 
   return (
     <>
@@ -31,11 +26,7 @@ export const HomePage: React.FC = () => {
       </main>
       <footer className={classes.footer}>
         <Pagination
-          page={page}
-          limit={limit}
-          isLastPage={isLastPage}
-          setPage={setPage}
-          setLimit={setLimit}
+
         />
       </footer>
     </>

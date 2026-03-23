@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import type { CreateNugget } from '../models/types';
-import { useCreateNugget, useVerifyNuggetWithAI } from '../api/nuggetApi';
+import {  useVerifyNuggetWithAI } from '../api/nuggetApi';
 import { Tags, TextInput, Error } from '../../ui';
 import classes from './CreateNuggetForm.module.scss';
 import { Loader } from '../../ui/components/Loader';
 import { z } from 'zod';
+import { useCreateNugget } from './hooks/useCreateNugget';
 
 const createNuggetSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -25,7 +26,6 @@ export const CreateNuggetForm: React.FC = () => {
 
   const {
     mutate: verifyNugget,
-    data: verificationData,
     isPending: isVerifying,
   } = useVerifyNuggetWithAI();
   const { mutate: createNugget, isPending: isCreating } = useCreateNugget();
@@ -43,7 +43,7 @@ export const CreateNuggetForm: React.FC = () => {
       content: '',
       tags: [],
     });
-    setIsModalOpen(false);
+    // setIsModalOpen(false);
   };
 
   const handleSubmit = () => {

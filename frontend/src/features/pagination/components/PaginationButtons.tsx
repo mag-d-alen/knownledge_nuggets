@@ -1,28 +1,18 @@
+import { usePaginatedNuggets } from '../hooks';
 import classes from './Pagination.module.scss';
 
-export const PaginationButtons = ({
-  page,
-  isLastPage,
-  setPage,
-}: {
-  page: number;
-  isLastPage: boolean;
-  setPage: (page: number) => void;
-}) => {
-  const goForward = () => {
-    setPage(page + 1);
-  };
+export const PaginationButtons = (
+) => {
 
-  const goBack = () => {
-    setPage(page - 1);
-  };
+  const { isLoading, currentPage, isLastPage, nextPage, prevPage } = usePaginatedNuggets();
+
 
   return (
     <div className={classes.paginationButtonsContainer}>
-      <button onClick={goBack} disabled={page === 1}>
+      <button onClick={prevPage} disabled={currentPage === 1 || isLoading} aria-label='Previous'>
         Previous
       </button>
-      <button onClick={goForward} disabled={isLastPage}>
+      <button onClick={nextPage} disabled={isLastPage || isLoading} aria-label='Next'>
         Next
       </button>
     </div>

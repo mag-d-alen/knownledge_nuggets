@@ -7,7 +7,7 @@ type ExplainNuggetProps = {
   nugget: Nugget;
 };
 export const ExplainNugget = ({ nugget }: ExplainNuggetProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     mutate: explainNugget,
     isPending: isLoading,
@@ -23,13 +23,13 @@ export const ExplainNugget = ({ nugget }: ExplainNuggetProps) => {
   };
 
   const handleOpenModal = () => {
-    setIsModalOpen(true);
+    // setIsModalOpen(true);
     handleExplainNugget();
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  // const handleCloseModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
   const loadedTitle = "Your Assistant's Feedback";
   const loadingText = 'Let me think how to explain the nugget...';
@@ -37,14 +37,15 @@ export const ExplainNugget = ({ nugget }: ExplainNuggetProps) => {
 
   return (
     <Modal
-      onClose={handleCloseModal}
-      isOpen={isModalOpen}
-      setModalOpen={handleOpenModal}
+      onClose={() => { }}
+      onOpen={handleExplainNugget}
+      // isOpen={isModalOpen}
+      // setModalOpen={handleOpenModal}
       loadingText={loadingText}
       title={loadedTitle}
       message={message}
       isLoading={isLoading}
-      triggerButton={'Explain it to me'}
+      trigger={'Explain it to me'}
     />
   );
 };

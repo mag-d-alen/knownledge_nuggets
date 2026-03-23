@@ -1,4 +1,4 @@
-@use '../../styles/_variables.scss' as *;
+// @use '../../styles/_variables.scss' as *;
 
 .container {
   display: flex;
@@ -6,13 +6,13 @@
   align-items: center;
   justify-content: center;
   padding: 8rem 1.5rem 6.5rem 1.5rem;
-  background-color: $color-background;
-  color: $color-text;
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
 .header {
-  color: $color-text-secondary;
-  background-color: $color-background;
-  box-shadow: $shadow-large;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  box-shadow: var(--shadow-primary);
   padding: 1rem;
   position: fixed;
   top: 0;
@@ -25,7 +25,7 @@
   left: 0;
   right: 0;
   padding: 1rem;
-  background-color: $color-background;
-  color: $color-text-secondary;
-  box-shadow: $shadow-large;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  box-shadow: var(--shadow-primary);
 }

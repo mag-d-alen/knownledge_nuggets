@@ -7,6 +7,7 @@ import { ExplainNugget } from '../explainNugget/ExplainNugget';
 import Markdown from 'react-markdown';
 import { useUpdateNugget } from '../api/nuggetApi';
 
+
 type NuggetCardProps = {
   nugget: Nugget;
 };
