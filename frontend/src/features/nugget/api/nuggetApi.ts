@@ -1,28 +1,21 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import type { CreateNugget, Nugget, PaginatedNuggets } from '../models/types';
-import { tr } from 'zod/v4/locales';
 
 const API_BASE_URL = 'http://localhost:8080/api';
 
-export const getNuggets = async ({ page, limit }: { page: number; limit: number }) => {
-  try {
-    const { data } = await axios.get<PaginatedNuggets>(
-      `${API_BASE_URL}/nuggets?page=${page}&limit=${limit}`,
-    );
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-
-}
-
-// export const useGetNuggets =  => {
-//   return useQuery({
-//     queryKey: ['nuggets'],
-//     queryFn:
-//   });
-// };
+export const getNuggets = async ({
+  page,
+  limit = 5,
+}: {
+  page: number;
+  limit?: number;
+}): Promise<PaginatedNuggets> => {
+  const { data } = await axios.get<PaginatedNuggets>(
+    `${API_BASE_URL}/nuggets?page=${page}&limit=${limit}`,
+  );
+  return data;
+};
 
 export const useGetNuggetById = (id: string) => {
   return useQuery({
@@ -41,8 +34,7 @@ export const createNugget = async (nugget: CreateNugget) => {
     nugget,
   );
   return data;
-}
-
+};
 
 export const useUpdateNugget = () => {
   const queryClient = useQueryClient();
@@ -61,7 +53,7 @@ export const useUpdateNugget = () => {
 };
 export const deleteNugget = async (id: string) => {
   await axios.delete(`${API_BASE_URL}/nuggets/${id}`);
-}
+};
 
 export const useDeleteNugget = () => {
   const queryClient = useQueryClient();

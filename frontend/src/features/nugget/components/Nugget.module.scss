@@ -9,7 +9,6 @@
     color: var(--color-text-secondary);
   }
 
-
   .card {
     padding: 1rem;
     margin: 1rem;
@@ -36,6 +35,13 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
+    }
+    .loadMore {
+      text-align: center;
+      margin: 1rem 0;
+      font: 0.8rem;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
     }
   }
 }

@@ -21,7 +21,7 @@ export const CreateNuggetForm: React.FC = () => {
     content: '',
     tags: [],
   });
-  const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [showVerification, setShowVerification] = useState(false);
 
   const {
@@ -64,53 +64,51 @@ export const CreateNuggetForm: React.FC = () => {
   };
 
   const dismissError = () => {
-    setError(null);
+    setErrors({});
   };
 
   return (
     <div>
       {isCreating && <Loader isFullscreen={true} />}
-      {error && <Error text={error} dismissError={dismissError} />}
-        {showVerification ? (
-          <button onClick={handleCloseVerification}>Back to form</button>
-        ) : (
-          <div>
-            <h1 className={classes.title}>Create Nugget</h1>
-            <form className={classes.form}>
-              <TextInput
-                isDisabled={isCreating || isVerifying}
-                value={newNugget.title}
-                onChange={(value) =>
-                  setNewNugget({ ...newNugget, title: value })
-                }
-                placeholder={'Nugget title'}
-                shouldSaveOnEnter={false}
-              />
-              <TextInput
-                isDisabled={isCreating || isVerifying}
-                value={newNugget.content}
-                onChange={(value) =>
-                  setNewNugget({ ...newNugget, content: value })
-                }
-                placeholder={'Nugget content'}
-                type={'textarea'}
-                shouldSaveOnEnter={false}
-              />
-              <Tags
-                updateTags={(newTags: string[]) =>
-                  setNewNugget({ ...newNugget, tags: newTags })
-                }
-                currentTags={newNugget.tags}
-                disabled={isCreating || isVerifying}
-              />
-            </form>
-            <FormButtons
-              onSubmit={handleSubmit}
-              onAskAIAssistant={handleVerifyWithAI}
-              submitDisabled={isCreating || !isFormValid()}
-            />
-          </div>
-        )}
+      {Object.keys(errors).length > 0 && (
+        <Error text={Object.values(errors).join(', ')} dismissError={dismissError} />
+      )}
+      <div>
+        <h1 className={classes.title}>Create Nugget</h1>
+        <form className={classes.form} onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+          <TextInput
+            value={newNugget.title}
+            onChange={(value) => setNewNugget({ ...newNugget, title: value })}
+            isDisabled={isCreating || isVerifying}
+            placeholder={'Nugget title'}
+            shouldSaveOnEnter={false}
+          />
+          {errors.title && <p className={classes.error}>{errors.title}</p>}
+
+          <TextInput
+            value={newNugget.content}
+            onChange={(value) => setNewNugget({ ...newNugget, content: value })}
+            isDisabled={isCreating || isVerifying}
+            placeholder={'Nugget content'}
+            type={'textarea'}
+            shouldSaveOnEnter={false}
+          />
+          {errors.content && <p className={classes.error}>{errors.content}</p>}
+
+          <Tags
+            updateTags={(newTags: string[]) => setNewNugget({ ...newNugget, tags: newTags })}
+            currentTags={newNugget.tags}
+            disabled={isCreating || isVerifying}
+          />
+          {errors.tags && <p className={classes.error}>{errors.tags}</p>}
+
+          <FormButtons
+            onSubmit={handleSubmit}
+            onAskAIAssistant={handleVerifyWithAI}
+            submitDisabled={isCreating}
+          />
+        </form>
+      </div>
     </div>
   );
 };

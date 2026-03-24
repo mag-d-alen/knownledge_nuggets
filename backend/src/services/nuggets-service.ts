@@ -21,7 +21,7 @@ export class NuggetsService {
       endIndex,
       limit,
     });
-    return { data, count: count || 0 };
+    return { data, count: count || 0};
   }
   async getNuggetById(id: string): Promise<Nugget | null> {
     const data = await this.nuggetsDao.getNuggetById(id);

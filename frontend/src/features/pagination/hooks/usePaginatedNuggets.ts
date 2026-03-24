@@ -1,48 +1,37 @@
-import { useState } from 'react';
 import { getNuggets } from '../../nugget/api/nuggetApi';
-import { useQuery } from '@tanstack/react-query';
-
-type UsePaginatedNuggetsArgs = {
-  page?: number;
-  pageSize?: number;
-};
-
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 
 export const usePaginatedNuggets = () => {
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentPageSize, setCurrentPageSize] = useState(5);
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["nuggets"],
-    queryFn: async () => await getNuggets({ page: currentPage, limit: currentPageSize }),
-    refetchOnWindowFocus: false,
-  });
-
-  const nextPage = () => {
-    if (data && currentPage * currentPageSize < data.totalNuggets) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const prevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
-
-  return {
-    nuggets: data?.nuggets || [],
+  const {
+    data,
     isLoading,
     isError,
-    nuggetsCount: data?.totalNuggets || 0,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['nuggets'],
+    initialPageParam: 1,
+    queryFn: ({ pageParam = 1 }) => getNuggets({ page: pageParam }),
+    getNextPageParam: (lastPage, allPages) => {
+      const totalFetched = allPages.flatMap((page) => page?.nuggets).length;
+      return lastPage?.totalNuggets && totalFetched < lastPage?.totalNuggets ? allPages.length + 1 : undefined;
+    },
+  });
 
-    setPage: setCurrentPage,
-    setPageSize: setCurrentPageSize,
-    nextPage,
-    prevPage,
-    currentPage,
-    currentPageSize,
-    isLastPage: data && currentPage * currentPageSize >= data.totalNuggets,
+  const nuggets = data?.pages.flatMap((page) => page?.nuggets) ?? [];
+  const nuggetsCount =
+    data?.pages.reduce((count, page) => count + (page?.nuggets?.length || 0), 0) ?? 0;
+
+  return {
+    nuggets,
+    nuggetsCount,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   };
-}
-
+};
