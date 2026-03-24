@@ -1,136 +1,148 @@
 import React, { useState } from 'react';
+import * as Form from '@radix-ui/react-form';
 import type { CreateNugget } from '../models/types';
-import {  useVerifyNuggetWithAI } from '../api/nuggetApi';
-import { Tags, TextInput, Error } from '../../ui';
+import { useVerifyNuggetWithAI } from '../api/nuggetApi';
+import { Tags, TextInput, Toast } from '../../ui';
+import { Button } from '@radix-ui/themes';
 import classes from './CreateNuggetForm.module.scss';
 import { Loader } from '../../ui/components/Loader';
-import { z } from 'zod';
 import { useCreateNugget } from './hooks/useCreateNugget';
+import { Collapse } from '../../ui/components/Collapse';
 
-const createNuggetSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  content: z.string().min(1, 'Content is required'),
-  tags: z.array(z.string()).min(1, 'At least one tag is required'),
-});
+const emptyNugget: CreateNugget = {
+  title: '',
+  content: '',
+  tags: [],
+}
+const emptyError = {
+  title: false,
+  content: false,
+  tags: false,
+}
 
+type CreateNuggetFormProps = {
+  onSuccess: () => void
+}
 
+export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
 
-export const CreateNuggetForm: React.FC = () => {
-  const [newNugget, setNewNugget] = useState<CreateNugget>({
-    title: '',
-    content: '',
-    tags: [],
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [showVerification, setShowVerification] = useState(false);
+  const [newNugget, setNewNugget] = useState<CreateNugget>(emptyNugget);
+  const [error, setError] = useState(emptyError);
 
-  const {
-    mutate: verifyNugget,
-    isPending: isVerifying,
-  } = useVerifyNuggetWithAI();
-  const { mutate: createNugget, isPending: isCreating } = useCreateNugget();
-  const isFormValid = () => {
-    return (
-      newNugget.title.length > 0 &&
-      newNugget.content.length > 0 &&
-      newNugget.tags.length > 0
-    );
-  };
+  const { mutate: createNugget, isPending } = useCreateNugget();
+  const { mutate: verifyNugget, isPending: isVerifying, data: AIFeedback } = useVerifyNuggetWithAI();
 
-  const resetAndCloseForm = () => {
-    setNewNugget({
-      title: '',
-      content: '',
-      tags: [],
-    });
-    // setIsModalOpen(false);
-  };
-
-  const handleSubmit = () => {
-    createNugget(newNugget);
-    resetAndCloseForm();
-  };
-
-  const handleVerifyWithAI = () => {
-    setShowVerification(true);
-    verifyNugget({
-      title: newNugget.title,
-      content: newNugget.content,
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!validateInputs()) return;
+    createNugget(newNugget, {
+      onSuccess: () => {
+        resetForm();
+        onSuccess();
+      },
     });
   };
 
-  const handleCloseVerification = () => {
-    setShowVerification(false);
+  const validateInputs = () => {
+    let isValid = true
+    if (newNugget.title === '') {
+      setError((prev) => ({ ...prev, title: true }));
+      isValid = false
+    }
+    if (newNugget.content === '') {
+      setError((prev) => ({ ...prev, content: true }));
+      isValid = false
+    }
+    if (newNugget.tags.length === 0) {
+      setError((prev) => ({ ...prev, tags: true }));
+      isValid = false
+    }
+    return isValid
   };
 
-  const dismissError = () => {
-    setErrors({});
+  const resetForm = () => {
+    setNewNugget(emptyNugget);
+    setError(emptyError);
   };
+
+
+  const handleCancel = () => {
+    resetForm();
+    onSuccess();
+  };
+
+
+  const handleTagsChange = (newTags: string[]) => {
+    setNewNugget((prev) => ({ ...prev, tags: newTags }));
+  };
+
+  const isDisabled = isPending || isVerifying
 
   return (
     <div>
-      {isCreating && <Loader isFullscreen={true} />}
-      {Object.keys(errors).length > 0 && (
-        <Error text={Object.values(errors).join(', ')} dismissError={dismissError} />
-      )}
-      <div>
-        <h1 className={classes.title}>Create Nugget</h1>
-        <form className={classes.form} onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+      <Form.Root className={classes.form} onSubmit={handleSubmit}>
+        <FormField name="title" errorMessage="Title is required" isError={error.title}>
           <TextInput
             value={newNugget.title}
-            onChange={(value) => setNewNugget({ ...newNugget, title: value })}
-            isDisabled={isCreating || isVerifying}
-            placeholder={'Nugget title'}
+            onChange={(value) => setNewNugget((prev) => ({ ...prev, title: value }))}
+            isDisabled={isDisabled}
+            placeholder="Nugget title"
             shouldSaveOnEnter={false}
           />
-          {errors.title && <p className={classes.error}>{errors.title}</p>}
-
+        </FormField>
+        <FormField name="content" errorMessage="Content is required" isError={error.content}>
           <TextInput
             value={newNugget.content}
-            onChange={(value) => setNewNugget({ ...newNugget, content: value })}
-            isDisabled={isCreating || isVerifying}
-            placeholder={'Nugget content'}
-            type={'textarea'}
+            onChange={(value) => setNewNugget((prev) => ({ ...prev, content: value }))}
+            isDisabled={isDisabled}
+            placeholder="Nugget content"
+            type="textarea"
             shouldSaveOnEnter={false}
           />
-          {errors.content && <p className={classes.error}>{errors.content}</p>}
-
+        </FormField>
+        <FormField name="tags" isError={error.tags} errorMessage="At least one tag is required">
           <Tags
-            updateTags={(newTags: string[]) => setNewNugget({ ...newNugget, tags: newTags })}
+            updateTags={handleTagsChange}
             currentTags={newNugget.tags}
-            disabled={isCreating || isVerifying}
+            disabled={isDisabled}
           />
-          {errors.tags && <p className={classes.error}>{errors.tags}</p>}
-
-          <FormButtons
-            onSubmit={handleSubmit}
-            onAskAIAssistant={handleVerifyWithAI}
-            submitDisabled={isCreating}
-          />
-        </form>
-      </div>
-    </div>
+        </FormField>
+        {isVerifying ? <Loader /> :
+          <Collapse isOpen={!!AIFeedback} trigger={
+            <Button type='button' disabled={error.title || error.content}
+              onClick={() => !isVerifying && !AIFeedback && verifyNugget(newNugget)}>
+              AI Feedback
+            </Button>}>
+            {AIFeedback ? AIFeedback.feedback : undefined}
+          </Collapse>}
+        <Button type="reset" onClick={handleCancel}>Cancel</Button>
+        <Form.Submit asChild>
+          <Button type="submit"  >Save</Button>
+        </Form.Submit>
+      </Form.Root>
+    </div >
   );
 };
 
-type FormButtonsProps = {
-  submitDisabled: boolean;
-  onAskAIAssistant: () => void;
-  onSubmit: () => void;
+type FormFieldProps = {
+  name: string;
+  errorMessage: string;
+  children: React.ReactNode;
+  isError: boolean;
 };
-const FormButtons = ({
-  submitDisabled,
-  onAskAIAssistant,
-  onSubmit,
-}: FormButtonsProps) => {
-  return (
-    <div className={classes.buttons}>
-      <button disabled={submitDisabled} onClick={onSubmit}>
-        Save
-      </button>
-      <button disabled={submitDisabled} onClick={onAskAIAssistant}>
-        Ask AI Assistant for Feedback
-      </button>
-    </div>
-  );
-};
+
+const FormField = ({ name, isError, errorMessage, children }: FormFieldProps) => (
+  <Form.Field name={name} serverInvalid={isError}>
+    <Form.Label className={classes.label}>{name}</Form.Label>
+    <Form.Control asChild>
+      {children}
+    </Form.Control>
+    {isError && (
+      <Form.Message className={classes.error}>
+        {errorMessage}
+      </Form.Message>
+    )}
+  </Form.Field>
+);
+
+

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import classes from './Tag.module.scss';
 import { Tag } from './Tag';
+import { Button } from "@radix-ui/themes";
+
 
 type TagsProps = {
   disabled: boolean;
@@ -43,9 +45,9 @@ export const Tags: React.FC<TagsProps> = ({
         />
       ) : (
         <div className={classes.addTagContainer}>
-          <button className={classes.addTag} onClick={toggleEdit}>
+          <Button className={classes.addTag} onClick={toggleEdit}>
             +
-          </button>
+          </Button>
           {currentTags.length === 0 && (
             <span className={classes.addTagText}>
               Add a tag to save this nugget

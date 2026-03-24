@@ -1,31 +1,26 @@
-@use '../../../../styles/variables.scss' as *;
-
-.verificationContainer {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: $color-background;
-  color: $color-text;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  padding: 3rem;
-  max-width: 600px;
-  width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-  z-index: 1;
-}
-
 .backdrop {
+  background: var(--color-background-backdrop);
   position: fixed;
-  min-height: 100vh;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: $color-background-backdrop;
-  backdrop-filter: blur(10px);
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  filter: blur(10%);
+}
+
+.content {
+  // background-color: var(--color-background);
+  color: var(--color-text);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 3rem;
+  width: 90%;
+  min-width: 300px;
+  background: white;
+  padding: 30px;
 }
 
 .header {
@@ -33,28 +28,21 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid $color-detail;
+  border-bottom: 1px solid var(--color-detail);
 }
 
 .closeButton {
   background: none;
   border: none;
-  font-size: 2rem;
-  color: $color-text-secondary;
+  color: var(--color-text-secondary);
   padding: 0;
-  width: 3rem;
-  height: 3rem;
+  width: 1rem;
+  height: 1rem;
   display: flex;
   align-items: center;
-  border-radius: 0.5rem;
+  justify-content: center;
+  border-radius: 50%;
 }
-
 .title {
-  color: $color-text-secondary;
-}
-
-.feedback {
-  margin-top: 2rem;
-  text-align: left;
+  color: var(--color-text-secondary);
 }

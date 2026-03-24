@@ -1,87 +1,52 @@
+
 import React from 'react';
-import classes from './Modal.module.scss';
+import * as Dialog from '@radix-ui/react-dialog';
 import Markdown from 'react-markdown';
 import { Loader } from './Loader';
+import classes from './Modal.module.scss';
 
 type ModalProps = {
+  open: boolean;
+  onOpenChange?: (open: boolean) => void;
   message?: string;
   isLoading: boolean;
   loadingText: string;
   title: string;
-  children?: React.ReactNode;
+  children: React.ReactNode;
   trigger: React.ReactNode;
-  onClose?: () => void;
-  onOpen?: () => void;
-
-
 };
 
 export const Modal: React.FC<ModalProps> = ({
-  onOpen,
+  open,
+  onOpenChange,
   message,
   loadingText,
   children,
   trigger,
   title,
   isLoading,
-  onClose
 }) => {
-  const [isOpen, setModalOpen] = React.useState(false);
-  const handleClose = () => {
-    setModalOpen(false);
-    onClose && onClose();
-  };
-  const handleOpen = () => {
-    setModalOpen(true);
-    onOpen && onOpen();
-  };
   return (
-    <>
-      {isOpen ? (
-        <div className={classes.backdrop}>
-          <div className={classes.verificationContainer} role="dialog"
-            aria-modal="true"
-            aria-labelledby="modal-title"
-            aria-describedby="modal-description">
-            <Header title={title} onClose={handleClose} />
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className={classes.backdrop}>
+          <Dialog.Content className={classes.content}>
+            <div className={classes.header}>
+              <Dialog.Title className={classes.title}>{title}</Dialog.Title>
+              <Dialog.Close className={classes.closeButton}>x</Dialog.Close>
+            </div>
             {isLoading ? (
               <Loader loadingText={loadingText} />
             ) : (
-              <Body message={message}>{children}</Body>
+              <>
+                {message && <Markdown>{message}</Markdown>}
+                {children}
+              </>
             )}
-          </div>
-        </div>
-      ) : (
-        <button onClick={handleOpen} aria-label='Open Modal'> {trigger} </button>
-      )}
-    </>
-  );
-};
-
-type HeaderProps = {
-  title: string;
-  onClose: () => void;
-};
-const Header = ({ title, onClose }: HeaderProps) => {
-  return (
-    <div className={classes.header}>
-      <h3 className={classes.title}>{title}</h3>
-      <button onClick={onClose} className={classes.closeButton}>
-        ×
-      </button>
-    </div>
-  );
-};
-
-type BodyProps = {
-  message?: string;
-  children?: React.ReactNode;
-};
-const Body = ({ message, children }: BodyProps) => {
-  return (
-    <div className={classes.feedback}>
-      {message && <Markdown>{message}</Markdown>}
-      {children}
-    </div>
+          </Dialog.Content>
+        </Dialog.Overlay>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 };

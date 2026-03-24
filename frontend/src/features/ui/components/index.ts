@@ -1,4 +1,4 @@
 export * from './Header';
-export * from './Error';
+export * from './Toast';
 export * from './Tags';
 export * from './TextInput';

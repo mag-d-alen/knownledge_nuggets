@@ -1,6 +1,5 @@
 import type { Nugget } from '../models';
 import { Modal } from '../../ui/components/Modal';
-import { useState } from 'react';
 import { useExplainNuggetWithAI } from '../api/nuggetApi';
 
 type ExplainNuggetProps = {
@@ -14,7 +13,7 @@ export const ExplainNugget = ({ nugget }: ExplainNuggetProps) => {
     data: explanationData,
   } = useExplainNuggetWithAI();
 
-  const handleExplainNugget = () => { 
+  const handleExplainNugget = () => {
     explainNugget({
       title: nugget.title,
       content: nugget.content,
@@ -37,15 +36,15 @@ export const ExplainNugget = ({ nugget }: ExplainNuggetProps) => {
 
   return (
     <Modal
-      onClose={() => { }}
-      onOpen={handleExplainNugget}
-      // isOpen={isModalOpen}
-      // setModalOpen={handleOpenModal}
       loadingText={loadingText}
       title={loadedTitle}
       message={message}
       isLoading={isLoading}
       trigger={'Explain it to me'}
-    />
+      open={false}
+      onOpenChange={function (open: boolean): void {
+        throw new Error('Function not implemented.');
+      }}
+      children={undefined} />
   );
 };

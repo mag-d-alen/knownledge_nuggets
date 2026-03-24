@@ -1,33 +1,22 @@
-@use '../../../../styles/variables.scss' as *;
-.container {
+.form {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  position: fixed;
-  top: 5.75rem;
-  left: 0;
-  right: 0;
+  gap: 1rem;
 
-  background-color: $color-success;
-  z-index: 1;
+  input,
+  textarea {
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-family: 'Open Sans', sans-serif;
+  }
+  .label {
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    font-size: 0.6rem;
+  }
 
-  .title {
-    text-align: center;
-    width: 50%;
-  }
-  .form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1rem;
-    width: 50%;
-    input,
-    textarea {
-      padding: 0.5rem;
-      font-size: 1rem;
-    }
-  }
   .buttons {
     display: flex;
     align-items: center;
@@ -38,28 +27,28 @@
     margin-top: 1rem;
     padding: 1rem 2rem;
     border-radius: 0.5rem;
-    border: $color-yellow 1px solid;
-    background-color: $color-yellow;
+    border: var(--color-accent) 1px solid;
+    // background-color: var(--color-accent);
     font-weight: 600;
     font-size: 1.2rem;
-    color: $color-text;
+    color: var(--color-text);
   }
 
-  .successMessage {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    border-radius: 8px;
-    padding: 16px;
-    margin: 16px 0;
-    width: 50%;
+  // .successMessage {
+  //   background-color: #d4edda;
+  //   border: 1px solid #c3e6cb;
+  //   border-radius: 8px;
+  //   padding: 16px;
+  //   margin: 16px 0;
+  //   width: 50%;
 
-    p {
-      margin: 0 0 12px 0;
-      color: #155724;
-      font-weight: 600;
-      font-size: 16px;
-    }
-  }
+  //   p {
+  //     margin: 0 0 12px 0;
+  //     color: #155724;
+  //     font-weight: 600;
+  //     font-size: 16px;
+  //   }
+  // }
 
   .verificationOptions {
     display: flex;
@@ -90,12 +79,6 @@
     width: 50%;
     font-size: 1.2rem;
     font-weight: 600;
-    color: $color-text;
-  }
-  @media (max-width: $breakpoint-md) {
-    width: 90%;
-  }
-  @media (max-width: $breakpoint-sm) {
-    width: 100%;
+    color: var(--color-text);
   }
 }

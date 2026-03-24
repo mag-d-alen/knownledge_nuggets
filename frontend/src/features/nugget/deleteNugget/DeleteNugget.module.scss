@@ -1,9 +1,10 @@
-@use '../../../../styles/variables.scss' as *;
 .deleteButton {
-  background-color: transparent;
+  background: none;
+  box-shadow: none;
   cursor: pointer;
-  border: none;
-  color: $color-text;
+  margin-bottom: 0.5rem;
+  color: inherit;
+  padding: 0;
 
   .deleteIcon {
     width: 1rem;

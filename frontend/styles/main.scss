@@ -1,19 +1,2 @@
-// 1. Abstracts (variables, functions, mixins)
-@import 'variables';
-// @import 'abstracts/mixins';
-// @import 'abstracts/functions';
-
-// // 2. Base styles (resets, typography, general element styling)
-// @import 'base/reset';
-// @import 'base/typography';
 @import 'base';
-
-// 3. Layout (specific layout sections like header, footer, grid)
-// @import 'layout/header';
-// @import 'layout/footer';
-
 @import 'components';
-
-// 4. Components (global, reusable UI components like buttons, cards)
-// @import 'components/button';
-// @import 'components/card';
