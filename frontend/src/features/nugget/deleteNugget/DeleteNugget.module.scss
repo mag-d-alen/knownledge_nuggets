@@ -1,5 +1,4 @@
 .deleteButton {
-  background: none;
   box-shadow: none;
   cursor: pointer;
   margin-bottom: 0.5rem;
@@ -7,12 +6,12 @@
   padding: 0;
 
   .deleteIcon {
-    width: 1rem;
-    height: 1rem;
+    background-color: none;
+    width: 1.5rem;
+    height: 1.5rem;
   }
   .darkModeIcon {
-    width: 1rem;
-    height: 1rem;
+    @extend .deleteIcon;
     filter: brightness(0) invert(1);
   }
 }

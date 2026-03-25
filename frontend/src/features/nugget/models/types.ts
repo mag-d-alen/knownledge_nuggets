@@ -4,7 +4,7 @@ export type Nugget = {
   content: string;
   tags: string[];
 };
-export type CreateNugget = Omit<Nugget, 'id' | 'createdAt'>;
+export type CreateNugget = Omit<Nugget, "id" | "createdAt">;
 export type PaginatedNuggets = {
   totalPages: number;
   totalNuggets: number;

@@ -2,19 +2,27 @@ import classes from "./DarkModeToggle.module.scss";
 import sun from "../../../assets/sun.svg";
 import moon from "../../../assets/moon.svg";
 import { useDarkMode } from "../../../providers/DarkModeProvider";
-import { Button } from "@radix-ui/themes";
+import { Switch } from "@radix-ui/themes";
 
 export const DarkModeToggle = () => {
-    const { darkMode, toggleDarkMode } = useDarkMode();
-    return (
-        <div className={classes.darkModeToggleContainer}>
-            <Button className={classes.darkModeToggle} onClick={toggleDarkMode}>
-                <img
-                    className={classes.darkModeToggleIcon}
-                    src={darkMode ? moon : sun}
-                    alt={darkMode ? 'moon' : 'sun'}
-                />
-            </Button>
-        </div>
-    );
+  const { darkMode, toggleDarkMode } = useDarkMode();
+  return (
+    <div className={classes.darkModeToggleContainer}>
+      <img
+        className={darkMode ? classes.darkModeIcon : classes.icon}
+        src={moon}
+        alt={"moon icon"}
+      />
+      <Switch
+        className={classes.darkModeToggle}
+        onClick={toggleDarkMode}
+        aria-label="Toggle dark mode"
+      />
+      <img
+        className={darkMode ? classes.darkModeIcon : classes.icon}
+        src={sun}
+        alt={"sun icon"}
+      />
+    </div>
+  );
 };

@@ -1,11 +1,11 @@
-import classes from './Loader.module.scss';
+import classes from "./Loader.module.scss";
 
 type LoaderProps = {
   loadingText?: string;
   isFullscreen?: boolean;
 };
 export const Loader = ({
-  loadingText = 'Loading...',
+  loadingText = "Loading...",
   isFullscreen = false,
 }: LoaderProps) => {
   return (
@@ -14,7 +14,8 @@ export const Loader = ({
         isFullscreen
           ? `${classes.container} ${classes.fullscreen}`
           : classes.container
-      }>
+      }
+    >
       <div className={classes.loader} />
       <h5 className={classes.loadingText}>{loadingText}</h5>
     </div>

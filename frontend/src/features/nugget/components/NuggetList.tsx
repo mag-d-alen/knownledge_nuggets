@@ -1,10 +1,10 @@
-import classes from './Nugget.module.scss';
-import { NuggetCard } from './NuggetCard';
-import { Loader } from '../../ui/components/Loader';
-import { useInView } from 'react-intersection-observer';
-import { useEffect } from 'react';
-import { usePaginatedNuggets } from '../../pagination/hooks/usePaginatedNuggets';
-import { Container } from '@radix-ui/themes';
+import classes from "./Nugget.module.scss";
+import { NuggetCard } from "./NuggetCard";
+import { Loader } from "../../ui/components/Loader";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
+import { usePaginatedNuggets } from "../../pagination/hooks/usePaginatedNuggets";
+import { Container } from "@radix-ui/themes";
 
 export const NuggetList = () => {
   const {
@@ -23,9 +23,8 @@ export const NuggetList = () => {
     }
   }, [inView]);
 
-  if (isLoading) return <Loader loadingText='Loading nuggets...' />;
+  if (isLoading) return <Loader loadingText="Loading nuggets..." />;
   if (isError) return <div>Error loading nuggets</div>;
-
 
   return (
     <Container className={classes.listContainer}>
@@ -33,10 +32,10 @@ export const NuggetList = () => {
         nuggets.map((nugget) => <NuggetCard key={nugget.id} nugget={nugget} />)}
       <p className={classes.loadMore} ref={ref}>
         {isFetchingNextPage
-          ? 'Loading more...'
+          ? "Loading more..."
           : hasNextPage
-            ? 'Load Newer'
-            : 'Nothing more to load'}
+            ? "Load Newer"
+            : "Nothing more to load"}
       </p>
     </Container>
   );

@@ -1,10 +1,11 @@
-import React from 'react';
-import { useDeleteNugget } from '../api/nuggetApi';
-import deleteIcon from '../../../assets/delete.svg';
-import classes from './DeleteNugget.module.scss';
-import { Loader } from '../../ui/components/Loader';
-import { Button } from '@radix-ui/themes'
-import { Tooltip } from '../../ui/components/Tooltip';
+import React from "react";
+import { useDeleteNugget } from "../api/nuggetApi";
+import deleteIcon from "../../../assets/delete.svg";
+import classes from "./DeleteNugget.module.scss";
+import { Loader } from "../../ui/components/Loader";
+import { Button } from "@radix-ui/themes";
+import { Tooltip } from "../../ui/components/Tooltip";
+import { useDarkMode } from "../../../providers/DarkModeProvider";
 
 export const DeleteNugget: React.FC<{ id: string }> = ({ id }) => {
   const { mutate: deleteNugget, isPending: isDeleting } = useDeleteNugget();
@@ -14,21 +15,34 @@ export const DeleteNugget: React.FC<{ id: string }> = ({ id }) => {
     deleteNugget(id);
   };
 
-  const darkMode = document.body.classList.contains('darkMode');
+  const { darkMode } = useDarkMode();
 
   const deleteIconClassName = darkMode
     ? classes.darkModeIcon
-    : classes.deleteIcon
+    : classes.deleteIcon;
 
   return (
-    <Tooltip tooltipText='Delete Nugget' trigger={
-      <Button
-        type='button'
-        aria-label='Delete Nugget'
-        onClick={handleDeleteNugget}
-        className={classes.deleteButton}
-        disabled={isDeleting}>
-        {isDeleting ? <Loader /> : <img src={deleteIcon} alt='Delete' className={deleteIconClassName} />}
-      </Button>}
-    />)
+    <Tooltip
+      tooltipText="Delete Nugget"
+      trigger={
+        <Button
+          type="button"
+          aria-label="Delete Nugget"
+          onClick={handleDeleteNugget}
+          className={classes.deleteButton}
+          disabled={isDeleting}
+        >
+          {isDeleting ? (
+            <Loader />
+          ) : (
+            <img
+              src={deleteIcon}
+              alt="Delete"
+              className={deleteIconClassName}
+            />
+          )}
+        </Button>
+      }
+    />
+  );
 };

@@ -1,7 +1,5 @@
-
-import classes from './Header.module.scss';
-import { DarkModeToggle } from './DarkModeToggle';
-
+import classes from "./Header.module.scss";
+import { DarkModeToggle } from "./DarkModeToggle";
 
 export const Header: React.FC = () => {
   return (
@@ -11,5 +9,3 @@ export const Header: React.FC = () => {
     </div>
   );
 };
-
-

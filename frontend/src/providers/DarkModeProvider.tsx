@@ -1,8 +1,8 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
 
 const DarkModeContext = createContext({
   darkMode: false,
-  toggleDarkMode: () => { },
+  toggleDarkMode: () => {},
 });
 
 export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -16,14 +16,14 @@ export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const prefersDark = window.matchMedia(
-      '(prefers-color-scheme: dark)',
+      "(prefers-color-scheme: dark)",
     ).matches;
     return setDarkMode(prefersDark);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('darkMode', String(darkMode));
-    document.body.classList.toggle('dark', darkMode);
+    localStorage.setItem("darkMode", String(darkMode));
+    document.body.classList.toggle("dark", darkMode);
   }, [darkMode]);
 
   return (
@@ -34,5 +34,3 @@ export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 export const useDarkMode = () => useContext(DarkModeContext);
-
-

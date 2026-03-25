@@ -1,8 +1,8 @@
-import { Button } from '@radix-ui/themes';
-import { Collapse } from '../../ui/components/Collapse';
-import { Loader } from '../../ui/components/Loader';
-import { useVerifyNuggetWithAI } from '../api/nuggetApi';
-import type { CreateNugget } from '../models';
+import { Button } from "@radix-ui/themes";
+import { Collapse } from "../../ui/components/Collapse";
+import { Loader } from "../../ui/components/Loader";
+import { useVerifyNuggetWithAI } from "../api/nuggetApi";
+import type { CreateNugget } from "../models";
 type AIFeedbackCollapsibleProps = {
   nugget: CreateNugget;
   disabled: boolean;
@@ -29,10 +29,11 @@ export const AIFeedbackCollapsible = ({
       isOpen={!!AIFeedback}
       disabled={disabled}
       trigger={
-        <Button type='button' onClick={handleClick}>
+        <Button type="button" onClick={handleClick}>
           AI Feedback
         </Button>
-      }>
+      }
+    >
       {AIFeedback ? AIFeedback.feedback : undefined}
     </Collapse>
   );

@@ -1,8 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-import type { CreateNugget, Nugget, PaginatedNuggets } from '../models/types';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import type { CreateNugget, Nugget, PaginatedNuggets } from "../models/types";
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = "http://localhost:8080/api";
 
 export const getNuggets = async ({
   page,
@@ -19,7 +19,7 @@ export const getNuggets = async ({
 
 export const useGetNuggetById = (id: string) => {
   return useQuery({
-    queryKey: ['nugget', id],
+    queryKey: ["nugget", id],
     queryFn: async () => {
       const { data } = await axios.get<Nugget[]>(
         `${API_BASE_URL}/nuggets/${id}`,
@@ -47,7 +47,7 @@ export const useUpdateNugget = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['nuggets'] });
+      queryClient.invalidateQueries({ queryKey: ["nuggets"] });
     },
   });
 };
@@ -62,7 +62,7 @@ export const useDeleteNugget = () => {
       await axios.delete(`${API_BASE_URL}/nuggets/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['nuggets'] });
+      queryClient.invalidateQueries({ queryKey: ["nuggets"] });
     },
   });
 };

@@ -1,1 +1,1 @@
-export * from './NuggetList';
+export * from "./NuggetList";

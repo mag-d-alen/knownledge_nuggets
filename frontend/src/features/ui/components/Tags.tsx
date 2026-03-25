@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
-import classes from './Tag.module.scss';
-import { Tag } from './Tag';
+import React, { useRef, useState } from "react";
+import classes from "./Tag.module.scss";
+import { Tag } from "./Tag";
 import { Button, TextField } from "@radix-ui/themes";
 import plus from "../../../assets/plus.svg";
-import { Tooltip } from './Tooltip';
-
+import { Tooltip } from "./Tooltip";
+import { useDarkMode } from "../../../providers/DarkModeProvider";
 
 type TagsProps = {
   disabled: boolean;
@@ -16,8 +16,9 @@ export const Tags: React.FC<TagsProps> = ({
   updateTags,
   currentTags = [],
 }) => {
-  const [newTag, setNewTag] = useState('');
+  const [newTag, setNewTag] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const { darkMode } = useDarkMode();
 
   const timeRef = useRef<NodeJS.Timeout | null>(null);
   const startEditing = () => {
@@ -25,7 +26,7 @@ export const Tags: React.FC<TagsProps> = ({
   };
   const stopEditing = () => {
     setIsEditing(false);
-    setNewTag('');
+    setNewTag("");
   };
   const toggleEdit = () => {
     isEditing ? stopEditing() : startEditing();
@@ -42,7 +43,7 @@ export const Tags: React.FC<TagsProps> = ({
   };
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       handleAddTag();
     }
@@ -53,7 +54,7 @@ export const Tags: React.FC<TagsProps> = ({
     timeRef.current = setTimeout(() => {
       handleAddTag();
     }, 1500);
-  }
+  };
 
   const removeTag = (tag: string) => {
     updateTags(currentTags.filter((t) => t !== tag));
@@ -62,7 +63,8 @@ export const Tags: React.FC<TagsProps> = ({
   return (
     <div className={classes.tags}>
       {isEditing ? (
-        <TextField.Root size="1"
+        <TextField.Root
+          size="1"
           autoFocus
           disabled={disabled}
           value={newTag}
@@ -72,9 +74,18 @@ export const Tags: React.FC<TagsProps> = ({
         />
       ) : (
         <>
-          <Tooltip trigger={<Button className={classes.addTag} onClick={toggleEdit}>
-            <img src={plus} alt="Add tag" />
-          </Button>} tooltipText={'Add a category tag'} />
+          <Tooltip
+            trigger={
+              <Button className={classes.addTag} onClick={toggleEdit}>
+                <img
+                  src={plus}
+                  alt="Add tag"
+                  className={darkMode ? classes.darkModeIcon : classes.icon}
+                />
+              </Button>
+            }
+            tooltipText={"Add a category tag"}
+          />
           {currentTags.length === 0 && (
             <span className={classes.addTagText}>
               Add a tag to save this nugget

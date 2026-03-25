@@ -1,9 +1,8 @@
-
-import React from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
-import Markdown from 'react-markdown';
-import { Loader } from './Loader';
-import classes from './Modal.module.scss';
+import React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+import Markdown from "react-markdown";
+import { Loader } from "./Loader";
+import classes from "./Modal.module.scss";
 
 type ModalProps = {
   open: boolean;
@@ -26,11 +25,10 @@ export const Modal: React.FC<ModalProps> = ({
   title,
   isLoading,
 }) => {
-
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
-      <Dialog.Portal >
+      <Dialog.Portal>
         <Dialog.Overlay className={classes.backdrop}>
           <Dialog.Content className={classes.content}>
             <div className={classes.header}>

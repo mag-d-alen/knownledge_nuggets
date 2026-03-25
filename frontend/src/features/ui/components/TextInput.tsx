@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { TextArea, TextField } from '@radix-ui/themes';
+import React, { useEffect, useRef, useState } from "react";
+import { TextArea, TextField } from "@radix-ui/themes";
 
 type TextInputProps = {
   isDisabled: boolean;
   value?: string;
   onChange: (value: string) => void;
   placeholder: string;
-  type?: 'text' | 'textarea';
+  type?: "text" | "textarea";
   rows?: number;
   required?: boolean;
 };
@@ -16,14 +16,13 @@ export const TextInput = ({
   value,
   onChange,
   placeholder,
-  type = 'text',
+  type = "text",
   rows = 10,
   required = false,
 }: TextInputProps) => {
   const [inputValue, setInputValue] = useState(value);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     setInputValue(value);
@@ -38,18 +37,18 @@ export const TextInput = ({
   };
 
   const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
-    if (e.key === 'Enter' && inputValue !== '') {
+    if (e.key === "Enter" && inputValue !== "") {
       e.preventDefault();
       saveValue(inputValue!);
-      setInputValue('');
+      setInputValue("");
     }
-    if (e.key === 'Escape') {
-      setInputValue('');
+    if (e.key === "Escape") {
+      setInputValue("");
     }
     timerRef.current = setTimeout(() => {
       onChange(inputValue!);
@@ -65,7 +64,6 @@ export const TextInput = ({
     timerRef.current = setTimeout(() => {
       onChange(value);
     }, 1000);
-
   };
   useEffect(() => {
     const handleOutsideInteraction = (e: MouseEvent | TouchEvent) => {
@@ -73,16 +71,16 @@ export const TextInput = ({
         containerRef.current &&
         !containerRef.current.contains(e.target as Node)
       ) {
-        saveValue(inputValue ?? '');
+        saveValue(inputValue ?? "");
       }
     };
 
-    document.addEventListener('mousedown', handleOutsideInteraction);
-    document.addEventListener('touchstart', handleOutsideInteraction);
+    document.addEventListener("mousedown", handleOutsideInteraction);
+    document.addEventListener("touchstart", handleOutsideInteraction);
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideInteraction);
-      document.removeEventListener('touchstart', handleOutsideInteraction);
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
     };
   }, [inputValue]);
 
@@ -94,10 +92,10 @@ export const TextInput = ({
     };
   }, []);
 
-  return type === 'textarea' ? (
+  return type === "textarea" ? (
     <TextArea
-      size={'2'}
-      radius='small'
+      size={"2"}
+      radius="small"
       aria-label={placeholder}
       required={required}
       rows={rows}
@@ -107,12 +105,11 @@ export const TextInput = ({
       onBlur={(e) => handleChange(e.target.value)}
       onChange={(e) => handleChange(e.target.value)}
       onKeyDown={(e) => handleKeyDown(e)}
-
     />
   ) : (
     <TextField.Root
-      size={'2'}
-      radius='small'
+      size={"2"}
+      radius="small"
       disabled={isDisabled}
       required={required}
       onChange={(e) => handleChange(e.target.value)}
@@ -121,6 +118,5 @@ export const TextInput = ({
       placeholder={placeholder}
       aria-label={placeholder}
     />
-
   );
 };

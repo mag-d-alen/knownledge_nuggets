@@ -1,10 +1,23 @@
+// @import '@radix-ui/colors/gray.css';
+// @import '@radix-ui/colors/gray-dark.css';
+// @import '@radix-ui/colors/sand.css';
+// @import '@radix-ui/colors/sand-dark.css';
+// @import '@radix-ui/colors/amber.css';
+// @import '@radix-ui/colors/amber-dark.css';
+// @import '@radix-ui/colors/red.css';
+// @import '@radix-ui/colors/red-dark.css';
+// @import '@radix-ui/colors/green.css';
+// @import '@radix-ui/colors/green-dark.css';
+// @import '@radix-ui/colors/black-alpha.css';
+@import "@radix-ui/themes/styles.css";
+
 $font-stack: system-ui, Avenir, Helvetica, Arial, sans-serif;
 
 :root {
   line-height: 1.5;
   font-weight: 400;
 
-  --viewport-padding: 1rem;
+  --default-padding: 2rem;
 
   --color-success: var(--green-9);
   --color-error: var(--red-9);
@@ -13,17 +26,18 @@ $font-stack: system-ui, Avenir, Helvetica, Arial, sans-serif;
   --color-text: var(--gray-11);
   --color-text-secondary: var(--gray-10);
 
-  --color-background: var(--sand-1);
+  --color-background: var(--sand-2);
   --color-accent: var(--amber-9);
   --color-detail: var(--gray-5);
 
   --shadow-primary: 0 1px 3px var(--black-a4);
   --shadow-large: 0 10px 25px var(--black-a7);
 
-  --color-background-backdrop: var(--gray-2);
+  --color-background-backdrop: var(--black-a9);
 }
 
 body {
+  color: var(--color-text);
   font-family: $font-stack;
   margin: 0;
   padding: 0;
