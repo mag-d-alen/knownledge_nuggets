@@ -1,8 +1,8 @@
 import { Grid, Heading } from "@radix-ui/themes";
-import { NuggetList } from "../features/nugget";
 import { CreateNuggetModal } from "../features/nugget/createNugget/CreateNuggetModal";
 import classes from "./PageLayout.module.scss";
-import { Header } from "../features/ui";
+import { NuggetList } from "../features/nugget/components/NuggetList";
+import { Header } from "../features/ui/components/Header";
 export const HomePage: React.FC = () => {
   return (
     <>

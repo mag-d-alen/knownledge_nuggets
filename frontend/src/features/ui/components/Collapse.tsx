@@ -30,17 +30,15 @@ export const Collapse = ({
       <Collapsible.Trigger asChild>
         <span className={disabled ? classes.disabled : classes.trigger}>
           {trigger}{" "}
-          <>
-            <img
-              src={chevron}
-              className={
-                isCollapsed && !disabled
-                  ? classes.triggerIcon
-                  : classes.triggerIconDown
-              }
-              alt="toggle collapse"
-            />
-          </>
+          <img
+            src={chevron}
+            className={
+              isCollapsed && !disabled
+                ? classes.triggerIcon
+                : classes.triggerIconDown
+            }
+            alt="toggle collapse"
+          />
         </span>
       </Collapsible.Trigger>
       <Collapsible.Content>

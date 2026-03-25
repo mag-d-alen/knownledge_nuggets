@@ -33,16 +33,22 @@
 
   p {
     margin: 0;
-    color: var(--color-text);
+    color: var(--gray-12);
   }
   button {
     cursor: pointer;
-    background-color: inherit;
-    color: inherit;
+    background-color: var(--sand-2);
+    color: var(--gray-12);
     border: none;
     height: fit-content;
     padding-bottom: 0.2rem;
-    color: var(--color-text);
+
+    &:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 3px var(--color-background),
+        0 0 0 5px var(--color-accent);
+    }
   }
 }
 
@@ -52,7 +58,7 @@
   font-weight: bold;
   font-size: small;
   cursor: pointer;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   color: var(--color-text-secondary);
   .icon {
     width: 1rem;
@@ -61,5 +67,9 @@
   .darkModeIcon {
     @extend .icon;
     filter: brightness(0) invert(1);
+  }
+  .addTagText {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
   }
 }

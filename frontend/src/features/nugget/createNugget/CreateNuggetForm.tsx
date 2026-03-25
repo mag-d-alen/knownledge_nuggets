@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import * as Form from "@radix-ui/react-form";
 import type { CreateNugget } from "../models/types";
-import { Tags, TextInput } from "../../ui";
 import { Button } from "@radix-ui/themes";
 import classes from "./CreateNuggetForm.module.scss";
 import { useCreateNugget } from "./hooks/useCreateNugget";
 import { Toast } from "../../ui/components/Toast";
 import { AIFeedbackCollapsible } from "./AIFeedbackCollapsible";
+import { Tags } from "../../ui/components/Tags";
+import { TextInput } from "../../ui/components/TextInput";
 
 const emptyNugget: CreateNugget = {
   title: "",

@@ -21,7 +21,7 @@ export const NuggetList = () => {
     if (inView) {
       fetchNextPage();
     }
-  }, [inView]);
+  }, [inView, fetchNextPage]);
 
   if (isLoading) return <Loader loadingText="Loading nuggets..." />;
   if (isError) return <div>Error loading nuggets</div>;

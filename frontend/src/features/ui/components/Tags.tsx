@@ -28,9 +28,9 @@ export const Tags: React.FC<TagsProps> = ({
     setIsEditing(false);
     setNewTag("");
   };
-  const toggleEdit = () => {
-    isEditing ? stopEditing() : startEditing();
-  };
+
+  const toggleEdit = () => (isEditing ? stopEditing() : startEditing());
+
   const handleAddTag = () => {
     const trimmed = newTag.trim();
     if (!trimmed) return;

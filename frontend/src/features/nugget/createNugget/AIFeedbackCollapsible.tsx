@@ -1,8 +1,8 @@
 import { Button } from "@radix-ui/themes";
 import { Collapse } from "../../ui/components/Collapse";
 import { Loader } from "../../ui/components/Loader";
-import type { CreateNugget } from "../models";
 import { useVerifyNuggetWithAI } from "./hooks/useVerifyNugget";
+import type { CreateNugget } from "../models/types";
 type AIFeedbackCollapsibleProps = {
   nugget: CreateNugget;
   disabled: boolean;

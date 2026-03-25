@@ -11,10 +11,9 @@
 }
 .content {
   margin-top: 10%;
-  animation: contentShow 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: contentShow 500ms cubic-bezier(0.16, 1, 0.3, 1);
   overflow-y: scroll;
-  background-color: var(--color-background);
-  color: var(--color-text);
+  background-color: var(--sand-2);
   border-radius: 0.5rem;
   box-shadow: var(--shadow-large);
   padding: var(--default-padding);
@@ -47,7 +46,6 @@
 .closeButton {
   background: none;
   border: none;
-  color: var(--color-text-secondary);
   padding: 0;
   width: 1rem;
   height: 1rem;
@@ -56,6 +54,17 @@
   justify-content: center;
   border-radius: 50%;
 }
+.icon {
+  width: 1rem;
+  height: 1rem;
+  stroke: var(--color-text-secondary);
+}
+
+.darkModeIcon {
+  @extend .icon;
+  filter: brightness(0) invert(1);
+}
+
 .title {
-  color: var(--color-text-secondary);
+  color: var(--gray-12);
 }

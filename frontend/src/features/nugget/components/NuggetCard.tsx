@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Tags, TextInput } from "../../ui";
 import classes from "./Nugget.module.scss";
 import type { Nugget } from "../models/types";
 import { DeleteNugget } from "../deleteNugget/DeleteNugget";
 import Markdown from "react-markdown";
 import { Tooltip } from "../../ui/components/Tooltip";
 import { useUpdateNugget } from "../editNugget/hooks/useEditNugget";
+import { Tags } from "../../ui/components/Tags";
+import { TextInput } from "../../ui/components/TextInput";
 
 type NuggetCardProps = {
   nugget: Nugget;

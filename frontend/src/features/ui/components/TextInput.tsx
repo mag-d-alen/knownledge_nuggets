@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TextArea, TextField } from "@radix-ui/themes";
 
 type TextInputProps = {
@@ -18,7 +18,7 @@ export const TextInput = ({
   placeholder,
   type = "text",
   rows = 10,
-  required = false,
+  required = true,
 }: TextInputProps) => {
   const [inputValue, setInputValue] = useState(value);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -28,13 +28,16 @@ export const TextInput = ({
     setInputValue(value);
   }, [value]);
 
-  const saveValue = (value: string) => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-    onChange(value);
-  };
+  const saveValue = useCallback(
+    (value: string) => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      onChange(value);
+    },
+    [onChange],
+  );
 
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -82,7 +85,7 @@ export const TextInput = ({
       document.removeEventListener("mousedown", handleOutsideInteraction);
       document.removeEventListener("touchstart", handleOutsideInteraction);
     };
-  }, [inputValue]);
+  }, [inputValue, saveValue]);
 
   useEffect(() => {
     return () => {

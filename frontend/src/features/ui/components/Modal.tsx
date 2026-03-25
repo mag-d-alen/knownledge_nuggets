@@ -1,8 +1,10 @@
-import React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
-import Markdown from "react-markdown";
-import { Loader } from "./Loader";
-import classes from "./Modal.module.scss";
+import React from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import Markdown from 'react-markdown';
+import { Loader } from './Loader';
+import classes from './Modal.module.scss';
+import x from '../../../assets/x.svg';
+import { useDarkMode } from '../../../providers/DarkModeProvider';
 
 type ModalProps = {
   open: boolean;
@@ -25,6 +27,7 @@ export const Modal: React.FC<ModalProps> = ({
   title,
   isLoading,
 }) => {
+  const { darkMode } = useDarkMode();
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -33,7 +36,13 @@ export const Modal: React.FC<ModalProps> = ({
           <Dialog.Content className={classes.content}>
             <div className={classes.header}>
               <Dialog.Title className={classes.title}>{title}</Dialog.Title>
-              <Dialog.Close className={classes.closeButton}>x</Dialog.Close>
+              <Dialog.Close className={classes.closeButton}>
+                <img
+                  src={x}
+                  alt='Close modal'
+                  className={darkMode ? classes.darkModeIcon : classes.icon}
+                />
+              </Dialog.Close>
             </div>
             {isLoading ? (
               <Loader loadingText={loadingText} />

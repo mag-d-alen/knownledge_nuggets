@@ -1,15 +1,15 @@
-import { Tooltip as RadixTooltip } from "radix-ui";
-import classes from "./Tooltip.module.scss";
+import { Tooltip as RadixTooltip } from 'radix-ui';
+import classes from './Tooltip.module.scss';
 
 type TooltipProps = {
   trigger: React.ReactNode;
   tooltipText: string;
-  displaySide?: "top" | "right" | "bottom" | "left";
+  displaySide?: 'top' | 'right' | 'bottom' | 'left';
 };
 export const Tooltip = ({
   trigger,
   tooltipText,
-  displaySide = "top",
+  displaySide = 'top',
 }: TooltipProps) => {
   return (
     <RadixTooltip.Provider>
@@ -19,8 +19,7 @@ export const Tooltip = ({
           <RadixTooltip.Content
             className={classes.content}
             sideOffset={5}
-            side={displaySide}
-          >
+            side={displaySide}>
             {tooltipText}
             <RadixTooltip.Arrow className={classes.arrow} />
           </RadixTooltip.Content>

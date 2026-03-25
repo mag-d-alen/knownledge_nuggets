@@ -8,11 +8,11 @@
   textarea {
     padding: 0.5rem;
     font-size: 1rem;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
   }
   .label {
     font-weight: 600;
-    color: var(--color-text-secondary);
+    color: var(--gray-12);
     text-transform: uppercase;
     font-size: 0.6rem;
   }
@@ -22,7 +22,7 @@
     font-size: 0.8rem;
   }
   .saveButton {
-    background-color: var(--color-text-secondary);
+    background-color: var(--gray-12);
     border: 1px solid var(--color-text-secondary);
     color: var(--color-background);
     border-radius: 0.5rem;
@@ -36,8 +36,8 @@
       cursor: not-allowed;
       opacity: 0.5;
       box-shadow: none;
-      background-color: var(--gray-4);
-      color: var(--sand-4);
+      background-color: var(--sand-2);
+      color: var(--gray-12);
     }
   }
 }

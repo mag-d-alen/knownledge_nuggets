@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./Tag.module.scss";
-import { Button } from "@radix-ui/themes";
+import x from "../../../assets/x.svg";
 
 type TagProps = {
   tag: string;
@@ -10,9 +10,9 @@ export const Tag: React.FC<TagProps> = ({ tag, onClick }: TagProps) => {
   return (
     <div className={classes.tag} key={tag}>
       <p>{tag}</p>
-      <Button className={classes.closeButton} onClick={onClick}>
-        𐄂
-      </Button>
+      <button className={classes.closeButton} onClick={onClick}>
+        <img src={x} alt="Remove tag" />
+      </button>
     </div>
   );
 };
