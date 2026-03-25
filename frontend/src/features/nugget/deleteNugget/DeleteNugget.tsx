@@ -1,10 +1,10 @@
 import React from "react";
-import { useDeleteNugget } from "../api/nuggetApi";
 import deleteIcon from "../../../assets/delete.svg";
 import classes from "./DeleteNugget.module.scss";
 import { Loader } from "../../ui/components/Loader";
 import { Tooltip } from "../../ui/components/Tooltip";
 import { useDarkMode } from "../../../providers/DarkModeProvider";
+import { useDeleteNugget } from "./hooks/useDeleteNugget";
 
 export const DeleteNugget: React.FC<{ id: string }> = ({ id }) => {
   const { mutate: deleteNugget, isPending: isDeleting } = useDeleteNugget();
