@@ -114,7 +114,6 @@ export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
           }
           isDisabled={isPending}
           placeholder='Nugget title'
-          shouldSaveOnEnter={false}
         />
       </FormField>
       <FormField
@@ -129,7 +128,6 @@ export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
           isDisabled={isPending}
           placeholder='Nugget content'
           type='textarea'
-          shouldSaveOnEnter={false}
         />
       </FormField>
       <FormField

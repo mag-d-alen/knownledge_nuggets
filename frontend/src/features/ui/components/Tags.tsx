@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react';
 import classes from './Tag.module.scss';
 import { Tag } from './Tag';
 import { Button, TextField } from "@radix-ui/themes";
+import plus from "../../../assets/plus.svg";
+import { Tooltip } from './Tooltip';
 
 
 type TagsProps = {
@@ -24,7 +26,7 @@ export const Tags: React.FC<TagsProps> = ({
   const stopEditing = () => {
     setIsEditing(false);
     setNewTag('');
-  }; 
+  };
   const toggleEdit = () => {
     isEditing ? stopEditing() : startEditing();
   };
@@ -70,9 +72,9 @@ export const Tags: React.FC<TagsProps> = ({
         />
       ) : (
         <>
-          <Button className={classes.addTag} onClick={toggleEdit}>
-            +
-          </Button>
+          <Tooltip trigger={<Button className={classes.addTag} onClick={toggleEdit}>
+            <img src={plus} alt="Add tag" />
+          </Button>} tooltipText={'Add a category tag'} />
           {currentTags.length === 0 && (
             <span className={classes.addTagText}>
               Add a tag to save this nugget

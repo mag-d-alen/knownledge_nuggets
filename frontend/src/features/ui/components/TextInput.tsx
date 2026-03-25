@@ -9,7 +9,6 @@ type TextInputProps = {
   type?: 'text' | 'textarea';
   rows?: number;
   required?: boolean;
-  shouldSaveOnEnter?: boolean;
 };
 
 export const TextInput = ({
@@ -23,10 +22,20 @@ export const TextInput = ({
 }: TextInputProps) => {
   const [inputValue, setInputValue] = useState(value);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     setInputValue(value);
   }, [value]);
+
+  const saveValue = (value: string) => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    onChange(value);
+  };
 
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -36,7 +45,10 @@ export const TextInput = ({
     }
     if (e.key === 'Enter' && inputValue !== '') {
       e.preventDefault();
-      onChange(inputValue!);
+      saveValue(inputValue!);
+      setInputValue('');
+    }
+    if (e.key === 'Escape') {
       setInputValue('');
     }
     timerRef.current = setTimeout(() => {
@@ -44,17 +56,35 @@ export const TextInput = ({
     }, 1000);
   };
 
-  const handleChange = (val: string) => {
-    setInputValue(val);
+  const handleChange = (value: string) => {
+    setInputValue(value);
 
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
     timerRef.current = setTimeout(() => {
-      onChange(val);
+      onChange(value);
     }, 1000);
 
   };
+  useEffect(() => {
+    const handleOutsideInteraction = (e: MouseEvent | TouchEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        saveValue(inputValue ?? '');
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideInteraction);
+    document.addEventListener('touchstart', handleOutsideInteraction);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
+    };
+  }, [inputValue]);
 
   useEffect(() => {
     return () => {
@@ -78,7 +108,6 @@ export const TextInput = ({
       onChange={(e) => handleChange(e.target.value)}
       onKeyDown={(e) => handleKeyDown(e)}
 
-    // className={classes.textInput}
     />
   ) : (
     <TextField.Root

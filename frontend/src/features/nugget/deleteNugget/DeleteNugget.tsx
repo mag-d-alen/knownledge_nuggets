@@ -4,6 +4,7 @@ import deleteIcon from '../../../assets/delete.svg';
 import classes from './DeleteNugget.module.scss';
 import { Loader } from '../../ui/components/Loader';
 import { Button } from '@radix-ui/themes'
+import { Tooltip } from '../../ui/components/Tooltip';
 
 export const DeleteNugget: React.FC<{ id: string }> = ({ id }) => {
   const { mutate: deleteNugget, isPending: isDeleting } = useDeleteNugget();
@@ -20,13 +21,14 @@ export const DeleteNugget: React.FC<{ id: string }> = ({ id }) => {
     : classes.deleteIcon
 
   return (
-    <Button
-      type='button'
-      aria-label='Delete Nugget'
-      onClick={handleDeleteNugget}
-      className={classes.deleteButton}
-      disabled={isDeleting}>
-      {isDeleting ? <Loader /> : <img src={deleteIcon} alt='Delete' className={deleteIconClassName} />}
-    </Button>
-  );
+    <Tooltip tooltipText='Delete Nugget' trigger={
+      <Button
+        type='button'
+        aria-label='Delete Nugget'
+        onClick={handleDeleteNugget}
+        className={classes.deleteButton}
+        disabled={isDeleting}>
+        {isDeleting ? <Loader /> : <img src={deleteIcon} alt='Delete' className={deleteIconClassName} />}
+      </Button>}
+    />)
 };

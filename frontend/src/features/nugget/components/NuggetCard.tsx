@@ -3,9 +3,10 @@ import { Tags, TextInput } from '../../ui';
 import classes from './Nugget.module.scss';
 import type { Nugget } from '../models/types';
 import { DeleteNugget } from '../deleteNugget/DeleteNugget';
-// import { ExplainNugget } from '../explainNugget/ExplainNugget';
 import Markdown from 'react-markdown';
 import { useUpdateNugget } from '../api/nuggetApi';
+import { Button } from '@radix-ui/themes';
+import { Tooltip } from '../../ui/components/Tooltip';
 
 
 type NuggetCardProps = {
@@ -46,9 +47,11 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
           isDisabled={isLoadingUpdateNugget}
         />
       ) : (
-        <div className={classes.title} onClick={() => toggleEdit('title')}>
-          {title} <DeleteNugget id={id} />
-        </div>
+        <Tooltip tooltipText={'Click to edit the title'} trigger={
+          <Button aria-label={'Editable title'} className={classes.title} onClick={() => toggleEdit('title')}>
+            {title} <DeleteNugget id={id} />
+          </Button>}
+        />
       )}
       {canEdit.content ? (
         <TextInput
@@ -59,9 +62,12 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
           isDisabled={isLoadingUpdateNugget}
         />
       ) : (
-        <div className={classes.content} onClick={() => toggleEdit('content')}>
-          <Markdown>{content}</Markdown>
-        </div>
+        <Tooltip tooltipText={'Click to edit the content'} trigger={
+          <span aria-label={'Editable content'} className={classes.content} onClick={() => toggleEdit('content')}>
+            <Markdown>{content}</Markdown>
+          </span>
+        }
+        />
       )}
       <div className={classes.tags}>
         {tags?.length > 0 && (
@@ -74,7 +80,6 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
           />
         )}
       </div>
-      {/* <ExplainNugget nugget={nugget} /> */}
     </div>
   );
 };

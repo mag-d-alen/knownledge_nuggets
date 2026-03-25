@@ -28,10 +28,20 @@
       display: flex;
       justify-content: space-between;
       text-align: left;
+      border: none;
+      background-color: inherit;
+      color: var(--color-text);
+      width: fit-content;
     }
     .content {
+      border: none;
+      width: 100%;
       font-size: 1rem;
       text-align: left;
+      background-color: inherit;
+      color: var(--color-text);
+      line-height: 1.1rem;
+
     }
     .tags {
       display: flex;
