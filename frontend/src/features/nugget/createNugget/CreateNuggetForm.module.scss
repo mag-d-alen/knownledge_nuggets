@@ -8,7 +8,7 @@
   textarea {
     padding: 0.5rem;
     font-size: 1rem;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
   }
   .label {
     font-weight: 600;
@@ -21,9 +21,23 @@
     font-weight: 500;
     font-size: 0.8rem;
   }
-  .buttons {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  .saveButton {
+    background-color: var(--color-text-secondary);
+    border: 1px solid var(--color-text-secondary);
+    color: var(--color-background);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    :hover {
+      background-color: var(--color-text);
+      border: 1px solid var(--color-text);
+    }
+    :disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      box-shadow: none;
+      background-color: var(--gray-4);
+      color: var(--sand-4);
+    }
   }
 }

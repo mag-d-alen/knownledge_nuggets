@@ -29,18 +29,7 @@ export const Toast: React.FC<ToastProps> = ({
         <RadixToast.Description className={classes.title}>
           {text}
         </RadixToast.Description>
-
-        <RadixToast.Action altText="Dismiss notification" asChild>
-          <Button
-            className={classes.dismiss}
-            aria-label="Dismiss"
-            onClick={() => onOpenChange(false)}
-          >
-            ✕
-          </Button>
-        </RadixToast.Action>
       </RadixToast.Root>
-
       <RadixToast.Viewport className={classes.viewport} />
     </RadixToast.Provider>
   );
