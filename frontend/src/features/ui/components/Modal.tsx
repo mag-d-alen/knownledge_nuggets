@@ -26,10 +26,11 @@ export const Modal: React.FC<ModalProps> = ({
   title,
   isLoading,
 }) => {
+
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
-      <Dialog.Portal>
+      <Dialog.Portal >
         <Dialog.Overlay className={classes.backdrop}>
           <Dialog.Content className={classes.content}>
             <div className={classes.header}>

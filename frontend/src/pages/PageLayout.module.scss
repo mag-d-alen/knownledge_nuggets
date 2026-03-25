@@ -12,6 +12,30 @@
   display: flex;
   justify-content: flex-start;
   padding: 8rem 1.5rem 6.5rem 1.5rem;
+  flex-direction: column;
   background-color: var(--color-background);
   color: var(--color-text);
+  .heading {
+    padding-bottom: 4rem;
+    text-transform: uppercase;
+  }
+  .bottomContent {
+    order: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .topContent {
+    order: 0;
+  }
+  @media (min-width: 1024px) {
+    .main {
+      padding: 8rem 6.5rem 6.5rem 6.5rem;
+    }
+    .bottomContent {
+      order: 2;
+    }
+    .topContent {
+      order: 1;
+    }
+  }
 }

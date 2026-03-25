@@ -1,26 +1,44 @@
 .backdrop {
-  background: var(--color-background-backdrop);
+  background-color: var(--black-a9);
   position: fixed;
+  filter: blur(10%);
+  overflow: auto;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  display: grid;
   place-items: center;
-  overflow-y: auto;
-  filter: blur(10%);
 }
-
 .content {
-  // background-color: var(--color-background);
+  animation: contentShow 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--color-background);
+  overflow-y: scroll;
+  background-color: var(--color-background);
   color: var(--color-text);
   border-radius: 0.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   padding: 3rem;
   width: 90%;
-  min-width: 300px;
-  background: white;
+  max-width: 500px;
   padding: 30px;
+
+  @keyframes contentShow {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes contentHide {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
 }
 
 .header {

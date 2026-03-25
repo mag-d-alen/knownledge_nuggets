@@ -19,6 +19,14 @@ export const Toast: React.FC<ToastProps> = ({
   variant = 'error',
   duration = 5000,
 }) => {
+  // const [open, setOpen] = React.useState(false);
+  // const eventDateRef = React.useRef(new Date());
+  // const timerRef = React.useRef(0);
+
+  // React.useEffect(() => {
+  // 	return () => clearTimeout(timerRef.current);
+  // }, []);
+
   return (
     <RadixToast.Provider swipeDirection='right' duration={duration}>
       <RadixToast.Root

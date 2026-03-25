@@ -3,7 +3,7 @@ import { Tags, TextInput } from '../../ui';
 import classes from './Nugget.module.scss';
 import type { Nugget } from '../models/types';
 import { DeleteNugget } from '../deleteNugget/DeleteNugget';
-import { ExplainNugget } from '../explainNugget/ExplainNugget';
+// import { ExplainNugget } from '../explainNugget/ExplainNugget';
 import Markdown from 'react-markdown';
 import { useUpdateNugget } from '../api/nuggetApi';
 
@@ -74,7 +74,7 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
           />
         )}
       </div>
-      <ExplainNugget nugget={nugget} />
+      {/* <ExplainNugget nugget={nugget} /> */}
     </div>
   );
 };

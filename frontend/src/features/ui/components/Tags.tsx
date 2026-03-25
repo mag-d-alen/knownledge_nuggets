@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import classes from './Tag.module.scss';
 import { Tag } from './Tag';
-import { Button } from "@radix-ui/themes";
+import { Button, TextField } from "@radix-ui/themes";
 
 
 type TagsProps = {
@@ -16,17 +16,43 @@ export const Tags: React.FC<TagsProps> = ({
 }) => {
   const [newTag, setNewTag] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+
+  const timeRef = useRef<NodeJS.Timeout | null>(null);
+  const startEditing = () => {
+    setIsEditing(true);
+  };
+  const stopEditing = () => {
+    setIsEditing(false);
+    setNewTag('');
+  }; 
   const toggleEdit = () => {
-    setIsEditing(!isEditing);
+    isEditing ? stopEditing() : startEditing();
   };
-  const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && newTag !== '') {
-      e.preventDefault();
-      updateTags(currentTags.length > 0 ? [...currentTags, newTag] : [newTag]);
-      setNewTag('');
-      toggleEdit();
+  const handleAddTag = () => {
+    const trimmed = newTag.trim();
+    if (!trimmed) return;
+    if (currentTags.includes(trimmed)) {
+      stopEditing();
+      return;
     }
+    updateTags([...currentTags, trimmed]);
+    stopEditing();
   };
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddTag();
+    }
+
+    if (timeRef.current) {
+      clearTimeout(timeRef.current);
+    }
+    timeRef.current = setTimeout(() => {
+      handleAddTag();
+    }, 1500);
+  }
+
   const removeTag = (tag: string) => {
     updateTags(currentTags.filter((t) => t !== tag));
   };
@@ -34,17 +60,16 @@ export const Tags: React.FC<TagsProps> = ({
   return (
     <div className={classes.tags}>
       {isEditing ? (
-        <input
+        <TextField.Root size="1"
+          autoFocus
           disabled={disabled}
           value={newTag}
+          placeholder="Add a tag"
           onChange={(e) => setNewTag(e.target.value)}
-          onKeyDown={(e) => {
-            addTag(e);
-          }}
-          placeholder='Add a tag'
+          onKeyUp={handleKeyUp}
         />
       ) : (
-        <div className={classes.addTagContainer}>
+        <>
           <Button className={classes.addTag} onClick={toggleEdit}>
             +
           </Button>
@@ -53,7 +78,7 @@ export const Tags: React.FC<TagsProps> = ({
               Add a tag to save this nugget
             </span>
           )}
-        </div>
+        </>
       )}
       {currentTags.length > 0 &&
         currentTags.map((tag) => (

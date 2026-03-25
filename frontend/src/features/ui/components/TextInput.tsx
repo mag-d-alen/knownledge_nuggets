@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import classes from './TextInput.module.scss';
+import React, { useEffect, useRef, useState } from 'react';
+import { TextArea, TextField } from '@radix-ui/themes';
 
 type TextInputProps = {
   isDisabled: boolean;
@@ -20,55 +20,78 @@ export const TextInput = ({
   type = 'text',
   rows = 10,
   required = false,
-  shouldSaveOnEnter = true,
 }: TextInputProps) => {
   const [inputValue, setInputValue] = useState(value);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    if (!shouldSaveOnEnter) {
-      return;
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
     }
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && inputValue !== '') {
+      e.preventDefault();
       onChange(inputValue!);
       setInputValue('');
     }
+    timerRef.current = setTimeout(() => {
+      onChange(inputValue!);
+    }, 1000);
   };
-  const handleChange = (value: string) => {
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    setInputValue(value);
-    if (!shouldSaveOnEnter) {
-      if (timer) {
-        clearTimeout(timer);
-      }
-      timer = setTimeout(() => {
-        onChange(value);
-      }, 100);
+
+  const handleChange = (val: string) => {
+    setInputValue(val);
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
     }
+    timerRef.current = setTimeout(() => {
+      onChange(val);
+    }, 1000);
+
   };
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
   return type === 'textarea' ? (
-    <textarea
+    <TextArea
+      size={'2'}
+      radius='small'
       aria-label={placeholder}
       required={required}
       rows={rows}
       disabled={isDisabled}
       placeholder={placeholder}
       value={inputValue}
-      onKeyDown={(e) => handleKeyDown(e)}
+      onBlur={(e) => handleChange(e.target.value)}
       onChange={(e) => handleChange(e.target.value)}
-      className={classes.textInput}
+      onKeyDown={(e) => handleKeyDown(e)}
+
+    // className={classes.textInput}
     />
   ) : (
-    <input
-      aria-label={placeholder}
-      onKeyDown={(e) => handleKeyDown(e)}
-      required={required}
+    <TextField.Root
+      size={'2'}
+      radius='small'
       disabled={isDisabled}
-      placeholder={placeholder}
-      type={'text'}
-      value={inputValue}
+      required={required}
       onChange={(e) => handleChange(e.target.value)}
-      className={classes.textInput}
+      onKeyDown={(e) => handleKeyDown(e)}
+      value={inputValue}
+      placeholder={placeholder}
+      aria-label={placeholder}
     />
+
   );
 };

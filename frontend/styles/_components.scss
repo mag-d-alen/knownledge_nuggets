@@ -6,7 +6,6 @@ button {
   border-radius: 0.5rem;
   text-transform: uppercase;
   font-size: small;
-  background-color: var(--color-text);
   cursor: pointer;
   :disabled {
     cursor: not-allowed;
@@ -72,11 +71,11 @@ textarea {
 //     align-items: center;
 //     justify-content: center;
 //   }
+// // }
+// select {
+//   padding: 0.5rem;
+//   font-size: small;
+//   border: 0.5px solid var(--color-text);
+//   border-radius: 0.5rem;
+//   background-color: inherit;
 // }
-select {
-  padding: 0.5rem;
-  font-size: small;
-  border: 0.5px solid var(--color-text);
-  border-radius: 0.5rem;
-  background-color: inherit;
-}

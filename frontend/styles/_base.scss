@@ -8,7 +8,7 @@ $font-stack: system-ui, Avenir, Helvetica, Arial, sans-serif;
   --color-error: var(--red-9);
   --color-error-background: var(--red-a3);
 
-  --color-text: var(--gray-12);
+  --color-text: var(--gray-11);
   --color-text-secondary: var(--gray-10);
 
   --color-background: var(--sand-1);
@@ -18,13 +18,11 @@ $font-stack: system-ui, Avenir, Helvetica, Arial, sans-serif;
   --shadow-primary: 0 1px 3px var(--black-a4);
   --shadow-large: 0 10px 25px var(--black-a7);
 
-  --color-background-backdrop: var(--black-a8);
+  --color-background-backdrop: var(--gray-2);
 }
 
 body {
   font-family: $font-stack;
-  color: var(--color-text);
-  background-color: var(--color-background);
   margin: 0;
   padding: 0;
 }
