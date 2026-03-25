@@ -73,10 +73,6 @@ export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
     setError(emptyError);
   };
 
-  const handleCancel = () => {
-    resetForm();
-    onSuccess();
-  };
 
   const handleTagsChange = (newTags: string[]) => {
     setNewNugget((prev) => ({ ...prev, tags: newTags }));

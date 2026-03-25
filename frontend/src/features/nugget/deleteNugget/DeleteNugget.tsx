@@ -3,7 +3,6 @@ import { useDeleteNugget } from "../api/nuggetApi";
 import deleteIcon from "../../../assets/delete.svg";
 import classes from "./DeleteNugget.module.scss";
 import { Loader } from "../../ui/components/Loader";
-import { Button } from "@radix-ui/themes";
 import { Tooltip } from "../../ui/components/Tooltip";
 import { useDarkMode } from "../../../providers/DarkModeProvider";
 

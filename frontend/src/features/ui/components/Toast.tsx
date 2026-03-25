@@ -1,5 +1,4 @@
 import { Toast as RadixToast } from "radix-ui";
-import { Button } from "@radix-ui/themes";
 import classes from "./Toast.module.scss";
 
 type Variant = "error" | "success" | "info";

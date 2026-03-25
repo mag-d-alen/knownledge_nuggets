@@ -5,7 +5,6 @@ import type { Nugget } from "../models/types";
 import { DeleteNugget } from "../deleteNugget/DeleteNugget";
 import Markdown from "react-markdown";
 import { useUpdateNugget } from "../api/nuggetApi";
-import { Button } from "@radix-ui/themes";
 import { Tooltip } from "../../ui/components/Tooltip";
 
 type NuggetCardProps = {

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import classes from "./Tag.module.scss";
 import { Tag } from "./Tag";
-import { Button, TextField } from "@radix-ui/themes";
+import { TextField } from "@radix-ui/themes";
 import plus from "../../../assets/plus.svg";
 import { Tooltip } from "./Tooltip";
 import { useDarkMode } from "../../../providers/DarkModeProvider";
