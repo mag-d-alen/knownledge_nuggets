@@ -76,13 +76,13 @@ export const Tags: React.FC<TagsProps> = ({
         <>
           <Tooltip
             trigger={
-              <Button className={classes.addTag} onClick={toggleEdit}>
+              <button className={classes.addTag} onClick={toggleEdit}>
                 <img
                   src={plus}
                   alt="Add tag"
                   className={darkMode ? classes.darkModeIcon : classes.icon}
                 />
-              </Button>
+              </button>
             }
             tooltipText={"Add a category tag"}
           />

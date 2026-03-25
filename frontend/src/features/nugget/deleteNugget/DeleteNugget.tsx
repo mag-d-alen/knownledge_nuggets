@@ -25,7 +25,7 @@ export const DeleteNugget: React.FC<{ id: string }> = ({ id }) => {
     <Tooltip
       tooltipText="Delete Nugget"
       trigger={
-        <Button
+        <button
           type="button"
           aria-label="Delete Nugget"
           onClick={handleDeleteNugget}
@@ -41,7 +41,7 @@ export const DeleteNugget: React.FC<{ id: string }> = ({ id }) => {
               className={deleteIconClassName}
             />
           )}
-        </Button>
+        </button>
       }
     />
   );

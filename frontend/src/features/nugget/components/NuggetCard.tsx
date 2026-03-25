@@ -50,13 +50,13 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
           <Tooltip
             tooltipText={"Click to edit the title"}
             trigger={
-              <Button
+              <button
                 aria-label={"Editable title"}
                 className={classes.title}
                 onClick={() => toggleEdit("title")}
               >
                 {title}
-              </Button>
+              </button>
             }
           />
           <DeleteNugget id={id} />
