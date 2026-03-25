@@ -8,7 +8,13 @@ export const CreateNuggetModal = () => {
     const [open, setOpen] = useState(false);
     const { isPending } = useCreateNugget();
 
-    return (
+    const delayedClose = () => {
+        setTimeout(() => {
+            setOpen(false);
+        }, 2000);
+    };
+
+    return (<>
         <Modal
             open={open}
             onOpenChange={setOpen}
@@ -18,7 +24,8 @@ export const CreateNuggetModal = () => {
             title="Create Nugget"
             aria-describedby="modal-title"
         >
-            <CreateNuggetForm onSuccess={() => setOpen(false)} />
+            <CreateNuggetForm onSuccess={delayedClose} />
         </Modal>
+    </>
     );
 };

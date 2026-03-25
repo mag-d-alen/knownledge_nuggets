@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Form from '@radix-ui/react-form';
 import type { CreateNugget } from '../models/types';
-import { useVerifyNuggetWithAI } from '../api/nuggetApi';
 import { Tags, TextInput } from '../../ui';
 import { Button } from '@radix-ui/themes';
 import classes from './CreateNuggetForm.module.scss';
-import { Loader } from '../../ui/components/Loader';
 import { useCreateNugget } from './hooks/useCreateNugget';
-import { Collapse } from '../../ui/components/Collapse';
+import { Toast } from '../../ui/components/Toast';
+import { AIFeedbackCollapsible } from './AIFeedbackCollapsible';
 
 const emptyNugget: CreateNugget = {
   title: '',
@@ -27,18 +26,18 @@ type CreateNuggetFormProps = {
 export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
   const [newNugget, setNewNugget] = useState<CreateNugget>(emptyNugget);
   const [error, setError] = useState(emptyError);
+  const [toast, setToast] = useState<{
+    open: boolean;
+    text: string;
+    variant: 'success' | 'error';
+  }>({ open: false, text: 'Nugget added successfully', variant: 'success' });
 
-  const { mutate: createNugget, isPending } = useCreateNugget();
-  const {
-    mutate: verifyNugget,
-    isPending: isVerifying,
-    data: AIFeedback,
-  } = useVerifyNuggetWithAI();
+  const { mutate: createNugget, isPending, isError, isSuccess } = useCreateNugget();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const isValid = validateInputs();
-    if (!isValid || !verifyNugget) return;
+    if (!isValid) return;
     createNugget(newNugget, {
       onSuccess: () => {
         resetForm();
@@ -79,78 +78,82 @@ export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
     setError((prev) => ({ ...prev, tags: newTags.length === 0 }));
   };
 
-  const isDisabled = isPending || isVerifying;
-  const collapseDisabled = newNugget.title === '' || newNugget.content === '';
+  useEffect(() => {
+    if (isSuccess) {
+      setToast({
+        open: true,
+        text: 'Nugget created successfully',
+        variant: 'success',
+      });
+    }
+  }, [isSuccess]);
 
-  return (
-    <div>
-      <Form.Root className={classes.form} onSubmit={handleSubmit}>
-        <FormField
-          name='title'
-          errorMessage='Title is required'
-          isError={error.title}>
-          <TextInput
-            value={newNugget.title}
-            onChange={(value) =>
-              setNewNugget((prev) => ({ ...prev, title: value }))
-            }
-            isDisabled={isDisabled}
-            placeholder='Nugget title'
-            shouldSaveOnEnter={false}
-          />
-        </FormField>
-        <FormField
-          name='content'
-          errorMessage='Content is required'
-          isError={error.content}>
-          <TextInput
-            value={newNugget.content}
-            onChange={(value) =>
-              setNewNugget((prev) => ({ ...prev, content: value }))
-            }
-            isDisabled={isDisabled}
-            placeholder='Nugget content'
-            type='textarea'
-            shouldSaveOnEnter={false}
-          />
-        </FormField>
-        <FormField
-          name='tags'
-          isError={error.tags}
-          errorMessage='At least one tag is required'>
-          <Tags
-            updateTags={handleTagsChange}
-            currentTags={newNugget.tags}
-            disabled={isDisabled}
-          />
-        </FormField>
-        {isVerifying ? (
-          <Loader />
-        ) : (
-          <Collapse
-            isOpen={!!AIFeedback}
-            disabled={collapseDisabled}
-            trigger={
-              <Button
-                type='button'
-                onClick={() =>
-                  !collapseDisabled && !isVerifying && !AIFeedback && verifyNugget(newNugget)
-                }>
-                AI Feedback
-              </Button>
-            }>
-            {AIFeedback ? AIFeedback.feedback : undefined}
-          </Collapse>
-        )}
-        <Button type='reset' onClick={handleCancel}>
+  useEffect(() => {
+    if (isError) {
+      setToast({
+        open: true,
+        text: 'Error creating nugget',
+        variant: 'error',
+      });
+    }
+  }, [isError]);
+
+
+
+  return <>
+    <Toast text={toast.text} variant={toast.variant} open={toast.open} onOpenChange={() => setToast({ ...toast, open: false })} />
+    <Form.Root className={classes.form} onSubmit={handleSubmit}>
+      <FormField
+        name='title'
+        errorMessage='Title is required'
+        isError={error.title}>
+        <TextInput
+          value={newNugget.title}
+          onChange={(value) =>
+            setNewNugget((prev) => ({ ...prev, title: value }))
+          }
+          isDisabled={isPending}
+          placeholder='Nugget title'
+          shouldSaveOnEnter={false}
+        />
+      </FormField>
+      <FormField
+        name='content'
+        errorMessage='Content is required'
+        isError={error.content}>
+        <TextInput
+          value={newNugget.content}
+          onChange={(value) =>
+            setNewNugget((prev) => ({ ...prev, content: value }))
+          }
+          isDisabled={isPending}
+          placeholder='Nugget content'
+          type='textarea'
+          shouldSaveOnEnter={false}
+        />
+      </FormField>
+      <FormField
+        name='tags'
+        isError={error.tags}
+        errorMessage='At least one tag is required'>
+        <Tags
+          updateTags={handleTagsChange}
+          currentTags={newNugget.tags}
+          disabled={isPending}
+        />
+      </FormField>
+      <AIFeedbackCollapsible disabled={isPending} nugget={newNugget} />
+      <div className={classes.buttons}>
+        <Button className={classes.cancelButton} type='reset' onClick={handleCancel}>
           Cancel
         </Button>
         <Form.Submit asChild>
-          <Button type='submit'>Save</Button>
+          <Button className={classes.saveButton} type='submit'>Save</Button>
         </Form.Submit>
-      </Form.Root>
-    </div>
-  );
+      </div>
+    </Form.Root>
+  </>
+
 };
 
 type FormFieldProps = {

@@ -4,10 +4,12 @@ import { createNugget } from "../../api/nuggetApi";
 
 export const useCreateNugget = () => {
     const queryClient = useQueryClient();
-    return useMutation({
+    const { mutate, isPending, isError, isSuccess } = useMutation({
         mutationFn: createNugget,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['nuggets'] });
         },
     });
+
+    return { mutate, isPending, isError, isSuccess };
 };

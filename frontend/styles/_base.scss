@@ -4,6 +4,8 @@ $font-stack: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
+  --viewport-padding: 1rem;
+
   --color-success: var(--green-9);
   --color-error: var(--red-9);
   --color-error-background: var(--red-a3);

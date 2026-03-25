@@ -1,6 +1,6 @@
 import { Toast as RadixToast } from "radix-ui";
 import { Button } from '@radix-ui/themes';
-import styles from './Toast.module.scss';
+import classes from './Toast.module.scss';
 
 type Variant = 'error' | 'success' | 'info';
 
@@ -19,28 +19,21 @@ export const Toast: React.FC<ToastProps> = ({
   variant = 'error',
   duration = 5000,
 }) => {
-  // const [open, setOpen] = React.useState(false);
-  // const eventDateRef = React.useRef(new Date());
-  // const timerRef = React.useRef(0);
-
-  // React.useEffect(() => {
-  // 	return () => clearTimeout(timerRef.current);
-  // }, []);
 
   return (
     <RadixToast.Provider swipeDirection='right' duration={duration}>
       <RadixToast.Root
         open={open}
         onOpenChange={onOpenChange}
-        className={`${styles.root} ${styles[variant]}`}
+        className={`${classes.toastRoot} ${classes[variant]}`}
       >
-        <RadixToast.Description className={styles.description}>
+        <RadixToast.Description className={classes.title}>
           {text}
         </RadixToast.Description>
 
         <RadixToast.Action altText='Dismiss notification' asChild>
           <Button
-            className={styles.dismiss}
+            className={classes.dismiss}
             aria-label='Dismiss'
             onClick={() => onOpenChange(false)}
           >
@@ -49,7 +42,7 @@ export const Toast: React.FC<ToastProps> = ({
         </RadixToast.Action>
       </RadixToast.Root>
 
-      <RadixToast.Viewport className={styles.viewport} />
+      <RadixToast.Viewport className={classes.viewport} />
     </RadixToast.Provider>
   );
 };
