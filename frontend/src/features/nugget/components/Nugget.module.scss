@@ -33,6 +33,11 @@
       color: var(--color-text);
       width: fit-content;
     }
+    .titleContainer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     .content {
       border: none;
       width: 100%;
@@ -41,7 +46,6 @@
       background-color: inherit;
       color: var(--color-text);
       line-height: 1.1rem;
-
     }
     .tags {
       display: flex;

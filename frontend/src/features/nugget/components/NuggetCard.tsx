@@ -46,12 +46,13 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
           type={'text'}
           isDisabled={isLoadingUpdateNugget}
         />
-      ) : (
+      ) : (<div className={classes.titleContainer}>
         <Tooltip tooltipText={'Click to edit the title'} trigger={
           <Button aria-label={'Editable title'} className={classes.title} onClick={() => toggleEdit('title')}>
-            {title} <DeleteNugget id={id} />
+            {title}
           </Button>}
-        />
+        /><DeleteNugget id={id} />
+      </div>
       )}
       {canEdit.content ? (
         <TextInput
