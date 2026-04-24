@@ -22,8 +22,8 @@ export const TextInput = ({
 }: TextInputProps) => {
   const [inputValue, setInputValue] = useState(value);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
     setInputValue(value);
   }, [value]);
@@ -42,37 +42,32 @@ export const TextInput = ({
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
+    // e.preventDefault();
     if (e.key === "Enter" && inputValue !== "") {
-      e.preventDefault();
       saveValue(inputValue!);
       setInputValue("");
     }
-    if (e.key === "Escape") {
-      setInputValue("");
-    }
-    timerRef.current = setTimeout(() => {
-      onChange(inputValue!);
-    }, 1000);
   };
 
   const handleChange = (value: string) => {
     setInputValue(value);
-
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(() => {
-      onChange(value);
-    }, 1000);
+    // timerRef.current = setTimeout(() => {
+    //   onChange(inputValue!);
+    // }, 10000);
   };
+
   useEffect(() => {
     const handleOutsideInteraction = (e: MouseEvent | TouchEvent) => {
+      e.stopPropagation();
       if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
+        textareaRef.current &&
+        !textareaRef.current.contains(e.target as Node)
+      ) {
+        saveValue(inputValue ?? "");
+      }
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(e.target as Node)
       ) {
         saveValue(inputValue ?? "");
       }
@@ -108,9 +103,11 @@ export const TextInput = ({
       onBlur={(e) => handleChange(e.target.value)}
       onChange={(e) => handleChange(e.target.value)}
       onKeyDown={(e) => handleKeyDown(e)}
+      ref={textareaRef}
     />
   ) : (
     <TextField.Root
+      ref={inputRef}
       size={"2"}
       radius="small"
       disabled={isDisabled}

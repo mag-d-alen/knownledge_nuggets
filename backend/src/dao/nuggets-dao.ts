@@ -3,6 +3,9 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import type { Nugget } from '../types';
 
 dotenv.config();
+
+type CreateNuggetDTO = Omit<Nugget, 'id' | 'created_at'>;
+
 export class NuggetsDao {
   private supabase: SupabaseClient;
   constructor() {
@@ -47,7 +50,7 @@ export class NuggetsDao {
     return data;
   };
 
-  insertNugget = async (nugget: Nugget) => {
+  insertNugget = async (nugget: CreateNuggetDTO) => {
     const { data, error } = await this.supabase.from('nuggets').insert(nugget).select().maybeSingle();
     if (error) {
       throw new Error(`Error inserting nugget into database: ${error.message}`);
@@ -55,7 +58,7 @@ export class NuggetsDao {
     return data;
   };
 
-  updateNugget = async (id: string, nugget: Nugget) => {
+  updateNugget = async (id: string, nugget: Partial<CreateNuggetDTO>) => {
     const { data, error } = await this.supabase
       .from('nuggets')
       .update(nugget)

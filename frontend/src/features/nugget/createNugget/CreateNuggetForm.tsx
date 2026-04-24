@@ -145,7 +145,7 @@ export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
             disabled={isPending}
           />
         </FormField>
-        <AIFeedbackCollapsible disabled={isPending} nugget={newNugget} />
+        <AIFeedbackCollapsible disabled={isPending|| !newNugget.content || !newNugget.title} nugget={newNugget} />
 
         <Form.Submit asChild>
           <Button className={classes.saveButton} type='submit'>

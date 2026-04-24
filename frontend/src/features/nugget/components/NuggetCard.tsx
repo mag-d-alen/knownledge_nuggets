@@ -13,6 +13,7 @@ type NuggetCardProps = {
 };
 export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
   const [canEdit, setCanEdit] = useState<Record<string, boolean>>({});
+
   const { mutateAsync: updateNugget, isPending: isLoadingUpdateNugget } =
     useUpdateNugget();
 
@@ -34,6 +35,8 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
     }
     setCanEdit({ ...canEdit, [key]: false });
   };
+
+
 
   return (
     <div key={id} className={classes.card}>

@@ -1,6 +1,7 @@
 export type Nugget = {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
+  id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  created_at?: string;
 };

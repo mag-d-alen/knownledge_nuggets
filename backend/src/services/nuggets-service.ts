@@ -1,6 +1,8 @@
 import type { NuggetsDao } from '../dao/nuggets-dao';
 import type { Nugget } from '../types';
 
+type CreateNuggetDTO = Omit<Nugget, 'id' | 'created_at'>;
+
 export class NuggetsService {
   constructor(private readonly nuggetsDao: NuggetsDao) {}
 
@@ -27,12 +29,12 @@ export class NuggetsService {
     const data = await this.nuggetsDao.getNuggetById(id);
     return data;
   }
-  async createNugget(nugget: Nugget): Promise<Nugget> {
+  async createNugget(nugget: CreateNuggetDTO): Promise<Nugget> {
     const data = await this.nuggetsDao.insertNugget(nugget);
     if (!data) throw new Error('Service Error: Nugget not created');
     return data;
   }
-  async updateNugget(id: string, nugget: Nugget): Promise<Nugget | null> {
+  async updateNugget(id: string, nugget: Partial<CreateNuggetDTO>): Promise<Nugget | null> {
     const data = await this.nuggetsDao.updateNugget(id, nugget);
     return data;
   }

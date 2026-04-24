@@ -1,12 +1,7 @@
 import type { Request, Response } from 'express';
 import type { NuggetsService } from '../services/nuggets-service';
 import { AIVerificationService } from '../services/ai-verification-service';
-type Nugget = {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-};
+import type { Nugget } from '../types';
 type FilteredNuggets = {
   nuggets: Nugget[];
   totalNuggets: number;
@@ -16,6 +11,8 @@ type FilteredNuggets = {
   prevPage: number;
   isLastPage: boolean;
 };
+
+type CreateNuggetDTO = Omit<Nugget, 'id' | 'created_at'>;
 export class NuggetsController {
   private readonly aiVerificationService: AIVerificationService;
 
