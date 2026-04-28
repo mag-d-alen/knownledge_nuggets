@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import * as Form from '@radix-ui/react-form';
+import {
+  Control,
+  Field,
+  Label,
+  Message,
+  Root,
+  Submit,
+} from '@radix-ui/react-form';
 import type { CreateNugget } from '../models/types';
 import { Button } from '@radix-ui/themes';
 import classes from './CreateNuggetForm.module.scss';
@@ -42,8 +49,6 @@ export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isValid = validateInputs();
-    if (!isValid) return;
     createNugget(newNugget, {
       onSuccess: () => {
         resetForm();
@@ -52,22 +57,13 @@ export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
     });
   };
 
-  const validateInputs = () => {
-    let isValid = true;
-    if (newNugget.title === '') {
-      setError((prev) => ({ ...prev, title: true }));
-      isValid = false;
-    }
-    if (newNugget.content === '') {
-      setError((prev) => ({ ...prev, content: true }));
-      isValid = false;
-    }
-    if (newNugget.tags.length === 0) {
-      setError((prev) => ({ ...prev, tags: true }));
-      isValid = false;
-    }
-    return isValid;
-  };
+  useEffect(() => {
+    setError({
+      title: newNugget.title.trim() === '',
+      content: newNugget.content.trim() === '',
+      tags: newNugget.tags.length === 0,
+    });
+  }, [newNugget.content, newNugget.title, newNugget.tags]);
 
   const resetForm = () => {
     setNewNugget(emptyNugget);
@@ -107,14 +103,14 @@ export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
         open={toast.open}
         onOpenChange={() => setToast({ ...toast, open: false })}
       />
-      <Form.Root className={classes.form} onSubmit={handleSubmit}>
+      <Root className={classes.form} onSubmit={handleSubmit}>
         <FormField
           name='title'
           errorMessage='Title is required'
           isError={error.title}>
           <TextInput
             value={newNugget.title}
-            onChange={(value) =>
+            saveValue={(value) =>
               setNewNugget((prev) => ({ ...prev, title: value }))
             }
             isDisabled={isPending}
@@ -127,7 +123,7 @@ export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
           isError={error.content}>
           <TextInput
             value={newNugget.content}
-            onChange={(value) =>
+            saveValue={(value) =>
               setNewNugget((prev) => ({ ...prev, content: value }))
             }
             isDisabled={isPending}
@@ -145,14 +141,17 @@ export const CreateNuggetForm = ({ onSuccess }: CreateNuggetFormProps) => {
             disabled={isPending}
           />
         </FormField>
-        <AIFeedbackCollapsible disabled={isPending|| !newNugget.content || !newNugget.title} nugget={newNugget} />
+        <AIFeedbackCollapsible
+          disabled={isPending || !newNugget.content || !newNugget.title}
+          nugget={newNugget}
+        />
 
-        <Form.Submit asChild>
+        <Submit asChild>
           <Button className={classes.saveButton} type='submit'>
             Save
           </Button>
-        </Form.Submit>
-      </Form.Root>
+        </Submit>
+      </Root>
     </>
   );
 };
@@ -170,11 +169,9 @@ const FormField = ({
   errorMessage,
   children,
 }: FormFieldProps) => (
-  <Form.Field name={name} serverInvalid={isError}>
-    <Form.Label className={classes.label}>{name}</Form.Label>
-    <Form.Control asChild>{children}</Form.Control>
-    {isError && (
-      <Form.Message className={classes.error}>{errorMessage}</Form.Message>
-    )}
-  </Form.Field>
+  <Field name={name} serverInvalid={isError}>
+    <Label className={classes.label}>{name}</Label>
+    <Control asChild>{children}</Control>
+    {isError && <Message className={classes.error}>{errorMessage}</Message>}
+  </Field>
 );

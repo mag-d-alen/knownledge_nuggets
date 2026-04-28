@@ -12,7 +12,7 @@ type FilteredNuggets = {
   isLastPage: boolean;
 };
 
-type CreateNuggetDTO = Omit<Nugget, 'id' | 'created_at'>;
+// type CreateNuggetDTO = Omit<Nugget, 'id' | 'created_at'>;
 export class NuggetsController {
   private readonly aiVerificationService: AIVerificationService;
 
