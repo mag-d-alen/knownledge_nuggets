@@ -43,7 +43,7 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
       {canEdit.title ? (
         <TextInput
           value={title}
-          onChange={(value) => saveNugget({ key: "title", value })}
+          saveValue={(value) => saveNugget({ key: "title", value })}
           placeholder={"Title"}
           type={"text"}
           isDisabled={isLoadingUpdateNugget}
@@ -68,7 +68,7 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
       {canEdit.content ? (
         <TextInput
           value={content}
-          onChange={(value) => saveNugget({ key: "content", value })}
+          saveValue={(value) => saveNugget({ key: "content", value })}
           placeholder={"Content"}
           type={"textarea"}
           isDisabled={isLoadingUpdateNugget}
@@ -82,7 +82,7 @@ export const NuggetCard: React.FC<NuggetCardProps> = ({ nugget }) => {
               className={classes.content}
               onClick={() => toggleEdit("content")}
             >
-              <Markdown>{content}</Markdown>
+              <Markdown >{content}</Markdown>
             </span>
           }
         />
