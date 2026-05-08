@@ -37,7 +37,20 @@
       opacity: 0.5;
       box-shadow: none;
       background-color: var(--sand-2);
-      color: var(--gray-12);
     }
+  }
+}
+.createTrigger {
+  position: fixed;
+  top: 5rem;
+  right: 2rem;
+  z-index: 100;
+  background-color: var(--color-accent);
+  color: var(--gray-5);
+  border: none;
+  border-radius: 0.5rem;
+  &:hover {
+    background-color: var(--amber-8);
+    color: var(--color-text);
   }
 }

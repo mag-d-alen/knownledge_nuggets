@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Modal } from "../../ui/components/Modal";
-import { CreateNuggetForm } from "./CreateNuggetForm";
-import { Button } from "@radix-ui/themes";
-import { useCreateNugget } from "./hooks/useCreateNugget";
+import { useState } from 'react';
+import { Modal } from '../../ui/components/Modal';
+import { CreateNuggetForm } from './CreateNuggetForm';
+import { useCreateNugget } from './hooks/useCreateNugget';
+import classes from './CreateNuggetForm.module.scss';
 
 export const CreateNuggetModal = () => {
   const [open, setOpen] = useState(false);
@@ -19,12 +19,11 @@ export const CreateNuggetModal = () => {
       <Modal
         open={open}
         onOpenChange={setOpen}
-        trigger={<Button>Create Nugget</Button>}
+        trigger={<button className={classes.createTrigger}>Create Nugget</button>}
         isLoading={isPending}
-        loadingText="Saving your knowledge"
-        title="Create Nugget"
-        aria-describedby="modal-title"
-      >
+        loadingText='Saving your knowledge'
+        title='Create Nugget'
+        aria-describedby='modal-title'>
         <CreateNuggetForm onSuccess={delayedClose} />
       </Modal>
     </>
