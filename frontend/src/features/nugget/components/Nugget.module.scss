@@ -1,4 +1,5 @@
 .listContainer {
+  width: 100%;
   display: flex;
   flex-direction: column;
 
@@ -6,20 +7,18 @@
     text-align: center;
     margin-bottom: 1rem;
     text-transform: uppercase;
-    color: var(--color-text-secondary);
   }
 
   .card {
     padding: 1rem;
     margin: 1rem 0 2rem;
     border-radius: 1rem;
-    min-height: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-shadow: var(--shadow-primary);
     border-bottom: 1px solid var(--color-accent);
-    background-color: var(--sand-2);
+    animation: fadeIn 0.5s ease-in-out;
 
     .title {
       font-weight: bold;
@@ -29,21 +28,17 @@
       text-align: left;
       border: none;
       background-color: inherit;
-      width: fit-content;
     }
     .titleContainer {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0 1rem;
     }
     .content {
       border: none;
-      width: 100%;
-      font-size: 1rem;
-      text-align: left;
-      line-height: 1.1rem;
-      pre{
-        background-color: var(--color-background);
+      pre {
         padding: 0.5rem;
         border-radius: 0.5rem;
         overflow: auto;
@@ -60,5 +55,61 @@
       font: 0.8rem;
       text-transform: uppercase;
     }
+  }
+}
+
+.skeletonContent {
+  height: 3rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(
+    -60deg,
+    #000 1%,
+    #2b2828 30%,
+    rgba(51, 50, 50, 0.333) 50%,
+    rgba(51, 50, 50, 0.7),
+    70%,
+    #000 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 10s infinite;
+  animation: fadeOut 0.5s ease-in-out 1;
+}
+
+.skeletonTitle {
+  height: 1.2rem;
+  margin-bottom: 0.5rem;
+  @extend .skeletonContent;
+}
+@keyframes shimmer {
+  from {
+    background-position: -1000px 0;
+  }
+  to {
+    background-position: 1000px 0;
+  }
+}
+@keyframes fadeOut {
+0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    // transform: translateY(0%);
+  }
+  50% {
+    opacity: 0.5;
+    // transform: translateY(-5%);
+  }
+  100% {
+    opacity: 1;
+    // transform: translateY(-10%);
   }
 }

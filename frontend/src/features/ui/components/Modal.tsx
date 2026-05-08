@@ -30,7 +30,9 @@ export const Modal: React.FC<ModalProps> = ({
   const { darkMode } = useDarkMode();
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
+      <Dialog.Trigger className={classes.trigger} asChild>
+        {trigger}
+      </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className={classes.backdrop}>
           <Dialog.Content className={classes.content}>
